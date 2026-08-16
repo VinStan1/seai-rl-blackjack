@@ -1,0 +1,79 @@
+"""Tests for selecting and configuring the final experiment."""
+
+import unittest
+from pathlib import Path
+
+from src.final_experiment import build_final_config, select_best_configurations
+
+
+def result(identifier: str, algorithm: str, reward: float, **parameters):
+    return {
+        "configuration_id": identifier,
+        "algorithm": algorithm,
+        "parameters": parameters,
+        "mean_reward": {"mean": reward},
+    }
+
+
+class FinalExperimentTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.summary = {
+            "configurations": [
+                result("mc_bad", "monte_carlo", -0.08, epsilon=0.1, gamma=1.0),
+                result("mc_best", "monte_carlo", -0.06, epsilon=0.2, gamma=1.0),
+                result(
+                    "sarsa_best",
+                    "sarsa",
+                    -0.05,
+                    epsilon=0.2,
+                    alpha=0.05,
+                    gamma=1.0,
+                ),
+                result(
+                    "q_best",
+                    "q_learning",
+                    -0.04,
+                    epsilon=0.1,
+                    alpha=0.05,
+                    gamma=1.0,
+                ),
+            ]
+        }
+
+    def test_selects_one_best_configuration_per_required_algorithm(self) -> None:
+        selected = select_best_configurations(self.summary)
+
+        self.assertEqual(
+            [item["configuration_id"] for item in selected],
+            ["mc_best", "sarsa_best", "q_best"],
+        )
+
+    def test_builds_scalar_final_config_with_fresh_budget_and_seeds(self) -> None:
+        config = build_final_config(
+            self.summary,
+            Path("pilot/summary.json"),
+            episodes=1_000_000,
+            evaluation_episodes=1_000_000,
+            evaluation_seed=10_000_000,
+            seeds=[100, 101],
+            workers=2,
+            output_dir=Path("results/final"),
+            experiment_name="final",
+        )
+
+        self.assertEqual(config["training"]["episodes"], 1_000_000)
+        self.assertEqual(config["evaluation"]["episodes"], 1_000_000)
+        self.assertEqual(config["training"]["seeds"], [100, 101])
+        self.assertEqual(len(config["algorithms"]), 3)
+        self.assertEqual(config["algorithms"][0]["parameters"]["epsilon"], 0.2)
+        self.assertEqual(config["metadata"]["phase"], "final_validation")
+
+    def test_requires_all_three_algorithms(self) -> None:
+        self.summary["configurations"] = self.summary["configurations"][:-1]
+
+        with self.assertRaisesRegex(ValueError, "q_learning"):
+            select_best_configurations(self.summary)
+
+
+if __name__ == "__main__":
+    unittest.main()

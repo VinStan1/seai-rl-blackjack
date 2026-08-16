@@ -1,9 +1,8 @@
 # Reinforcement Learning for Blackjack
 
 Docker-first implementation and evaluation of reinforcement-learning agents on
-Gymnasium's `Blackjack-v1`. The current milestone contains a tabular first-visit
-Monte Carlo control agent. Finite-deck Blackjack, SARSA, and Q-learning are
-intentionally left for later milestones.
+Gymnasium's `Blackjack-v1`. The project contains tabular first-visit Monte Carlo,
+SARSA, and Q-learning agents, plus a configurable hyperparameter sweep runner.
 
 ## MDP model
 
@@ -35,9 +34,11 @@ the incremental sample mean of first-visit returns with discount factor
 |-- requirements.txt
 |-- src/
 |   |-- agents/monte_carlo.py
+|   |-- agents/temporal_difference.py
 |   |-- environments/blackjack.py
 |   |-- train.py
-|   `-- evaluate.py
+|   |-- evaluate.py
+|   `-- sweep.py
 |-- experiments/
 |-- results/
 `-- tests/
@@ -71,6 +72,88 @@ Evaluate every saved model over 10,000 independent episodes:
 docker compose run --rm evaluate
 ```
 
+Run the supplied Monte Carlo, SARSA, and Q-learning hyperparameter grid:
+
+```bash
+docker compose run --rm sweep
+```
+
+Pass another configuration and optionally train independent runs in parallel:
+
+```bash
+docker compose run --rm sweep \
+  --config experiments/hyperparameter_sweep.json --workers 4
+```
+
+The JSON configuration defines the environment, training and evaluation budgets,
+seeds, algorithms, and parameter value lists. A scalar means one value; a list is
+expanded as part of the Cartesian product for that algorithm. Monte Carlo accepts
+`epsilon` and `gamma`; SARSA and Q-learning also accept `alpha`.
+
+Every invocation creates a timestamped directory under `results/sweeps/`. Each
+seed/configuration run saves a model and run report. `summary.json` is refreshed
+after every completed or failed run and ranks configurations by mean evaluation
+reward across seeds. Worker processes only parallelize independent runs; they do
+not alter their seeds or experimental settings.
+
+While the sweep is running, its aggregate progress bar shows completed runs,
+percentage, elapsed time, and an ETA. The ETA becomes available after the first
+configuration/seed run finishes and adjusts as later runs complete.
+
+Generate a human-readable analysis for the newest sweep:
+
+```bash
+docker compose run --rm analyze
+```
+
+Analyze a specific summary or choose another output directory:
+
+```bash
+docker compose run --rm analyze \
+  --summary results/sweeps/blackjack_pilot_grid_20260816T181220Z/summary.json \
+  --output-dir results/my_analysis
+```
+
+The analyzer creates `analysis.md`, a ranked configuration CSV, and three PNG
+figures covering final reward with confidence intervals, hyperparameter
+sensitivity, and the reward/training-time trade-off. With `latest`, the most
+recently modified sweep summary is selected automatically.
+
+## Final million-episode comparison
+
+After the pilot grid search, run the best configuration from each algorithm on
+fresh seeds:
+
+```bash
+docker compose run --rm final \
+  --summary latest --workers 4
+```
+
+By default this command:
+
+- selects the highest-mean-reward Monte Carlo, SARSA, and Q-learning settings;
+- uses ten fresh training seeds (`100` through `109`);
+- trains each algorithm for 1,000,000 episodes per seed;
+- evaluates each trained model over 1,000,000 independent episodes;
+- writes the normal sweep `summary.json`, models, and per-run reports;
+- generates the Markdown/PNG/CSV analysis automatically; and
+- writes `final_selection.json` with the observed winner and its paired
+  comparison against the runner-up.
+
+The full default run represents 30 million training episodes and 30 million
+evaluation episodes. Reduce the evaluation budget or change the fresh seeds when
+doing a quick check:
+
+```bash
+docker compose run --rm final \
+  --summary latest --workers 4 \
+  --evaluation-episodes 100000 \
+  --seeds 100 101 102 103 104
+```
+
+The selected model is reported as provisional when its paired 95% confidence
+interval versus the runner-up includes zero.
+
 Generated models and JSON reports persist in `results/`. The reports include
 per-seed reward, win/draw/loss rates, training time, inference latency, and a 95%
 normal-approximation confidence interval across independent training seeds.
@@ -82,9 +165,8 @@ are stored in the generated artifacts, together with the environment and
 hyperparameters. Evaluation uses a deterministic greedy policy and a separate
 seed range from training.
 
-This bootstrap does **not yet satisfy the final course requirement to compare at
-least two RL techniques**. A later milestone must add another algorithm, apply
-the same multi-seed protocol, perform an appropriate statistical test, evaluate
+The sweep supplies the multi-algorithm, multi-seed experiment data, but a final
+course submission must still apply an appropriate statistical test, evaluate
 generalisation variants, and discuss failure modes and sample efficiency.
 
 ## References

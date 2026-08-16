@@ -16,3 +16,25 @@ services:
     volumes:
       - ./results:/app/results
       - ./experiments:/app/experiments
+
+  sweep:
+    build: .
+    entrypoint: ["python", "-m", "src.sweep"]
+    command: ["--config", "experiments/hyperparameter_sweep.json"]
+    volumes:
+      - ./results:/app/results
+      - ./experiments:/app/experiments:ro
+
+  analyze:
+    build: .
+    entrypoint: ["python", "-m", "src.analyze"]
+    command: ["--summary", "latest"]
+    volumes:
+      - ./results:/app/results
+
+  final:
+    build: .
+    entrypoint: ["python", "-m", "src.final_experiment"]
+    command: ["--summary", "latest"]
+    volumes:
+      - ./results:/app/results

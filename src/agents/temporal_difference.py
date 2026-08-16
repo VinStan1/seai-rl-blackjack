@@ -1,11 +1,11 @@
-"""First-visit Monte Carlo control with an epsilon-greedy policy."""
+"""Tabular SARSA and Q-learning agents for Gymnasium Blackjack."""
 
 from __future__ import annotations
 
 import json
 import random
 from collections import defaultdict
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any, Protocol, TypeAlias
 
@@ -14,8 +14,6 @@ EpisodeStep: TypeAlias = tuple[BlackjackState, int, float]
 
 
 class BlackjackEnvironment(Protocol):
-    """Subset of the Gymnasium API required by the agent."""
-
     def reset(
         self, *, seed: int | None = None
     ) -> tuple[BlackjackState, dict[str, Any]]: ...
@@ -25,25 +23,31 @@ class BlackjackEnvironment(Protocol):
     ) -> tuple[BlackjackState, float, bool, bool, dict[str, Any]]: ...
 
 
-class MonteCarloAgent:
-    """Tabular first-visit Monte Carlo control agent."""
+class TabularTDAgent:
+    """Shared behavior for one-step tabular temporal-difference agents."""
+
+    algorithm = "tabular_td"
 
     def __init__(
         self,
         *,
         epsilon: float = 0.1,
+        alpha: float = 0.05,
         gamma: float = 1.0,
         number_actions: int = 2,
         seed: int = 0,
     ) -> None:
         if not 0.0 <= epsilon <= 1.0:
             raise ValueError("epsilon must be between 0 and 1")
+        if not 0.0 < alpha <= 1.0:
+            raise ValueError("alpha must be greater than 0 and at most 1")
         if not 0.0 <= gamma <= 1.0:
             raise ValueError("gamma must be between 0 and 1")
         if number_actions < 1:
             raise ValueError("number_actions must be positive")
 
         self.epsilon = epsilon
+        self.alpha = alpha
         self.gamma = gamma
         self.number_actions = number_actions
         self.seed = seed
@@ -51,29 +55,19 @@ class MonteCarloAgent:
         self.q_values: defaultdict[BlackjackState, list[float]] = defaultdict(
             self._empty_action_values
         )
-        self.visit_counts: defaultdict[BlackjackState, list[int]] = defaultdict(
-            self._empty_visit_counts
-        )
 
     def _empty_action_values(self) -> list[float]:
         return [0.0] * self.number_actions
 
-    def _empty_visit_counts(self) -> list[int]:
-        return [0] * self.number_actions
-
     def select_action(self, state: BlackjackState, *, explore: bool = True) -> int:
-        """Select an epsilon-greedy action, using stable tie-breaking for evaluation."""
+        """Choose an epsilon-greedy action with stable evaluation tie-breaking."""
         if explore and self._random.random() < self.epsilon:
             return self._random.randrange(self.number_actions)
 
         # Looking up an unseen evaluation state must not mutate the learned table.
-        action_values = self.q_values.get(state, self._empty_action_values())
-        best_value = max(action_values)
-        best_actions = [
-            action
-            for action, value in enumerate(action_values)
-            if value == best_value
-        ]
+        values = self.q_values.get(state, self._empty_action_values())
+        best_value = max(values)
+        best_actions = [index for index, value in enumerate(values) if value == best_value]
         if explore:
             return self._random.choice(best_actions)
         return best_actions[0]
@@ -83,12 +77,11 @@ class MonteCarloAgent:
         environment: BlackjackEnvironment,
         *,
         seed: int | None = None,
-        explore: bool = True,
+        explore: bool = False,
     ) -> list[EpisodeStep]:
-        """Generate one complete episode using the current policy."""
+        """Play one complete episode without updating the value table."""
         state, _ = environment.reset(seed=seed)
         episode: list[EpisodeStep] = []
-
         while True:
             action = self.select_action(state, explore=explore)
             next_state, reward, terminated, truncated, _ = environment.step(action)
@@ -97,44 +90,46 @@ class MonteCarloAgent:
                 return episode
             state = next_state
 
-    def update_episode(self, episode: Sequence[EpisodeStep]) -> None:
-        """Update action values from the first occurrence of each state-action pair."""
-        returns = [0.0] * len(episode)
-        discounted_return = 0.0
-        for index in range(len(episode) - 1, -1, -1):
-            discounted_return = episode[index][2] + self.gamma * discounted_return
-            returns[index] = discounted_return
-
-        visited: set[tuple[BlackjackState, int]] = set()
-        for (state, action, _), observed_return in zip(episode, returns, strict=True):
-            state_action = (state, action)
-            if state_action in visited:
-                continue
-            visited.add(state_action)
-
-            self.visit_counts[state][action] += 1
-            count = self.visit_counts[state][action]
-            current_value = self.q_values[state][action]
-            self.q_values[state][action] += (observed_return - current_value) / count
-
-    def train(
+    def _next_value(
         self,
-        environment: BlackjackEnvironment,
-        episodes: int,
-    ) -> list[float]:
-        """Train for a fixed number of episodes and return each episode reward."""
+        next_state: BlackjackState,
+        next_action: int,
+    ) -> float:
+        raise NotImplementedError
+
+    def train(self, environment: BlackjackEnvironment, episodes: int) -> list[float]:
+        """Train online with one-step temporal-difference updates."""
         if episodes < 1:
             raise ValueError("episodes must be positive")
 
         rewards: list[float] = []
         for episode_index in range(episodes):
-            episode = self.generate_episode(
-                environment,
-                seed=self.seed + episode_index,
-                explore=True,
-            )
-            self.update_episode(episode)
-            rewards.append(sum(step[2] for step in episode))
+            state, _ = environment.reset(seed=self.seed + episode_index)
+            action = self.select_action(state, explore=True)
+            episode_reward = 0.0
+
+            while True:
+                next_state, reward, terminated, truncated, _ = environment.step(action)
+                reward = float(reward)
+                episode_reward += reward
+                finished = terminated or truncated
+
+                if finished:
+                    target = reward
+                    next_action = 0
+                else:
+                    next_action = self.select_action(next_state, explore=True)
+                    target = reward + self.gamma * self._next_value(
+                        next_state, next_action
+                    )
+
+                current = self.q_values[state][action]
+                self.q_values[state][action] += self.alpha * (target - current)
+                if finished:
+                    break
+                state, action = next_state, next_action
+
+            rewards.append(episode_reward)
         return rewards
 
     def save(
@@ -143,34 +138,31 @@ class MonteCarloAgent:
         *,
         metadata: Mapping[str, object] | None = None,
     ) -> None:
-        """Save the learned action values and experiment metadata as JSON."""
+        """Save the learned Q-table and experiment metadata as JSON."""
         output_path = Path(path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        table = [
-            {
-                "state": list(state),
-                "values": self.q_values[state],
-                "visits": self.visit_counts[state],
-            }
-            for state in sorted(self.q_values)
-        ]
         payload = {
-            "algorithm": "first_visit_monte_carlo_control",
+            "algorithm": self.algorithm,
             "epsilon": self.epsilon,
+            "alpha": self.alpha,
             "gamma": self.gamma,
             "number_actions": self.number_actions,
             "seed": self.seed,
             "metadata": dict(metadata or {}),
-            "q_table": table,
+            "q_table": [
+                {"state": list(state), "values": self.q_values[state]}
+                for state in sorted(self.q_values)
+            ],
         }
         output_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
     @classmethod
-    def load(cls, path: str | Path) -> MonteCarloAgent:
-        """Restore an agent from a JSON artifact produced by :meth:`save`."""
+    def load(cls, path: str | Path) -> TabularTDAgent:
+        """Restore an agent saved by :meth:`save`."""
         payload = json.loads(Path(path).read_text(encoding="utf-8"))
         agent = cls(
             epsilon=float(payload["epsilon"]),
+            alpha=float(payload["alpha"]),
             gamma=float(payload["gamma"]),
             number_actions=int(payload["number_actions"]),
             seed=int(payload["seed"]),
@@ -179,5 +171,23 @@ class MonteCarloAgent:
             raw_state = entry["state"]
             state = (int(raw_state[0]), int(raw_state[1]), bool(raw_state[2]))
             agent.q_values[state] = [float(value) for value in entry["values"]]
-            agent.visit_counts[state] = [int(value) for value in entry["visits"]]
         return agent
+
+
+class SarsaAgent(TabularTDAgent):
+    """On-policy one-step SARSA control."""
+
+    algorithm = "sarsa"
+
+    def _next_value(self, next_state: BlackjackState, next_action: int) -> float:
+        return self.q_values[next_state][next_action]
+
+
+class QLearningAgent(TabularTDAgent):
+    """Off-policy one-step Q-learning control."""
+
+    algorithm = "q_learning"
+
+    def _next_value(self, next_state: BlackjackState, next_action: int) -> float:
+        del next_action
+        return max(self.q_values[next_state])
