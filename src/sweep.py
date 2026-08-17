@@ -23,9 +23,29 @@ AGENTS = {
     "q_learning": QLearningAgent,
 }
 ALLOWED_PARAMETERS = {
-    "monte_carlo": {"epsilon", "gamma"},
-    "sarsa": {"epsilon", "alpha", "gamma"},
-    "q_learning": {"epsilon", "alpha", "gamma"},
+    "monte_carlo": {
+        "epsilon",
+        "epsilon_start",
+        "epsilon_end",
+        "epsilon_decay_fraction",
+        "gamma",
+    },
+    "sarsa": {
+        "epsilon",
+        "epsilon_start",
+        "epsilon_end",
+        "epsilon_decay_fraction",
+        "alpha",
+        "gamma",
+    },
+    "q_learning": {
+        "epsilon",
+        "epsilon_start",
+        "epsilon_end",
+        "epsilon_decay_fraction",
+        "alpha",
+        "gamma",
+    },
 }
 
 
@@ -100,7 +120,16 @@ def validate_config(config: dict[str, Any]) -> None:
     if not isinstance(algorithms, list) or not algorithms:
         raise ValueError("algorithms must be a non-empty array")
 
-    _positive_integer(training.get("episodes"), "training.episodes")
+    episode_budgets = training.get("episodes")
+    if isinstance(episode_budgets, list):
+        if not episode_budgets:
+            raise ValueError("training.episodes must not be empty")
+        for budget in episode_budgets:
+            _positive_integer(budget, "training.episodes value")
+        if len(episode_budgets) != len(set(episode_budgets)):
+            raise ValueError("training.episodes must not contain duplicates")
+    else:
+        _positive_integer(episode_budgets, "training.episodes")
     _positive_integer(evaluation.get("episodes"), "evaluation.episodes")
     seeds = training.get("seeds")
     if not isinstance(seeds, list) or not seeds or any(
@@ -132,6 +161,8 @@ def validate_config(config: dict[str, Any]) -> None:
 def expand_configurations(config: dict[str, Any]) -> list[dict[str, Any]]:
     """Expand every algorithm's parameter grid into concrete configurations."""
     expanded: list[dict[str, Any]] = []
+    raw_budgets = config["training"]["episodes"]
+    episode_budgets = raw_budgets if isinstance(raw_budgets, list) else [raw_budgets]
     for specification in config["algorithms"]:
         name = specification["name"]
         grid = specification.get("parameters", {})
@@ -141,13 +172,16 @@ def expand_configurations(config: dict[str, Any]) -> list[dict[str, Any]]:
         ]
         combinations = itertools.product(*value_sets) if keys else [()]
         for values in combinations:
-            expanded.append(
-                {
-                    "configuration_id": f"{name}_{len(expanded):03d}",
-                    "algorithm": name,
-                    "parameters": dict(zip(keys, values, strict=True)),
-                }
-            )
+            parameters = dict(zip(keys, values, strict=True))
+            for episodes in episode_budgets:
+                expanded.append(
+                    {
+                        "configuration_id": f"{name}_{len(expanded):03d}",
+                        "algorithm": name,
+                        "parameters": parameters,
+                        "training_episodes": episodes,
+                    }
+                )
     return expanded
 
 
@@ -204,7 +238,7 @@ def _execute_run(job: dict[str, Any]) -> dict[str, Any]:
     )
     with BlackjackEnvironment(**job["environment"]) as environment:
         training_started = time.perf_counter()
-        rewards = agent.train(environment, job["training_episodes"])
+        rewards = agent.train(environment, configuration["training_episodes"])
         training_seconds = time.perf_counter() - training_started
 
     evaluation = _evaluate(
@@ -219,7 +253,7 @@ def _execute_run(job: dict[str, Any]) -> dict[str, Any]:
         **configuration,
         "seed": seed,
         "training": {
-            "episodes": job["training_episodes"],
+            "episodes": configuration["training_episodes"],
             "mean_reward": sum(rewards) / len(rewards),
             "seconds": training_seconds,
         },
@@ -344,7 +378,6 @@ def run_sweep(
             "configuration": configuration,
             "seed": seed,
             "environment": environment,
-            "training_episodes": config["training"]["episodes"],
             "evaluation_episodes": config["evaluation"]["episodes"],
             "evaluation_seed": config["evaluation"].get("seed", 10_000),
             "output_dir": str(output_dir),

@@ -32,6 +32,9 @@ class TabularTDAgent:
         self,
         *,
         epsilon: float = 0.1,
+        epsilon_start: float | None = None,
+        epsilon_end: float | None = None,
+        epsilon_decay_fraction: float = 0.8,
         alpha: float = 0.05,
         gamma: float = 1.0,
         number_actions: int = 2,
@@ -39,6 +42,14 @@ class TabularTDAgent:
     ) -> None:
         if not 0.0 <= epsilon <= 1.0:
             raise ValueError("epsilon must be between 0 and 1")
+        if (epsilon_start is None) != (epsilon_end is None):
+            raise ValueError("epsilon_start and epsilon_end must be provided together")
+        if epsilon_start is not None and not 0.0 <= epsilon_start <= 1.0:
+            raise ValueError("epsilon_start must be between 0 and 1")
+        if epsilon_end is not None and not 0.0 <= epsilon_end <= 1.0:
+            raise ValueError("epsilon_end must be between 0 and 1")
+        if not 0.0 < epsilon_decay_fraction <= 1.0:
+            raise ValueError("epsilon_decay_fraction must be greater than 0 and at most 1")
         if not 0.0 < alpha <= 1.0:
             raise ValueError("alpha must be greater than 0 and at most 1")
         if not 0.0 <= gamma <= 1.0:
@@ -47,6 +58,10 @@ class TabularTDAgent:
             raise ValueError("number_actions must be positive")
 
         self.epsilon = epsilon
+        self.epsilon_start = epsilon_start
+        self.epsilon_end = epsilon_end
+        self.epsilon_decay_fraction = epsilon_decay_fraction
+        self._active_epsilon = epsilon_start if epsilon_start is not None else epsilon
         self.alpha = alpha
         self.gamma = gamma
         self.number_actions = number_actions
@@ -59,9 +74,21 @@ class TabularTDAgent:
     def _empty_action_values(self) -> list[float]:
         return [0.0] * self.number_actions
 
+    def epsilon_for_episode(self, episode_index: int, episodes: int) -> float:
+        """Return fixed epsilon or a linearly decayed value for this episode."""
+        if self.epsilon_start is None or self.epsilon_end is None:
+            return self.epsilon
+        decay_episodes = max(1, round((episodes - 1) * self.epsilon_decay_fraction))
+        if episode_index >= decay_episodes:
+            return self.epsilon_end
+        progress = episode_index / decay_episodes
+        return self.epsilon_start + progress * (
+            self.epsilon_end - self.epsilon_start
+        )
+
     def select_action(self, state: BlackjackState, *, explore: bool = True) -> int:
         """Choose an epsilon-greedy action with stable evaluation tie-breaking."""
-        if explore and self._random.random() < self.epsilon:
+        if explore and self._random.random() < self._active_epsilon:
             return self._random.randrange(self.number_actions)
 
         # Looking up an unseen evaluation state must not mutate the learned table.
@@ -104,7 +131,12 @@ class TabularTDAgent:
 
         rewards: list[float] = []
         for episode_index in range(episodes):
-            state, _ = environment.reset(seed=self.seed + episode_index)
+            self._active_epsilon = self.epsilon_for_episode(
+                episode_index, episodes
+            )
+            state, _ = environment.reset(
+                seed=self.seed if episode_index == 0 else None
+            )
             action = self.select_action(state, explore=True)
             episode_reward = 0.0
 
@@ -144,6 +176,9 @@ class TabularTDAgent:
         payload = {
             "algorithm": self.algorithm,
             "epsilon": self.epsilon,
+            "epsilon_start": self.epsilon_start,
+            "epsilon_end": self.epsilon_end,
+            "epsilon_decay_fraction": self.epsilon_decay_fraction,
             "alpha": self.alpha,
             "gamma": self.gamma,
             "number_actions": self.number_actions,
@@ -162,6 +197,19 @@ class TabularTDAgent:
         payload = json.loads(Path(path).read_text(encoding="utf-8"))
         agent = cls(
             epsilon=float(payload["epsilon"]),
+            epsilon_start=(
+                float(payload["epsilon_start"])
+                if payload.get("epsilon_start") is not None
+                else None
+            ),
+            epsilon_end=(
+                float(payload["epsilon_end"])
+                if payload.get("epsilon_end") is not None
+                else None
+            ),
+            epsilon_decay_fraction=float(
+                payload.get("epsilon_decay_fraction", 0.8)
+            ),
             alpha=float(payload["alpha"]),
             gamma=float(payload["gamma"]),
             number_actions=int(payload["number_actions"]),

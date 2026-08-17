@@ -6,3 +6,4 @@ results/*
 experiments/*
 !experiments/.gitkeep
 !experiments/hyperparameter_sweep.json
+!experiments/hyperparameter_refined_sweep.json

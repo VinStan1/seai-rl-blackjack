@@ -7,7 +7,7 @@
     "sab": true
   },
   "training": {
-    "episodes": 100000,
+    "episodes": [20000, 50000, 100000, 200000],
     "seeds": [0, 1, 2, 3, 4]
   },
   "evaluation": {

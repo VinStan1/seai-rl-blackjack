@@ -87,8 +87,28 @@ docker compose run --rm sweep \
 
 The JSON configuration defines the environment, training and evaluation budgets,
 seeds, algorithms, and parameter value lists. A scalar means one value; a list is
-expanded as part of the Cartesian product for that algorithm. Monte Carlo accepts
-`epsilon` and `gamma`; SARSA and Q-learning also accept `alpha`.
+expanded as part of the Cartesian product. The supplied pilot grid trains every
+agent setting at 20,000, 50,000, 100,000, and 200,000 episodes. Monte Carlo
+accepts `epsilon` and `gamma`; SARSA and Q-learning also accept `alpha`.
+
+The supplied grid contains 84 configurations: 12 Monte Carlo, 36 SARSA, and 36
+Q-learning settings after including the four episode budgets. With five seeds,
+this produces 420 independent runs.
+
+After reviewing the coarse results, run the separate refined grid:
+
+```bash
+docker compose run --rm --build sweep \
+  --config experiments/hyperparameter_refined_sweep.json --workers 4
+```
+
+The refined grid tests fixed epsilon values `0.20`, `0.25`, and `0.30`, plus a
+linear schedule that decays from `1.0` to `0.05` over the first 80% of training.
+SARSA and Q-learning test alpha values `0.005` and `0.01`. Every setting is
+trained at 20,000, 50,000, 100,000, 200,000, and 500,000 episodes using the new
+pilot seeds `10` through `14`. This produces 100 configurations and 500 runs.
+Its timestamped summary is stored beside the coarse sweep under
+`results/sweeps/`, so the two experiment histories remain separate.
 
 Every invocation creates a timestamped directory under `results/sweeps/`. Each
 seed/configuration run saves a model and run report. `summary.json` is refreshed
@@ -115,9 +135,11 @@ docker compose run --rm analyze \
 ```
 
 The analyzer creates `analysis.md`, a ranked configuration CSV, and three PNG
-figures covering final reward with confidence intervals, hyperparameter
-sensitivity, and the reward/training-time trade-off. With `latest`, the most
-recently modified sweep summary is selected automatically.
+figures: a point-and-confidence-interval comparison of every configuration, a
+sample-efficiency plot of reward against training episodes, and a training-time
+scaling plot. Win rate remains in the report and CSV as a secondary diagnostic,
+but is not given a separate plot because mean reward is the primary objective.
+With `latest`, the most recently modified sweep summary is selected automatically.
 
 ## Final million-episode comparison
 
@@ -131,7 +153,8 @@ docker compose run --rm final \
 
 By default this command:
 
-- selects the highest-mean-reward Monte Carlo, SARSA, and Q-learning settings;
+- selects the highest-mean-reward Monte Carlo, SARSA, and Q-learning settings
+  at the largest pilot training budget;
 - uses ten fresh training seeds (`100` through `109`);
 - trains each algorithm for 1,000,000 episodes per seed;
 - evaluates each trained model over 1,000,000 independent episodes;
@@ -163,7 +186,9 @@ normal-approximation confidence interval across independent training seeds.
 The default experiment uses five training seeds. Training and evaluation seeds
 are stored in the generated artifacts, together with the environment and
 hyperparameters. Evaluation uses a deterministic greedy policy and a separate
-seed range from training.
+seed range from training. Each training run seeds its environment once and then
+advances an independent reproducible random stream; it does not reseed every
+episode with overlapping seed ranges.
 
 The sweep supplies the multi-algorithm, multi-seed experiment data, but a final
 course submission must still apply an appropriate statistical test, evaluate

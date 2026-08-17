@@ -56,6 +56,18 @@ def select_best_configurations(
         ]
         if not matches:
             raise ValueError(f"pilot summary has no completed {algorithm} configuration")
+        available_budgets = [
+            int(item["training_episodes"])
+            for item in matches
+            if item.get("training_episodes") is not None
+        ]
+        if available_budgets:
+            largest_budget = max(available_budgets)
+            matches = [
+                item
+                for item in matches
+                if int(item["training_episodes"]) == largest_budget
+            ]
         selected.append(
             max(matches, key=lambda item: float(item["mean_reward"]["mean"]))
         )
@@ -101,6 +113,7 @@ def build_final_config(
                     "algorithm": item["algorithm"],
                     "configuration_id": item["configuration_id"],
                     "parameters": item["parameters"],
+                    "pilot_training_episodes": item.get("training_episodes"),
                     "pilot_mean_reward": item["mean_reward"]["mean"],
                 }
                 for item in selected

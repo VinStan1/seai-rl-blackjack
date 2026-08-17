@@ -6,10 +6,17 @@ from pathlib import Path
 from src.final_experiment import build_final_config, select_best_configurations
 
 
-def result(identifier: str, algorithm: str, reward: float, **parameters):
+def result(
+    identifier: str,
+    algorithm: str,
+    reward: float,
+    training_episodes: int = 100_000,
+    **parameters,
+):
     return {
         "configuration_id": identifier,
         "algorithm": algorithm,
+        "training_episodes": training_episodes,
         "parameters": parameters,
         "mean_reward": {"mean": reward},
     }
@@ -27,6 +34,15 @@ class FinalExperimentTests(unittest.TestCase):
                     -0.05,
                     epsilon=0.2,
                     alpha=0.05,
+                    gamma=1.0,
+                ),
+                result(
+                    "q_lucky_short",
+                    "q_learning",
+                    -0.01,
+                    training_episodes=20_000,
+                    epsilon=0.2,
+                    alpha=0.1,
                     gamma=1.0,
                 ),
                 result(
@@ -69,7 +85,11 @@ class FinalExperimentTests(unittest.TestCase):
         self.assertEqual(config["metadata"]["phase"], "final_validation")
 
     def test_requires_all_three_algorithms(self) -> None:
-        self.summary["configurations"] = self.summary["configurations"][:-1]
+        self.summary["configurations"] = [
+            item
+            for item in self.summary["configurations"]
+            if item["algorithm"] != "q_learning"
+        ]
 
         with self.assertRaisesRegex(ValueError, "q_learning"):
             select_best_configurations(self.summary)

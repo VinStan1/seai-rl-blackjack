@@ -19,6 +19,7 @@ def configuration(identifier: str, algorithm: str, reward: float):
     return {
         "configuration_id": identifier,
         "algorithm": algorithm,
+        "training_episodes": 100_000,
         "parameters": {"epsilon": 0.1, "gamma": 1.0},
         "completed_seeds": 2,
         "mean_reward": {
@@ -95,6 +96,8 @@ class AnalyzeTests(unittest.TestCase):
         self.assertIn("Paired comparison", report)
         self.assertIn("Interpretation limits", report)
         self.assertIn("configuration_performance.png", report)
+        self.assertIn("sample_efficiency.png", report)
+        self.assertIn("training_time.png", report)
 
     def test_final_report_does_not_claim_to_reestimate_sensitivity(self) -> None:
         self.summary["experiment_metadata"] = {"phase": "final_validation"}

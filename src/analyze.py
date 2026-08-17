@@ -62,6 +62,20 @@ def load_summary(path: Path) -> dict[str, Any]:
         raise ValueError("summary contains no completed configurations")
     if not isinstance(runs, list):
         raise ValueError("summary.runs must be an array")
+    episodes_by_configuration = {
+        run["configuration_id"]: int(run["training"]["episodes"])
+        for run in runs
+        if run.get("status") == "completed"
+        and isinstance(run.get("training"), dict)
+        and "episodes" in run["training"]
+    }
+    for configuration in configurations:
+        if "training_episodes" not in configuration:
+            episodes = episodes_by_configuration.get(
+                configuration.get("configuration_id")
+            )
+            if episodes is not None:
+                configuration["training_episodes"] = episodes
     return summary
 
 
@@ -70,10 +84,22 @@ def _algorithm_name(name: str) -> str:
 
 
 def _parameters_text(parameters: dict[str, Any]) -> str:
-    preferred_order = ("epsilon", "alpha", "gamma")
-    ordered = [key for key in preferred_order if key in parameters]
-    ordered.extend(sorted(set(parameters) - set(ordered)))
-    return ", ".join(f"{key}={parameters[key]}" for key in ordered)
+    parts: list[str] = []
+    schedule_keys = {"epsilon_start", "epsilon_end", "epsilon_decay_fraction"}
+    if "epsilon_start" in parameters and "epsilon_end" in parameters:
+        fraction = float(parameters.get("epsilon_decay_fraction", 0.8))
+        parts.append(
+            f"epsilon={parameters['epsilon_start']}->{parameters['epsilon_end']} "
+            f"linear ({fraction:.0%})"
+        )
+    elif "epsilon" in parameters:
+        parts.append(f"epsilon={parameters['epsilon']}")
+    for key in ("alpha", "gamma"):
+        if key in parameters:
+            parts.append(f"{key}={parameters[key]}")
+    remaining = set(parameters) - schedule_keys - {"epsilon", "alpha", "gamma"}
+    parts.extend(f"{key}={parameters[key]}" for key in sorted(remaining))
+    return ", ".join(parts)
 
 
 def _interval(configuration: dict[str, Any], metric: str) -> tuple[float, float]:
@@ -146,144 +172,185 @@ def _pyplot() -> Any:
 def plot_configuration_performance(
     configurations: list[dict[str, Any]], output_path: Path
 ) -> None:
-    """Plot every configuration's final reward and 95% confidence interval."""
+    """Plot reward points and intervals without zero-anchored bars."""
     plt = _pyplot()
-    ordered = sorted(configurations, key=lambda item: item["mean_reward"]["mean"])
-    means = [float(item["mean_reward"]["mean"]) for item in ordered]
-    intervals = [_interval(item, "mean_reward") for item in ordered]
-    errors = [
-        [value - lower for value, (lower, _) in zip(means, intervals, strict=True)],
-        [upper - value for value, (_, upper) in zip(means, intervals, strict=True)],
+    algorithms = [
+        name
+        for name in ALGORITHM_NAMES
+        if any(item["algorithm"] == name for item in configurations)
     ]
-    labels = [
-        f"{_algorithm_name(item['algorithm'])}: {_parameters_text(item['parameters'])}"
-        for item in ordered
-    ]
-    colors = [COLORS.get(item["algorithm"], "#777777") for item in ordered]
-
-    figure, axis = plt.subplots(figsize=(12, max(7, len(ordered) * 0.38)))
-    positions = list(range(len(ordered)))
-    axis.barh(positions, means, color=colors, alpha=0.85)
-    axis.errorbar(
-        means,
-        positions,
-        xerr=errors,
-        fmt="none",
-        ecolor="#202020",
-        elinewidth=1.2,
-        capsize=3,
-    )
-    axis.set_yticks(positions, labels, fontsize=8)
-    axis.axvline(0, color="#333333", linewidth=0.8)
-    axis.set_xlabel("Mean evaluation reward (95% CI across seeds)")
-    axis.set_title("Final performance of every hyperparameter configuration")
-    axis.grid(axis="x", alpha=0.25)
-    figure.tight_layout()
-    figure.savefig(output_path, dpi=180, bbox_inches="tight")
-    plt.close(figure)
-
-
-def plot_hyperparameter_sensitivity(
-    configurations: list[dict[str, Any]], output_path: Path
-) -> None:
-    """Show how epsilon and alpha affect final evaluation reward."""
-    plt = _pyplot()
-    algorithms = sorted(
-        {item["algorithm"] for item in configurations},
-        key=lambda name: list(ALGORITHM_NAMES).index(name)
-        if name in ALGORITHM_NAMES
-        else 999,
-    )
+    budgets = sorted({int(item["training_episodes"]) for item in configurations})
+    palette = plt.get_cmap("viridis")
+    budget_colors = {
+        budget: palette(index / max(1, len(budgets) - 1))
+        for index, budget in enumerate(budgets)
+    }
     figure, axes = plt.subplots(
-        1, len(algorithms), figsize=(5.2 * len(algorithms), 4.8), squeeze=False
+        1,
+        len(algorithms),
+        figsize=(5.5 * len(algorithms), 6),
+        sharey=True,
+        squeeze=False,
     )
 
     for axis, algorithm in zip(axes[0], algorithms, strict=True):
         matches = [item for item in configurations if item["algorithm"] == algorithm]
-        line_groups: dict[tuple[Any, Any], list[dict[str, Any]]] = {}
-        for item in matches:
-            parameters = item["parameters"]
-            key = (parameters.get("alpha"), parameters.get("gamma"))
-            line_groups.setdefault(key, []).append(item)
-
-        for (alpha, gamma), group in sorted(
-            line_groups.items(), key=lambda item: str(item[0])
-        ):
-            group.sort(key=lambda item: float(item["parameters"].get("epsilon", 0)))
-            x_values = [float(item["parameters"].get("epsilon", 0)) for item in group]
-            y_values = [float(item["mean_reward"]["mean"]) for item in group]
-            intervals = [_interval(item, "mean_reward") for item in group]
-            y_errors = [
-                [
-                    value - lower
-                    for value, (lower, _) in zip(y_values, intervals, strict=True)
-                ],
-                [
-                    upper - value
-                    for value, (_, upper) in zip(y_values, intervals, strict=True)
-                ],
-            ]
-            label_parts = []
-            if alpha is not None:
-                label_parts.append(f"alpha={alpha}")
-            if len({key[1] for key in line_groups}) > 1:
-                label_parts.append(f"gamma={gamma}")
-            axis.errorbar(
-                x_values,
-                y_values,
-                yerr=y_errors,
-                marker="o",
-                capsize=3,
-                linewidth=1.8,
-                label=", ".join(label_parts) or f"gamma={gamma}",
-            )
-
+        parameter_sets = sorted(
+            {json.dumps(item["parameters"], sort_keys=True) for item in matches}
+        )
+        labels = [
+            _parameters_text(json.loads(parameters)) for parameters in parameter_sets
+        ]
+        offsets = {
+            budget: (index - (len(budgets) - 1) / 2) * 0.14
+            for index, budget in enumerate(budgets)
+        }
+        for budget in budgets:
+            for position, serialized in enumerate(parameter_sets):
+                item = next(
+                    (
+                        candidate
+                        for candidate in matches
+                        if candidate["training_episodes"] == budget
+                        and json.dumps(candidate["parameters"], sort_keys=True)
+                        == serialized
+                    ),
+                    None,
+                )
+                if item is None:
+                    continue
+                value = float(item["mean_reward"]["mean"])
+                lower, upper = _interval(item, "mean_reward")
+                axis.errorbar(
+                    position + offsets[budget],
+                    value,
+                    yerr=[[value - lower], [upper - value]],
+                    fmt="o",
+                    color=budget_colors[budget],
+                    capsize=3,
+                    markersize=6,
+                    label=f"{budget:,} episodes" if position == 0 else None,
+                )
+        axis.set_xticks(range(len(labels)), labels, rotation=35, ha="right", fontsize=8)
         axis.set_title(_algorithm_name(algorithm))
-        axis.set_xlabel("Epsilon")
-        axis.set_ylabel("Mean evaluation reward")
-        axis.grid(alpha=0.25)
-        if len(line_groups) > 1:
-            axis.legend(fontsize=8)
+        axis.set_xlabel("Agent hyperparameters")
+        axis.grid(axis="y", alpha=0.25)
 
-    figure.suptitle("Hyperparameter sensitivity", fontsize=14)
+    axes[0][0].set_ylabel("Mean evaluation reward (higher is better)")
+    axes[0][-1].legend(title="Training budget", fontsize=8)
+    figure.suptitle("Configuration performance with 95% confidence intervals")
     figure.tight_layout()
     figure.savefig(output_path, dpi=180, bbox_inches="tight")
     plt.close(figure)
 
 
-def plot_reward_vs_training_time(
+def plot_sample_efficiency(
     configurations: list[dict[str, Any]], output_path: Path
 ) -> None:
-    """Plot the final-performance/training-time trade-off."""
+    """Plot evaluation reward as training experience increases."""
+    plt = _pyplot()
+    algorithms = [
+        name
+        for name in ALGORITHM_NAMES
+        if any(item["algorithm"] == name for item in configurations)
+    ]
+    figure, axes = plt.subplots(
+        1, len(algorithms), figsize=(5.5 * len(algorithms), 5), sharey=True
+    )
+    if len(algorithms) == 1:
+        axes = [axes]
+
+    for axis, algorithm in zip(axes, algorithms, strict=True):
+        matches = [item for item in configurations if item["algorithm"] == algorithm]
+        groups: dict[str, list[dict[str, Any]]] = {}
+        for item in matches:
+            key = json.dumps(item["parameters"], sort_keys=True)
+            groups.setdefault(key, []).append(item)
+        for serialized, group in sorted(groups.items()):
+            group.sort(key=lambda item: int(item["training_episodes"]))
+            episodes = [int(item["training_episodes"]) for item in group]
+            rewards = [float(item["mean_reward"]["mean"]) for item in group]
+            intervals = [_interval(item, "mean_reward") for item in group]
+            errors = [
+                [
+                    value - lower
+                    for value, (lower, _) in zip(rewards, intervals, strict=True)
+                ],
+                [
+                    upper - value
+                    for value, (_, upper) in zip(rewards, intervals, strict=True)
+                ],
+            ]
+            axis.errorbar(
+                episodes,
+                rewards,
+                yerr=errors,
+                marker="o",
+                linewidth=1.5,
+                capsize=2,
+                label=_parameters_text(json.loads(serialized)),
+            )
+        axis.set_xscale("log")
+        budgets = sorted({int(item["training_episodes"]) for item in matches})
+        axis.set_xticks(budgets, [f"{budget // 1000}k" for budget in budgets])
+        axis.set_title(_algorithm_name(algorithm))
+        axis.set_xlabel("Training episodes")
+        axis.grid(alpha=0.25)
+        axis.legend(fontsize=7)
+
+    axes[0].set_ylabel("Mean evaluation reward (higher is better)")
+    figure.suptitle("Sample efficiency: performance versus training experience")
+    figure.tight_layout()
+    figure.savefig(output_path, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+
+
+def plot_training_time(
+    configurations: list[dict[str, Any]], output_path: Path
+) -> None:
+    """Plot training-time scaling and configuration-level observations."""
     plt = _pyplot()
     figure, axis = plt.subplots(figsize=(9, 6))
-    best = _best_by_algorithm(configurations)
-
-    for algorithm in sorted({item["algorithm"] for item in configurations}):
+    for algorithm in ALGORITHM_NAMES:
         matches = [item for item in configurations if item["algorithm"] == algorithm]
+        if not matches:
+            continue
+        budgets = sorted({int(item["training_episodes"]) for item in matches})
+        color = COLORS.get(algorithm, "#777777")
         axis.scatter(
+            [int(item["training_episodes"]) for item in matches],
             [float(item["training_seconds"]["mean"]) for item in matches],
-            [float(item["mean_reward"]["mean"]) for item in matches],
-            s=70,
-            alpha=0.8,
-            color=COLORS.get(algorithm, "#777777"),
+            color=color,
+            alpha=0.28,
+            s=35,
+        )
+        budget_means = [
+            mean(
+                float(item["training_seconds"]["mean"])
+                for item in matches
+                if int(item["training_episodes"]) == budget
+            )
+            for budget in budgets
+        ]
+        axis.plot(
+            budgets,
+            budget_means,
+            color=color,
+            marker="o",
+            linewidth=2.3,
             label=_algorithm_name(algorithm),
         )
-        selected = best[algorithm]
-        axis.annotate(
-            "best " + _algorithm_name(algorithm),
-            (
-                float(selected["training_seconds"]["mean"]),
-                float(selected["mean_reward"]["mean"]),
-            ),
-            xytext=(6, 7),
-            textcoords="offset points",
-            fontsize=8,
-        )
 
-    axis.set_xlabel("Mean training seconds per seed")
-    axis.set_ylabel("Mean evaluation reward")
-    axis.set_title("Final performance versus training time")
+    all_budgets = sorted(
+        {int(item["training_episodes"]) for item in configurations}
+    )
+    axis.set_xscale("log")
+    axis.set_xticks(
+        all_budgets, [f"{budget // 1000}k" for budget in all_budgets]
+    )
+    axis.set_xlabel("Training episodes")
+    axis.set_ylabel("Mean training seconds per run")
+    axis.set_title("Training-time scaling")
     axis.grid(alpha=0.25)
     axis.legend()
     figure.tight_layout()
@@ -298,6 +365,7 @@ def write_configuration_csv(
         "rank",
         "configuration_id",
         "algorithm",
+        "training_episodes",
         "parameters",
         "seeds",
         "mean_reward",
@@ -321,6 +389,7 @@ def write_configuration_csv(
                     "rank": rank,
                     "configuration_id": item["configuration_id"],
                     "algorithm": item["algorithm"],
+                    "training_episodes": item.get("training_episodes", ""),
                     "parameters": _parameters_text(item["parameters"]),
                     "seeds": item["completed_seeds"],
                     "mean_reward": item["mean_reward"]["mean"],
@@ -368,14 +437,15 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
         "",
         "## Best configuration per algorithm",
         "",
-        "| Algorithm | Parameters | Mean reward (95% CI) | Win rate | Training time |",
-        "|---|---|---:|---:|---:|",
+        "| Algorithm | Training episodes | Parameters | Mean reward (95% CI) | Win rate | Training time |",
+        "|---|---:|---|---:|---:|---:|",
     ]
 
     for algorithm, item in sorted(best_by_algorithm.items()):
         lower, upper = _interval(item, "mean_reward")
         lines.append(
-            f"| {_algorithm_name(algorithm)} | `{_parameters_text(item['parameters'])}` "
+            f"| {_algorithm_name(algorithm)} | {int(item.get('training_episodes', 0)):,} "
+            f"| `{_parameters_text(item['parameters'])}` "
             f"| {item['mean_reward']['mean']:.5f} [{lower:.5f}, {upper:.5f}] "
             f"| {item['win_rate']['mean']:.2%} "
             f"| {item['training_seconds']['mean']:.2f} s |"
@@ -405,7 +475,7 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
     interpretation_limits.extend(
         [
             "- Confidence-interval overlap alone does not prove algorithms are equivalent.",
-            "- This summary records only final performance. Add training checkpoints to compare learning speed and sample efficiency directly.",
+            "- Episode-budget points are trained independently from scratch; they estimate sample efficiency but are not checkpoints from one continuous run.",
             "- Evaluate environment variants before making claims about generalisation.",
         ]
     )
@@ -465,32 +535,21 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
     else:
         lines.extend(
             [
-                "## Hyperparameter sensitivity",
+                "## Sample efficiency",
                 "",
-                "![Hyperparameter sensitivity](hyperparameter_sensitivity.png)",
+                "![Sample efficiency](sample_efficiency.png)",
+                "",
+                "Each point is a separately trained agent at that episode budget. Higher reward with fewer episodes indicates better sample efficiency.",
                 "",
             ]
         )
-        for algorithm in sorted(best_by_algorithm):
-            matches = [
-                item for item in configurations if item["algorithm"] == algorithm
-            ]
-            best = max(matches, key=lambda item: item["mean_reward"]["mean"])
-            worst = min(matches, key=lambda item: item["mean_reward"]["mean"])
-            spread = best["mean_reward"]["mean"] - worst["mean_reward"]["mean"]
-            lines.append(
-                f"- **{_algorithm_name(algorithm)}:** the best setting was "
-                f"`{_parameters_text(best['parameters'])}` and the worst was "
-                f"`{_parameters_text(worst['parameters'])}`. The observed reward spread was "
-                f"{spread:.5f}."
-            )
 
     lines.extend(
         [
             "",
             "## Efficiency",
             "",
-            "![Reward versus training time](reward_vs_training_time.png)",
+            "![Training time](training_time.png)",
             "",
             (
                 "Training times were collected while independent runs could execute in parallel. "
@@ -507,8 +566,8 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             f"- Source summary: `{summary_path}`",
             "- Full ranked table: `configuration_results.csv`",
             "- Final reward chart: `configuration_performance.png`",
-            "- Sensitivity chart: `hyperparameter_sensitivity.png`",
-            "- Efficiency chart: `reward_vs_training_time.png`",
+            "- Sample-efficiency chart: `sample_efficiency.png`",
+            "- Training-time chart: `training_time.png`",
             "",
         ]
     )
@@ -522,19 +581,25 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     performance_path = output_dir / "configuration_performance.png"
-    sensitivity_path = output_dir / "hyperparameter_sensitivity.png"
-    efficiency_path = output_dir / "reward_vs_training_time.png"
+    sample_efficiency_path = output_dir / "sample_efficiency.png"
+    training_time_path = output_dir / "training_time.png"
     csv_path = output_dir / "configuration_results.csv"
     report_path = output_dir / "analysis.md"
 
     plot_configuration_performance(configurations, performance_path)
-    plot_hyperparameter_sensitivity(configurations, sensitivity_path)
-    plot_reward_vs_training_time(configurations, efficiency_path)
+    plot_sample_efficiency(configurations, sample_efficiency_path)
+    plot_training_time(configurations, training_time_path)
     write_configuration_csv(configurations, csv_path)
     report_path.write_text(
         build_report(summary, summary_path), encoding="utf-8"
     )
-    return [report_path, performance_path, sensitivity_path, efficiency_path, csv_path]
+    return [
+        report_path,
+        performance_path,
+        sample_efficiency_path,
+        training_time_path,
+        csv_path,
+    ]
 
 
 def main() -> None:

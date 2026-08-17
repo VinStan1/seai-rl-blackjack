@@ -8,8 +8,11 @@ from src.agents.temporal_difference import QLearningAgent, SarsaAgent
 
 
 class OneStepEnvironment:
+    def __init__(self) -> None:
+        self.seeds = []
+
     def reset(self, *, seed: int | None = None):
-        del seed
+        self.seeds.append(seed)
         return (12, 5, False), {}
 
     def step(self, action: int):
@@ -38,7 +41,14 @@ class TemporalDifferenceAgentTests(unittest.TestCase):
         self.assertEqual(q_learning._next_value(state, 1), 3.0)
 
     def test_saved_agent_round_trips(self) -> None:
-        agent = QLearningAgent(alpha=0.1, epsilon=0.2, seed=7)
+        agent = QLearningAgent(
+            alpha=0.1,
+            epsilon=0.2,
+            epsilon_start=1.0,
+            epsilon_end=0.05,
+            epsilon_decay_fraction=0.8,
+            seed=7,
+        )
         agent.q_values[(18, 9, True)] = [-0.5, 0.25]
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "agent.json"
@@ -46,7 +56,30 @@ class TemporalDifferenceAgentTests(unittest.TestCase):
             restored = QLearningAgent.load(path)
 
         self.assertEqual(restored.seed, 7)
+        self.assertEqual(restored.epsilon_start, 1.0)
+        self.assertEqual(restored.epsilon_end, 0.05)
         self.assertEqual(restored.q_values[(18, 9, True)], [-0.5, 0.25])
+
+    def test_training_seeds_environment_once_per_run(self) -> None:
+        for agent_type in (SarsaAgent, QLearningAgent):
+            with self.subTest(agent=agent_type.__name__):
+                environment = OneStepEnvironment()
+                agent_type(seed=23).train(environment, episodes=3)
+                self.assertEqual(environment.seeds, [23, None, None])
+
+    def test_linear_epsilon_schedule_is_shared_by_td_agents(self) -> None:
+        for agent_type in (SarsaAgent, QLearningAgent):
+            with self.subTest(agent=agent_type.__name__):
+                agent = agent_type(
+                    epsilon_start=1.0,
+                    epsilon_end=0.05,
+                    epsilon_decay_fraction=0.8,
+                )
+                self.assertEqual(agent.epsilon_for_episode(0, 101), 1.0)
+                self.assertAlmostEqual(
+                    agent.epsilon_for_episode(40, 101), 0.525
+                )
+                self.assertEqual(agent.epsilon_for_episode(80, 101), 0.05)
 
 
 if __name__ == "__main__":

@@ -30,6 +30,35 @@ class MonteCarloAgentTests(unittest.TestCase):
         self.assertEqual(agent.visit_counts[state][0], 2)
         self.assertAlmostEqual(agent.q_values[state][0], 0.0)
 
+    def test_training_seeds_environment_once_per_run(self) -> None:
+        class RecordingEnvironment:
+            def __init__(self) -> None:
+                self.seeds = []
+
+            def reset(self, *, seed=None):
+                self.seeds.append(seed)
+                return (20, 10, False), {}
+
+            def step(self, action):
+                return (20, 10, False), 1.0, True, False, {}
+
+        environment = RecordingEnvironment()
+        MonteCarloAgent(seed=17).train(environment, episodes=3)
+
+        self.assertEqual(environment.seeds, [17, None, None])
+
+    def test_linear_epsilon_schedule_reaches_end_after_decay_fraction(self) -> None:
+        agent = MonteCarloAgent(
+            epsilon_start=1.0,
+            epsilon_end=0.05,
+            epsilon_decay_fraction=0.8,
+        )
+
+        self.assertEqual(agent.epsilon_for_episode(0, 101), 1.0)
+        self.assertAlmostEqual(agent.epsilon_for_episode(40, 101), 0.525)
+        self.assertEqual(agent.epsilon_for_episode(80, 101), 0.05)
+        self.assertEqual(agent.epsilon_for_episode(100, 101), 0.05)
+
 
 if __name__ == "__main__":
     unittest.main()
