@@ -3,6 +3,21 @@ __pycache__/
 .pytest_cache/
 results/*
 !results/.gitkeep
+
+# Track only analysis artifacts from the selected refined sweep.
+!results/sweeps/
+results/sweeps/*
+!results/sweeps/blackjack_refined_grid_20260817T111811Z/
+results/sweeps/blackjack_refined_grid_20260817T111811Z/*
+!results/sweeps/blackjack_refined_grid_20260817T111811Z/analysis/
+!results/sweeps/blackjack_refined_grid_20260817T111811Z/analysis/**
+
+# Track only analysis artifacts from the selected pilot sweep.
+!results/sweeps/blackjack_pilot_grid_20260817T102656Z/
+results/sweeps/blackjack_pilot_grid_20260817T102656Z/*
+!results/sweeps/blackjack_pilot_grid_20260817T102656Z/analysis/
+!results/sweeps/blackjack_pilot_grid_20260817T102656Z/analysis/**
+
 experiments/*
 !experiments/.gitkeep
 !experiments/hyperparameter_sweep.json
