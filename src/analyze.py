@@ -162,12 +162,17 @@ def _paired_comparison(
 
 
 def _score_per_training_second(
-    configuration_id: str, runs: list[dict[str, Any]]
+    configuration_id: str,
+    training_episodes: int,
+    runs: list[dict[str, Any]],
 ) -> dict[str, float | int | list[float]]:
-    """Summarize per-seed evaluation reward divided by training seconds."""
+    """Summarize per-seed reward/time multiplied by training episodes."""
     ratios = [
-        float(run["evaluation"]["mean_reward"])
-        / float(run["training"]["seconds"])
+        (
+            float(run["evaluation"]["mean_reward"])
+            / float(run["training"]["seconds"])
+            * training_episodes
+        )
         for run in runs
         if run.get("status") == "completed"
         and run["configuration_id"] == configuration_id
@@ -461,7 +466,7 @@ def plot_performance_vs_training_time(
                 if item is None:
                     continue
                 score = _score_per_training_second(
-                    item["configuration_id"], runs
+                    item["configuration_id"], int(item["training_episodes"]), runs
                 )
                 value = float(score["mean"])
                 lower, upper = score["confidence_interval_95"]
@@ -482,7 +487,9 @@ def plot_performance_vs_training_time(
         axis.set_xlabel("Agent hyperparameters")
         axis.grid(axis="y", alpha=0.25)
 
-    axes[0][0].set_ylabel("Mean evaluation reward / training second")
+    axes[0][0].set_ylabel(
+        "Mean evaluation reward x training episodes / training second"
+    )
     handles, legend_labels = axes[0][-1].get_legend_handles_labels()
     figure.legend(
         handles,
@@ -494,7 +501,7 @@ def plot_performance_vs_training_time(
         fontsize=9,
     )
     figure.suptitle(
-        "Evaluation score per training second with 95% confidence intervals\n"
+        "Episode-normalized score per training second with 95% confidence intervals\n"
         "Ratios are computed per seed, then averaged"
     )
     figure.tight_layout(rect=(0, 0, 0.88, 1))
@@ -722,13 +729,13 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             (
                 "This chart uses the same hyperparameter axis as the configuration-performance "
                 "plot. For each seed, the evaluation mean reward is divided by that run's "
-                "training time; points and 95% intervals summarize those per-seed ratios."
+                "training time and multiplied by its training episode count; points and 95% "
+                "intervals summarize those per-seed values."
             ),
             "",
             (
-                "Because Blackjack rewards are negative, this literal ratio is descriptive: "
-                "a slower run can move the value closer to zero even without improving reward. "
-                "Model selection therefore remains based only on mean evaluation reward."
+                "Because Blackjack rewards are negative, this literal metric remains descriptive. "
+                "Model selection remains based only on mean evaluation reward."
             ),
             "",
             "![Training time](training_time.png)",

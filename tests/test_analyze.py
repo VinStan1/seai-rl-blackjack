@@ -100,10 +100,12 @@ class AnalyzeTests(unittest.TestCase):
         for run, seconds in zip(self.runs[:2], [2.0, 4.0], strict=True):
             run["training"] = {"seconds": seconds}
 
-        score = _score_per_training_second("mc_0", self.runs)
+        score = _score_per_training_second("mc_0", 100, self.runs)
 
         self.assertEqual(score["count"], 2)
-        self.assertAlmostEqual(score["mean"], (-0.08 / 2.0 - 0.06 / 4.0) / 2.0)
+        self.assertAlmostEqual(
+            score["mean"], (-0.08 / 2.0 * 100 - 0.06 / 4.0 * 100) / 2.0
+        )
 
     def test_report_contains_result_and_interpretation_sections(self) -> None:
         report = build_report(self.summary, Path("summary.json"))
@@ -115,7 +117,7 @@ class AnalyzeTests(unittest.TestCase):
         self.assertIn("sample_efficiency.png", report)
         self.assertIn("training_time.png", report)
         self.assertIn("performance_vs_training_time.png", report)
-        self.assertIn("evaluation mean reward is divided", report)
+        self.assertIn("multiplied by its training episode count", report)
         self.assertIn("stick-on-17", report)
         self.assertIn("Sutton", report)
 

@@ -39,9 +39,9 @@ Each point is a separately trained agent at that episode budget. Higher reward w
 
 ![Performance versus training cost](performance_vs_training_time.png)
 
-This chart uses the same hyperparameter axis as the configuration-performance plot. For each seed, the evaluation mean reward is divided by that run's training time; points and 95% intervals summarize those per-seed ratios.
+This chart uses the same hyperparameter axis as the configuration-performance plot. For each seed, the evaluation mean reward is divided by that run's training time and multiplied by its training episode count; points and 95% intervals summarize those per-seed values.
 
-Because Blackjack rewards are negative, this literal ratio is descriptive: a slower run can move the value closer to zero even without improving reward. Model selection therefore remains based only on mean evaluation reward.
+Because Blackjack rewards are negative, this literal metric remains descriptive. Model selection remains based only on mean evaluation reward.
 
 ![Training time](training_time.png)
 

@@ -139,11 +139,12 @@ figures: a point-and-confidence-interval comparison of every configuration, a
 sample-efficiency plot of reward against training episodes, and a training-time
 scaling plot. The fourth figure keeps the same per-algorithm hyperparameter axis
 as the configuration-performance plot and reports evaluation mean reward divided
-by training seconds. The ratio is computed independently for each training seed
-and then summarized with a 95% confidence interval. Win rate remains in the
-report and CSV as a secondary diagnostic, but is not given a separate plot
-because mean reward is the primary objective. With `latest`, the most recently
-modified sweep summary is selected automatically.
+by training seconds and multiplied by the training episode count. The metric is
+computed independently for each training seed and then summarized with a 95%
+confidence interval. Win rate remains in the report and CSV as a secondary
+diagnostic, but is not given a separate plot because mean reward is the primary
+objective. With `latest`, the most recently modified sweep summary is selected
+automatically.
 
 ## Final million-episode comparison
 
