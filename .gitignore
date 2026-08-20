@@ -22,3 +22,5 @@ experiments/*
 !experiments/.gitkeep
 !experiments/hyperparameter_sweep.json
 !experiments/hyperparameter_refined_sweep.json
+!experiments/monte_carlo_epsilon_extension_sweep.json
+!experiments/selected_million_comparison.json

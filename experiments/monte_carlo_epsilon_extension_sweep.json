@@ -1,0 +1,26 @@
+{
+  "experiment_name": "blackjack_monte_carlo_epsilon_extension",
+  "output_dir": "results/sweeps",
+  "workers": 1,
+  "environment": {
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": [200000, 500000],
+    "seeds": [20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+  },
+  "evaluation": {
+    "episodes": 100000,
+    "seed": 20000000
+  },
+  "algorithms": [
+    {
+      "name": "monte_carlo",
+      "parameters": {
+        "epsilon": [0.25, 0.3, 0.4],
+        "gamma": [1.0]
+      }
+    }
+  ]
+}

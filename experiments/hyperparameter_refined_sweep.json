@@ -11,7 +11,7 @@
     "seeds": [10, 11, 12, 13, 14]
   },
   "evaluation": {
-    "episodes": 10000,
+    "episodes": 100000,
     "seed": 10000000
   },
   "algorithms": [
