@@ -72,6 +72,12 @@ class AnalyzeTests(unittest.TestCase):
             "failed_runs": 0,
             "configurations": [self.mc, self.q],
             "runs": self.runs,
+            "baseline": {
+                "name": "stick_on_17",
+                "episodes": 100,
+                "mean_reward": -0.08,
+                "win_rate": 0.42,
+            },
         }
 
     def test_selects_best_configuration_per_algorithm(self) -> None:
@@ -98,6 +104,9 @@ class AnalyzeTests(unittest.TestCase):
         self.assertIn("configuration_performance.png", report)
         self.assertIn("sample_efficiency.png", report)
         self.assertIn("training_time.png", report)
+        self.assertIn("performance_vs_training_time.png", report)
+        self.assertIn("stick-on-17", report)
+        self.assertIn("Sutton", report)
 
     def test_final_report_does_not_claim_to_reestimate_sensitivity(self) -> None:
         self.summary["experiment_metadata"] = {"phase": "final_validation"}

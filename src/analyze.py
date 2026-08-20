@@ -20,6 +20,7 @@ COLORS = {
     "sarsa": "#F58518",
     "q_learning": "#54A24B",
 }
+BASELINE_COLOR = "#B22222"
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -169,8 +170,29 @@ def _pyplot() -> Any:
     return plt
 
 
+def _baseline_reward(baseline: dict[str, Any] | None) -> float | None:
+    if not baseline or "mean_reward" not in baseline:
+        return None
+    return float(baseline["mean_reward"])
+
+
+def _plot_baseline(axis: Any, baseline: dict[str, Any] | None) -> None:
+    reward = _baseline_reward(baseline)
+    if reward is None:
+        return
+    axis.axhline(
+        reward,
+        color=BASELINE_COLOR,
+        linestyle="--",
+        linewidth=1.8,
+        label=f"Stick-on-17 baseline ({reward:.4f})",
+    )
+
+
 def plot_configuration_performance(
-    configurations: list[dict[str, Any]], output_path: Path
+    configurations: list[dict[str, Any]],
+    output_path: Path,
+    baseline: dict[str, Any] | None = None,
 ) -> None:
     """Plot reward points and intervals without zero-anchored bars."""
     plt = _pyplot()
@@ -235,9 +257,10 @@ def plot_configuration_performance(
         axis.set_title(_algorithm_name(algorithm))
         axis.set_xlabel("Agent hyperparameters")
         axis.grid(axis="y", alpha=0.25)
+        _plot_baseline(axis, baseline)
 
     axes[0][0].set_ylabel("Mean evaluation reward (higher is better)")
-    axes[0][-1].legend(title="Training budget", fontsize=8)
+    axes[0][-1].legend(title="Training budget / reference", fontsize=8)
     figure.suptitle("Configuration performance with 95% confidence intervals")
     figure.tight_layout()
     figure.savefig(output_path, dpi=180, bbox_inches="tight")
@@ -245,7 +268,9 @@ def plot_configuration_performance(
 
 
 def plot_sample_efficiency(
-    configurations: list[dict[str, Any]], output_path: Path
+    configurations: list[dict[str, Any]],
+    output_path: Path,
+    baseline: dict[str, Any] | None = None,
 ) -> None:
     """Plot evaluation reward as training experience increases."""
     plt = _pyplot()
@@ -296,6 +321,7 @@ def plot_sample_efficiency(
         axis.set_title(_algorithm_name(algorithm))
         axis.set_xlabel("Training episodes")
         axis.grid(alpha=0.25)
+        _plot_baseline(axis, baseline)
         axis.legend(fontsize=7)
 
     axes[0].set_ylabel("Mean evaluation reward (higher is better)")
@@ -351,6 +377,73 @@ def plot_training_time(
     axis.set_xlabel("Training episodes")
     axis.set_ylabel("Mean training seconds per run")
     axis.set_title("Training-time scaling")
+    axis.grid(alpha=0.25)
+    axis.legend()
+    figure.tight_layout()
+    figure.savefig(output_path, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+
+
+def plot_performance_vs_training_time(
+    configurations: list[dict[str, Any]],
+    output_path: Path,
+    baseline: dict[str, Any] | None = None,
+) -> None:
+    """Plot evaluation reward against mean wall-clock training time."""
+    plt = _pyplot()
+    figure, axis = plt.subplots(figsize=(10, 6.5))
+    for algorithm in ALGORITHM_NAMES:
+        matches = [item for item in configurations if item["algorithm"] == algorithm]
+        if not matches:
+            continue
+        color = COLORS.get(algorithm, "#777777")
+        times = [float(item["training_seconds"]["mean"]) for item in matches]
+        rewards = [float(item["mean_reward"]["mean"]) for item in matches]
+        errors = []
+        for item, reward in zip(matches, rewards, strict=True):
+            lower, upper = _interval(item, "mean_reward")
+            errors.append((reward - lower, upper - reward))
+        axis.errorbar(
+            times,
+            rewards,
+            yerr=[
+                [error[0] for error in errors],
+                [error[1] for error in errors],
+            ],
+            fmt="o",
+            color=color,
+            alpha=0.55,
+            capsize=2,
+            markersize=6,
+            label=_algorithm_name(algorithm),
+        )
+
+        best = max(matches, key=lambda item: float(item["mean_reward"]["mean"]))
+        best_time = float(best["training_seconds"]["mean"])
+        best_reward = float(best["mean_reward"]["mean"])
+        axis.scatter(
+            [best_time],
+            [best_reward],
+            color=color,
+            edgecolor="black",
+            linewidth=1,
+            marker="*",
+            s=180,
+            zorder=4,
+        )
+        axis.annotate(
+            f"{_algorithm_name(algorithm)} best\n{int(best['training_episodes']):,} episodes",
+            (best_time, best_reward),
+            xytext=(7, 7),
+            textcoords="offset points",
+            fontsize=8,
+        )
+
+    _plot_baseline(axis, baseline)
+    axis.set_xscale("log")
+    axis.set_xlabel("Mean training time per run (seconds, log scale)")
+    axis.set_ylabel("Mean evaluation reward (higher is better)")
+    axis.set_title("Performance versus training cost")
     axis.grid(alpha=0.25)
     axis.legend()
     figure.tight_layout()
@@ -414,6 +507,7 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
         configurations, key=lambda item: item["mean_reward"]["mean"]
     )
     reward_lower, reward_upper = _interval(overall_best, "mean_reward")
+    baseline = summary.get("baseline")
     lines = [
         f"# Analysis: {summary.get('experiment', 'Blackjack sweep')}",
         "",
@@ -449,6 +543,29 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             f"| {item['mean_reward']['mean']:.5f} [{lower:.5f}, {upper:.5f}] "
             f"| {item['win_rate']['mean']:.2%} "
             f"| {item['training_seconds']['mean']:.2f} s |"
+        )
+
+    if isinstance(baseline, dict):
+        lines.extend(
+            [
+                "",
+                "## Literature baseline",
+                "",
+                (
+                    f"The **stick-on-17** policy hits below 17 and sticks on 17 or above. "
+                    f"On the same {int(baseline['episodes']):,} seeded evaluation episodes, "
+                    f"its mean reward was **{float(baseline['mean_reward']):.5f}** with a "
+                    f"{float(baseline['win_rate']):.2%} win rate."
+                ),
+                "",
+                (
+                    "Reference: Richard S. Sutton and Andrew G. Barto, "
+                    "*Reinforcement Learning: An Introduction*, second edition, "
+                    "Example 5.1: Blackjack (2018), "
+                    "http://incompleteideas.net/book/RLbook2020.pdf."
+                ),
+                "",
+            ]
         )
 
     interpretation_limits = []
@@ -549,6 +666,13 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             "",
             "## Efficiency",
             "",
+            "![Performance versus training cost](performance_vs_training_time.png)",
+            "",
+            (
+                "This chart relates final evaluation reward to wall-clock training cost. "
+                "Star markers identify the highest-reward configuration for each algorithm."
+            ),
+            "",
             "![Training time](training_time.png)",
             "",
             (
@@ -568,6 +692,7 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             "- Final reward chart: `configuration_performance.png`",
             "- Sample-efficiency chart: `sample_efficiency.png`",
             "- Training-time chart: `training_time.png`",
+            "- Performance-versus-training-time chart: `performance_vs_training_time.png`",
             "",
         ]
     )
@@ -583,12 +708,17 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
     performance_path = output_dir / "configuration_performance.png"
     sample_efficiency_path = output_dir / "sample_efficiency.png"
     training_time_path = output_dir / "training_time.png"
+    performance_time_path = output_dir / "performance_vs_training_time.png"
     csv_path = output_dir / "configuration_results.csv"
     report_path = output_dir / "analysis.md"
 
-    plot_configuration_performance(configurations, performance_path)
-    plot_sample_efficiency(configurations, sample_efficiency_path)
+    baseline = summary.get("baseline")
+    plot_configuration_performance(configurations, performance_path, baseline)
+    plot_sample_efficiency(configurations, sample_efficiency_path, baseline)
     plot_training_time(configurations, training_time_path)
+    plot_performance_vs_training_time(
+        configurations, performance_time_path, baseline
+    )
     write_configuration_csv(configurations, csv_path)
     report_path.write_text(
         build_report(summary, summary_path), encoding="utf-8"
@@ -598,6 +728,7 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
         performance_path,
         sample_efficiency_path,
         training_time_path,
+        performance_time_path,
         csv_path,
     ]
 

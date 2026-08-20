@@ -134,10 +134,12 @@ docker compose run --rm analyze \
   --output-dir results/my_analysis
 ```
 
-The analyzer creates `analysis.md`, a ranked configuration CSV, and three PNG
+The analyzer creates `analysis.md`, a ranked configuration CSV, and four PNG
 figures: a point-and-confidence-interval comparison of every configuration, a
 sample-efficiency plot of reward against training episodes, and a training-time
-scaling plot. Win rate remains in the report and CSV as a secondary diagnostic,
+scaling plot. The fourth figure plots mean evaluation reward against mean
+training time, with the best observed configuration for each algorithm marked
+explicitly. Win rate remains in the report and CSV as a secondary diagnostic,
 but is not given a separate plot because mean reward is the primary objective.
 With `latest`, the most recently modified sweep summary is selected automatically.
 
@@ -190,6 +192,14 @@ seed range from training. Each training run seeds its environment once and then
 advances an independent reproducible random stream; it does not reseed every
 episode with overlapping seed ranges.
 
+Each new sweep also evaluates a deterministic **stick-on-17 baseline**: hit when
+the player sum is below 17 and stick on 17 or above. It uses the same evaluation
+episode count and `evaluation.seed + episode_index` sequence as every learned
+policy, and its score is stored in `summary.json` and drawn as a reference line
+in the reward plots. This dealer-like policy is the policy described in Sutton
+and Barto, *Reinforcement Learning: An Introduction*, second edition, Example
+5.1: Blackjack (2018).
+
 The sweep supplies the multi-algorithm, multi-seed experiment data, but a final
 course submission must still apply an appropriate statistical test, evaluate
 generalisation variants, and discuss failure modes and sample efficiency.
@@ -198,4 +208,4 @@ generalisation variants, and discuss failure modes and sample efficiency.
 
 - Gymnasium, [Blackjack documentation](https://gymnasium.farama.org/environments/toy_text/blackjack/).
 - Sutton, R. S. and Barto, A. G., *Reinforcement Learning: An Introduction*,
-	second edition, Example 5.1.
+  second edition, Example 5.1, 2018. [Online edition](http://incompleteideas.net/book/RLbook2020.pdf).

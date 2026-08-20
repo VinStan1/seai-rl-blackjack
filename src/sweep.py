@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from src.agents import MonteCarloAgent, QLearningAgent, SarsaAgent
+from src.baselines import StickOnSeventeenPolicy
 from src.environments.blackjack import BlackjackEnvironment
 from src.metrics import summarize
 
@@ -223,6 +224,20 @@ def _evaluate(
     }
 
 
+def _evaluate_baseline(
+    environment_config: dict[str, Any], episodes: int, seed: int
+) -> dict[str, Any]:
+    """Evaluate the literature baseline on the same seeded evaluation episodes."""
+    policy = StickOnSeventeenPolicy()
+    return {
+        "name": policy.name,
+        "description": policy.description,
+        "reference": policy.reference,
+        "evaluation_seed": seed,
+        **_evaluate(policy, environment_config, episodes, seed),
+    }
+
+
 def _execute_run(job: dict[str, Any]) -> dict[str, Any]:
     configuration = job["configuration"]
     seed = job["seed"]
@@ -308,6 +323,7 @@ def _write_summary(
     total_runs: int,
     workers: int,
     started_at: str,
+    baseline: dict[str, Any],
 ) -> None:
     completed = sum(run.get("status") == "completed" for run in runs)
     failed = sum(run.get("status") == "failed" for run in runs)
@@ -328,6 +344,7 @@ def _write_summary(
         "total_runs": total_runs,
         "completed_runs": completed,
         "failed_runs": failed,
+        "baseline": baseline,
         "configurations": _aggregate(configurations, runs),
         "runs": sorted(runs, key=lambda run: run["run_id"]),
     }
@@ -361,6 +378,13 @@ def run_sweep(
     environment = config.get("environment", {"natural": False, "sab": True})
     if not isinstance(environment, dict):
         raise ValueError("environment must be an object")
+    evaluation_episodes = config["evaluation"]["episodes"]
+    evaluation_seed = config["evaluation"].get("seed", 10_000)
+    baseline = _evaluate_baseline(
+        environment,
+        evaluation_episodes,
+        evaluation_seed,
+    )
 
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     experiment_name = config.get("experiment_name", "blackjack_sweep")
@@ -378,8 +402,8 @@ def run_sweep(
             "configuration": configuration,
             "seed": seed,
             "environment": environment,
-            "evaluation_episodes": config["evaluation"]["episodes"],
-            "evaluation_seed": config["evaluation"].get("seed", 10_000),
+            "evaluation_episodes": evaluation_episodes,
+            "evaluation_seed": evaluation_seed,
             "output_dir": str(output_dir),
         }
         for configuration in configurations
@@ -395,6 +419,7 @@ def run_sweep(
         total_runs=total_runs,
         workers=workers,
         started_at=started_at,
+        baseline=baseline,
     )
     print(f"experiment={output_dir} configurations={len(configurations)} runs={total_runs}")
     sweep_started = time.perf_counter()
@@ -454,6 +479,7 @@ def run_sweep(
                     total_runs=total_runs,
                     workers=workers,
                     started_at=started_at,
+                    baseline=baseline,
                 )
             _display_progress(
                 len(runs), total_runs, sweep_started, interactive=interactive

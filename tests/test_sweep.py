@@ -2,7 +2,9 @@
 
 import unittest
 
+from src.baselines import StickOnSeventeenPolicy
 from src.sweep import (
+    _evaluate_baseline,
     _format_duration,
     _progress_line,
     expand_configurations,
@@ -85,6 +87,23 @@ class SweepConfigurationTests(unittest.TestCase):
         self.assertIn("elapsed 01:40", progress)
         self.assertIn("ETA 01:40", progress)
         self.assertEqual(_format_duration(3_661), "1:01:01")
+
+    def test_literature_baseline_uses_requested_evaluation_protocol(self) -> None:
+        baseline = _evaluate_baseline(
+            {"natural": False, "sab": True}, episodes=20, seed=500
+        )
+
+        self.assertEqual(baseline["name"], "stick_on_17")
+        self.assertEqual(baseline["episodes"], 20)
+        self.assertEqual(baseline["evaluation_seed"], 500)
+        self.assertIn("Sutton", baseline["reference"]["authors"])
+
+    def test_literature_baseline_sticks_on_seventeen(self) -> None:
+        policy = StickOnSeventeenPolicy()
+
+        self.assertEqual(policy.select_action((16, 10, False)), 1)
+        self.assertEqual(policy.select_action((17, 10, False)), 0)
+        self.assertEqual(policy.select_action((21, 1, True)), 0)
 
 
 if __name__ == "__main__":
