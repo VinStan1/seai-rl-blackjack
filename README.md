@@ -1,8 +1,9 @@
 # Reinforcement Learning for Blackjack
 
 Docker-first implementation and evaluation of reinforcement-learning agents on
-Gymnasium's `Blackjack-v1`. The project contains tabular first-visit Monte Carlo,
-SARSA, and Q-learning agents, plus a configurable hyperparameter sweep runner.
+Gymnasium's `Blackjack-v1` and three finite-shoe variants. The project contains
+tabular first-visit Monte Carlo, SARSA, and Q-learning agents, plus a configurable
+hyperparameter sweep runner.
 
 ## MDP model
 
@@ -25,6 +26,37 @@ is epsilon-greedy during training and greedy during evaluation. Action values us
 the incremental sample mean of first-visit returns with discount factor
 `gamma=1.0` by default.
 
+## Finite six-deck variants
+
+All finite variants use the same Blackjack rules and one shared shoe engine. A
+shoe contains six standard decks (312 cards): 24 cards for each value from ace
+through 9 and 96 ten-valued cards. The cut card is placed at 75% penetration,
+or 234 dealt cards. Crossing the cut card never interrupts a hand; the shoe is
+reshuffled immediately before the next hand, with 78 cards nominally remaining.
+An experiment seed initializes the shuffle once and the deterministic random
+stream then advances across hands.
+
+The initial deal and dealer behavior match the Sutton and Barto mode of
+`Blackjack-v1`: the player automatically draws until reaching at least 12, the
+dealer sticks on 17, and a player natural beats a non-natural dealer 21. The
+available finite observations are:
+
+- `finite_hidden`: `(player_sum, dealer_upcard, usable_ace)`. The physical shoe
+  is finite but its composition is hidden, so the observation is not Markov and
+  the learning problem is a POMDP from the agent's perspective.
+- `finite_hi_lo`: the hidden observation plus an integer Hi-Lo true-count
+  bucket. Cards 2-6 contribute `+1`, 7-9 contribute `0`, and tens and aces
+  contribute `-1`. The running count is divided by physical decks remaining,
+  truncated toward zero, and clipped to `[-20, 20]`.
+- `finite_composition`: the hidden observation plus ten counts ordered as
+  `(A, 2, 3, 4, 5, 6, 7, 8, 9, 10)`. They describe cards not yet publicly
+  observed. The dealer hole card is not removed from the observation until it
+  is revealed, preventing privileged information leakage.
+
+The composition representation is deliberately large for a tabular method.
+Sparse state visitation and slower learning are expected experimental outcomes,
+not reasons to collapse or hash the state differently.
+
 ## Project layout
 
 ```text
@@ -36,6 +68,8 @@ the incremental sample mean of first-visit returns with discount factor
 |   |-- agents/monte_carlo.py
 |   |-- agents/temporal_difference.py
 |   |-- environments/blackjack.py
+|   |-- environments/finite_blackjack.py
+|   |-- environments/factory.py
 |   |-- train.py
 |   |-- evaluate.py
 |   `-- sweep.py
@@ -106,9 +140,26 @@ The refined grid tests fixed epsilon values `0.20`, `0.25`, and `0.30`, plus a
 linear schedule that decays from `1.0` to `0.05` over the first 80% of training.
 SARSA and Q-learning test alpha values `0.005` and `0.01`. Every setting is
 trained at 20,000, 50,000, 100,000, 200,000, and 500,000 episodes using the new
-pilot seeds `10` through `14`. This produces 100 configurations and 500 runs.
+pilot seeds `10` through `19`. This produces 100 configurations and 1,000 runs.
 Its timestamped summary is stored beside the coarse sweep under
 `results/sweeps/`, so the two experiment histories remain separate.
+
+Run the same refined grid independently on each finite variant:
+
+```bash
+docker compose run --rm --build sweep \
+  --config experiments/finite_hidden_sweep.json --workers 4
+docker compose run --rm --build sweep \
+  --config experiments/finite_hi_lo_sweep.json --workers 4
+docker compose run --rm --build sweep \
+  --config experiments/finite_composition_sweep.json --workers 4
+```
+
+These compact files inherit the complete refined grid through `extends` and
+override only experiment metadata and environment settings. The generated
+`config.json` is fully resolved, so results do not depend on the parent file
+after execution. Composition runs can consume substantially more memory and
+storage because their Q-tables contain many more distinct states.
 
 Every invocation creates a timestamped directory under `results/sweeps/`. Each
 seed/configuration run saves a model and run report. `summary.json` is refreshed
@@ -188,18 +239,18 @@ normal-approximation confidence interval across independent training seeds.
 
 ## Reproducibility and experimental scope
 
-The default experiment uses five training seeds. Training and evaluation seeds
-are stored in the generated artifacts, together with the environment and
-hyperparameters. Evaluation uses a deterministic greedy policy and a separate
-seed range from training. Each training run seeds its environment once and then
-advances an independent reproducible random stream; it does not reseed every
-episode with overlapping seed ranges.
+Training and evaluation seeds are stored in the generated artifacts, together
+with the environment and hyperparameters. Evaluation uses a deterministic greedy
+policy and a separate seed from training. Each training or evaluation run seeds
+its environment once and then advances an independent reproducible random stream;
+it does not reseed every episode. This preserves finite-shoe continuity while
+remaining deterministic.
 
 Each new sweep also evaluates a deterministic **stick-on-17 baseline**: hit when
 the player sum is below 17 and stick on 17 or above. It uses the same evaluation
-episode count and `evaluation.seed + episode_index` sequence as every learned
-policy, and its score is stored in `summary.json` and drawn as a reference line
-in the reward plots. This dealer-like policy is the policy described in Sutton
+episode count and initial evaluation seed as every learned policy, and its score
+is stored in `summary.json` and drawn as a reference line in the reward plots.
+This dealer-like policy is the policy described in Sutton
 and Barto, *Reinforcement Learning: An Introduction*, second edition, Example
 5.1: Blackjack (2018).
 

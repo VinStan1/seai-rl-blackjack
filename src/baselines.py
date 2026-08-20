@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TypeAlias
 
-BlackjackState: TypeAlias = tuple[int, int, bool]
+BlackjackState: TypeAlias = tuple[int | bool, ...]
 
 DEALER_POLICY_REFERENCE = {
     "title": "Reinforcement Learning: An Introduction",
@@ -25,5 +25,5 @@ class StickOnSeventeenPolicy:
 
     def select_action(self, state: BlackjackState, *, explore: bool = False) -> int:
         del explore
-        player_sum, _, _ = state
+        player_sum = int(state[0])
         return 1 if player_sum < 17 else 0

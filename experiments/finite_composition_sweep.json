@@ -1,0 +1,13 @@
+{
+  "extends": "hyperparameter_refined_sweep.json",
+  "experiment_name": "blackjack_finite_composition_refined_grid",
+  "metadata": {
+    "phase": "finite_variant",
+    "description": "Refined algorithm grid on a six-deck shoe with public unseen-card composition"
+  },
+  "environment": {
+    "variant": "finite_composition",
+    "decks": 6,
+    "penetration": 0.75
+  }
+}

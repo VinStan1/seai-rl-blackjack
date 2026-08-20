@@ -15,7 +15,7 @@ from typing import Any
 
 from src.agents import MonteCarloAgent, QLearningAgent, SarsaAgent
 from src.baselines import StickOnSeventeenPolicy
-from src.environments.blackjack import BlackjackEnvironment
+from src.environments.factory import make_blackjack_environment
 from src.metrics import summarize
 
 AGENTS = {
@@ -60,6 +60,36 @@ def parse_arguments() -> argparse.Namespace:
         help="override the worker count in the configuration",
     )
     return parser.parse_args()
+
+
+def _merge_config(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
+    merged = dict(base)
+    for key, value in override.items():
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key] = _merge_config(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+
+def load_config(path: Path, seen: set[Path] | None = None) -> dict[str, Any]:
+    """Load a JSON sweep config, recursively resolving an optional ``extends``."""
+    resolved_path = path.resolve()
+    visited = set() if seen is None else seen
+    if resolved_path in visited:
+        raise ValueError(f"cyclic sweep configuration inheritance at {path}")
+    visited.add(resolved_path)
+
+    loaded = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(loaded, dict):
+        raise ValueError("the top-level JSON value must be an object")
+    parent_name = loaded.pop("extends", None)
+    if parent_name is None:
+        return loaded
+    if not isinstance(parent_name, str) or not parent_name:
+        raise ValueError("extends must be a non-empty path string")
+    parent = load_config(path.parent / parent_name, visited)
+    return _merge_config(parent, loaded)
 
 
 def _positive_integer(value: Any, name: str) -> int:
@@ -199,9 +229,9 @@ def _evaluate(
     rewards: list[float] = []
     action_count = 0
     selection_ns = 0
-    with BlackjackEnvironment(**environment_config) as environment:
+    with make_blackjack_environment(environment_config) as environment:
         for episode_index in range(episodes):
-            state, _ = environment.reset(seed=seed + episode_index)
+            state, _ = environment.reset(seed=seed if episode_index == 0 else None)
             episode_reward = 0.0
             while True:
                 started = time.perf_counter_ns()
@@ -251,7 +281,7 @@ def _execute_run(job: dict[str, Any]) -> dict[str, Any]:
     agent = _make_agent(
         configuration["algorithm"], configuration["parameters"], seed
     )
-    with BlackjackEnvironment(**job["environment"]) as environment:
+    with make_blackjack_environment(job["environment"]) as environment:
         training_started = time.perf_counter()
         rewards = agent.train(environment, configuration["training_episodes"])
         training_seconds = time.perf_counter() - training_started
@@ -336,6 +366,9 @@ def _write_summary(
     payload = {
         "experiment": config.get("experiment_name", "blackjack_sweep"),
         "experiment_metadata": config.get("metadata", {}),
+        "environment": config.get(
+            "environment", {"natural": False, "sab": True}
+        ),
         "config_path": str(config_path),
         "started_at_utc": started_at,
         "updated_at_utc": datetime.now(UTC).isoformat(),
@@ -495,9 +528,7 @@ def run_sweep(
 
 def main() -> None:
     arguments = parse_arguments()
-    config = json.loads(arguments.config.read_text(encoding="utf-8"))
-    if not isinstance(config, dict):
-        raise ValueError("the top-level JSON value must be an object")
+    config = load_config(arguments.config)
     run_sweep(
         config,
         config_path=arguments.config,

@@ -528,8 +528,16 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
     )
     reward_lower, reward_upper = _interval(overall_best, "mean_reward")
     baseline = summary.get("baseline")
+    environment = summary.get("environment", {})
+    environment_variant = (
+        environment.get("variant", "standard")
+        if isinstance(environment, dict)
+        else "standard"
+    )
     lines = [
         f"# Analysis: {summary.get('experiment', 'Blackjack sweep')}",
+        "",
+        f"Environment variant: **{environment_variant}**.",
         "",
         "## Executive summary",
         "",
@@ -613,9 +621,17 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
         [
             "- Confidence-interval overlap alone does not prove algorithms are equivalent.",
             "- Episode-budget points are trained independently from scratch; they estimate sample efficiency but are not checkpoints from one continuous run.",
-            "- Evaluate environment variants before making claims about generalisation.",
         ]
     )
+    if environment_variant == "standard":
+        interpretation_limits.append(
+            "- Evaluate environment variants before making claims about generalisation."
+        )
+    else:
+        interpretation_limits.append(
+            "- Compare this result with independently tuned standard and finite variants "
+            "before attributing differences to the observation alone."
+        )
 
     lines.extend(
         [

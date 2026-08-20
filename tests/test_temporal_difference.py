@@ -60,6 +60,18 @@ class TemporalDifferenceAgentTests(unittest.TestCase):
         self.assertEqual(restored.epsilon_end, 0.05)
         self.assertEqual(restored.q_values[(18, 9, True)], [-0.5, 0.25])
 
+    def test_saved_agent_round_trips_extended_state(self) -> None:
+        state = (18, 9, True, -2)
+        agent = SarsaAgent(seed=8)
+        agent.q_values[state] = [0.125, -0.25]
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "agent.json"
+            agent.save(path)
+            restored = SarsaAgent.load(path)
+
+        self.assertEqual(restored.q_values[state], [0.125, -0.25])
+
     def test_training_seeds_environment_once_per_run(self) -> None:
         for agent_type in (SarsaAgent, QLearningAgent):
             with self.subTest(agent=agent_type.__name__):

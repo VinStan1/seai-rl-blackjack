@@ -1,6 +1,8 @@
 """Tests for first-visit Monte Carlo control."""
 
+import tempfile
 import unittest
+from pathlib import Path
 
 from src.agents.monte_carlo import MonteCarloAgent
 
@@ -58,6 +60,20 @@ class MonteCarloAgentTests(unittest.TestCase):
         self.assertAlmostEqual(agent.epsilon_for_episode(40, 101), 0.525)
         self.assertEqual(agent.epsilon_for_episode(80, 101), 0.05)
         self.assertEqual(agent.epsilon_for_episode(100, 101), 0.05)
+
+    def test_saved_agent_round_trips_extended_state(self) -> None:
+        state = (18, 9, True, 24, 23, 24, 24, 24, 24, 24, 24, 95)
+        agent = MonteCarloAgent(seed=7)
+        agent.q_values[state] = [-0.5, 0.25]
+        agent.visit_counts[state] = [3, 5]
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "agent.json"
+            agent.save(path)
+            restored = MonteCarloAgent.load(path)
+
+        self.assertEqual(restored.q_values[state], [-0.5, 0.25])
+        self.assertEqual(restored.visit_counts[state], [3, 5])
 
 
 if __name__ == "__main__":

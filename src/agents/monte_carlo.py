@@ -9,8 +9,19 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, Protocol, TypeAlias
 
-BlackjackState: TypeAlias = tuple[int, int, bool]
+BlackjackState: TypeAlias = tuple[int | bool, ...]
 EpisodeStep: TypeAlias = tuple[BlackjackState, int, float]
+
+
+def _deserialize_state(raw_state: Sequence[object]) -> BlackjackState:
+    if len(raw_state) < 3:
+        raise ValueError("serialized Blackjack states need at least three values")
+    return (
+        int(raw_state[0]),
+        int(raw_state[1]),
+        bool(raw_state[2]),
+        *(int(value) for value in raw_state[3:]),
+    )
 
 
 class BlackjackEnvironment(Protocol):
@@ -223,7 +234,7 @@ class MonteCarloAgent:
         )
         for entry in payload["q_table"]:
             raw_state = entry["state"]
-            state = (int(raw_state[0]), int(raw_state[1]), bool(raw_state[2]))
+            state = _deserialize_state(raw_state)
             agent.q_values[state] = [float(value) for value in entry["values"]]
             agent.visit_counts[state] = [int(value) for value in entry["visits"]]
         return agent

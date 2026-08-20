@@ -1,13 +1,18 @@
 """Tests for sweep configuration validation and grid expansion."""
 
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
 from src.baselines import StickOnSeventeenPolicy
 from src.sweep import (
+    _evaluate,
     _evaluate_baseline,
     _format_duration,
     _progress_line,
     expand_configurations,
+    load_config,
     validate_config,
 )
 
@@ -53,6 +58,38 @@ class SweepConfigurationTests(unittest.TestCase):
             },
             {20, 50, 100, 200},
         )
+
+    def test_config_extends_and_deep_merges_environment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "base.json").write_text(
+                json.dumps(
+                    {
+                        "experiment_name": "base",
+                        "environment": {"natural": False, "sab": True},
+                        "training": {"episodes": 10, "seeds": [1]},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            child = root / "child.json"
+            child.write_text(
+                json.dumps(
+                    {
+                        "extends": "base.json",
+                        "experiment_name": "finite",
+                        "environment": {"variant": "finite_hidden"},
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            config = load_config(child)
+
+        self.assertEqual(config["experiment_name"], "finite")
+        self.assertEqual(config["environment"]["variant"], "finite_hidden")
+        self.assertTrue(config["environment"]["sab"])
+        self.assertEqual(config["training"]["episodes"], 10)
 
     def test_rejects_parameters_not_supported_by_an_algorithm(self) -> None:
         self.config["algorithms"][0]["parameters"]["alpha"] = [0.1]
@@ -104,6 +141,35 @@ class SweepConfigurationTests(unittest.TestCase):
         self.assertEqual(policy.select_action((16, 10, False)), 1)
         self.assertEqual(policy.select_action((17, 10, False)), 0)
         self.assertEqual(policy.select_action((21, 1, True)), 0)
+
+    def test_evaluation_supports_all_finite_observation_variants(self) -> None:
+        policy = StickOnSeventeenPolicy()
+        for variant in (
+            "finite_hidden",
+            "finite_hi_lo",
+            "finite_composition",
+        ):
+            with self.subTest(variant=variant):
+                result = _evaluate(
+                    policy,
+                    {
+                        "variant": variant,
+                        "decks": 6,
+                        "penetration": 0.75,
+                        "natural": False,
+                        "sab": True,
+                    },
+                    episodes=20,
+                    seed=600,
+                )
+
+                self.assertEqual(result["episodes"], 20)
+                self.assertAlmostEqual(
+                    result["win_rate"]
+                    + result["draw_rate"]
+                    + result["loss_rate"],
+                    1.0,
+                )
 
 
 if __name__ == "__main__":
