@@ -9,6 +9,7 @@ from pathlib import Path
 from src.analyze import (
     _best_by_algorithm,
     _paired_comparison,
+    _score_per_training_second,
     build_report,
     load_summary,
     resolve_summary_path,
@@ -95,6 +96,15 @@ class AnalyzeTests(unittest.TestCase):
         self.assertEqual(comparison["count"], 2)
         self.assertAlmostEqual(comparison["mean_difference"], 0.02)
 
+    def test_score_per_training_second_is_averaged_across_seeds(self) -> None:
+        for run, seconds in zip(self.runs[:2], [2.0, 4.0], strict=True):
+            run["training"] = {"seconds": seconds}
+
+        score = _score_per_training_second("mc_0", self.runs)
+
+        self.assertEqual(score["count"], 2)
+        self.assertAlmostEqual(score["mean"], (-0.08 / 2.0 - 0.06 / 4.0) / 2.0)
+
     def test_report_contains_result_and_interpretation_sections(self) -> None:
         report = build_report(self.summary, Path("summary.json"))
 
@@ -105,7 +115,7 @@ class AnalyzeTests(unittest.TestCase):
         self.assertIn("sample_efficiency.png", report)
         self.assertIn("training_time.png", report)
         self.assertIn("performance_vs_training_time.png", report)
-        self.assertIn("mean training time across its training seeds", report)
+        self.assertIn("evaluation mean reward is divided", report)
         self.assertIn("stick-on-17", report)
         self.assertIn("Sutton", report)
 
