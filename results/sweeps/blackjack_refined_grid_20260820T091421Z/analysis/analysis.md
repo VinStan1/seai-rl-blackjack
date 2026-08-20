@@ -39,7 +39,7 @@ Each point is a separately trained agent at that episode budget. Higher reward w
 
 ![Performance versus training cost](performance_vs_training_time.png)
 
-This chart relates final evaluation reward to wall-clock training cost. Star markers identify the highest-reward configuration for each algorithm.
+This chart shows the highest-reward configuration for each algorithm. Each point is the mean evaluation reward and mean training time across its training seeds; horizontal and vertical bars show their 95% confidence intervals.
 
 ![Training time](training_time.png)
 

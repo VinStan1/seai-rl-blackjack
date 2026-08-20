@@ -389,63 +389,58 @@ def plot_performance_vs_training_time(
     output_path: Path,
     baseline: dict[str, Any] | None = None,
 ) -> None:
-    """Plot evaluation reward against mean wall-clock training time."""
+    """Compare each algorithm's best configuration using seed-averaged metrics."""
     plt = _pyplot()
-    figure, axis = plt.subplots(figsize=(10, 6.5))
+    figure, axis = plt.subplots(figsize=(11.5, 6.5))
+    best_by_algorithm = _best_by_algorithm(configurations)
+    markers = {
+        "monte_carlo": "o",
+        "sarsa": "s",
+        "q_learning": "^",
+    }
     for algorithm in ALGORITHM_NAMES:
-        matches = [item for item in configurations if item["algorithm"] == algorithm]
-        if not matches:
+        item = best_by_algorithm.get(algorithm)
+        if item is None:
             continue
         color = COLORS.get(algorithm, "#777777")
-        times = [float(item["training_seconds"]["mean"]) for item in matches]
-        rewards = [float(item["mean_reward"]["mean"]) for item in matches]
-        errors = []
-        for item, reward in zip(matches, rewards, strict=True):
-            lower, upper = _interval(item, "mean_reward")
-            errors.append((reward - lower, upper - reward))
+        time = float(item["training_seconds"]["mean"])
+        reward = float(item["mean_reward"]["mean"])
+        reward_lower, reward_upper = _interval(item, "mean_reward")
+        time_lower, time_upper = _interval(item, "training_seconds")
+        seed_count = int(item["completed_seeds"])
         axis.errorbar(
-            times,
-            rewards,
-            yerr=[
-                [error[0] for error in errors],
-                [error[1] for error in errors],
-            ],
-            fmt="o",
+            [time],
+            [reward],
+            xerr=[[time - time_lower], [time_upper - time]],
+            yerr=[[reward - reward_lower], [reward_upper - reward]],
+            fmt=markers.get(algorithm, "o"),
             color=color,
-            alpha=0.55,
-            capsize=2,
-            markersize=6,
-            label=_algorithm_name(algorithm),
-        )
-
-        best = max(matches, key=lambda item: float(item["mean_reward"]["mean"]))
-        best_time = float(best["training_seconds"]["mean"])
-        best_reward = float(best["mean_reward"]["mean"])
-        axis.scatter(
-            [best_time],
-            [best_reward],
-            color=color,
-            edgecolor="black",
-            linewidth=1,
-            marker="*",
-            s=180,
-            zorder=4,
-        )
-        axis.annotate(
-            f"{_algorithm_name(algorithm)} best\n{int(best['training_episodes']):,} episodes",
-            (best_time, best_reward),
-            xytext=(7, 7),
-            textcoords="offset points",
-            fontsize=8,
+            capsize=5,
+            elinewidth=1.8,
+            markersize=10,
+            markeredgecolor="black",
+            markeredgewidth=0.8,
+            label=(
+                f"{_algorithm_name(algorithm)} | {seed_count} seeds | "
+                f"{int(item['training_episodes']):,} episodes"
+            ),
         )
 
     _plot_baseline(axis, baseline)
-    axis.set_xscale("log")
-    axis.set_xlabel("Mean training time per run (seconds, log scale)")
+    axis.set_xlabel("Mean training time per seed (seconds)")
     axis.set_ylabel("Mean evaluation reward (higher is better)")
-    axis.set_title("Performance versus training cost")
+    axis.set_title(
+        "Best configuration per algorithm: performance versus training cost\n"
+        "Points are means across training seeds; error bars show 95% confidence intervals"
+    )
     axis.grid(alpha=0.25)
-    axis.legend()
+    axis.legend(
+        title="Reward-selected configurations",
+        loc="center left",
+        bbox_to_anchor=(1.02, 0.5),
+        frameon=True,
+        fontsize=9,
+    )
     figure.tight_layout()
     figure.savefig(output_path, dpi=180, bbox_inches="tight")
     plt.close(figure)
@@ -669,8 +664,9 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             "![Performance versus training cost](performance_vs_training_time.png)",
             "",
             (
-                "This chart relates final evaluation reward to wall-clock training cost. "
-                "Star markers identify the highest-reward configuration for each algorithm."
+                "This chart shows the highest-reward configuration for each algorithm. "
+                "Each point is the mean evaluation reward and mean training time across its "
+                "training seeds; horizontal and vertical bars show their 95% confidence intervals."
             ),
             "",
             "![Training time](training_time.png)",

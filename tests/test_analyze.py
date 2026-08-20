@@ -105,6 +105,7 @@ class AnalyzeTests(unittest.TestCase):
         self.assertIn("sample_efficiency.png", report)
         self.assertIn("training_time.png", report)
         self.assertIn("performance_vs_training_time.png", report)
+        self.assertIn("mean training time across its training seeds", report)
         self.assertIn("stick-on-17", report)
         self.assertIn("Sutton", report)
 
