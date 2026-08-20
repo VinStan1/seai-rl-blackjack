@@ -8,6 +8,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir --requirement requirements.txt
 
+COPY requirements-dqn.txt .
+RUN pip install --no-cache-dir --requirement requirements-dqn.txt
+
 COPY src ./src
 COPY tests ./tests
 

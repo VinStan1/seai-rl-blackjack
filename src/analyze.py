@@ -14,11 +14,13 @@ ALGORITHM_NAMES = {
     "monte_carlo": "Monte Carlo",
     "sarsa": "SARSA",
     "q_learning": "Q-learning",
+    "double_dqn": "Double DQN",
 }
 COLORS = {
     "monte_carlo": "#4C78A8",
     "sarsa": "#F58518",
     "q_learning": "#54A24B",
+    "double_dqn": "#B279A2",
 }
 BASELINE_COLOR = "#B22222"
 

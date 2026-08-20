@@ -2,8 +2,8 @@
 
 Docker-first implementation and evaluation of reinforcement-learning agents on
 Gymnasium's `Blackjack-v1` and three finite-shoe variants. The project contains
-tabular first-visit Monte Carlo, SARSA, and Q-learning agents, plus a configurable
-hyperparameter sweep runner.
+tabular first-visit Monte Carlo, SARSA, and Q-learning agents, an optional
+composition-aware Double DQN, and a configurable hyperparameter sweep runner.
 
 ## MDP model
 
@@ -57,6 +57,43 @@ The composition representation is deliberately large for a tabular method.
 Sparse state visitation and slower learning are expected experimental outcomes,
 not reasons to collapse or hash the state differently.
 
+## Optional Double DQN
+
+`src/agents/double_dqn.py` is an isolated neural alternative for the exact
+`finite_composition` observation. It preserves all ten counts but normalizes
+player sum, dealer upcard, and each count before passing the 13 features through
+a `13 -> 64 -> 64 -> 2` multilayer perceptron. Training uses experience replay,
+a target network, Huber loss, gradient clipping, and Double-DQN targets: the
+online network selects the next action and the target network evaluates it.
+
+PyTorch is pinned separately in `requirements-dqn.txt`. Neural checkpoints use
+`.pt`; tabular models retain their JSON format. The sweep imports Double DQN only
+when an algorithm entry names `double_dqn`, and rejects that agent unless the
+environment is `finite_composition`.
+
+Run the short end-to-end check first:
+
+```bash
+docker compose run --rm --build sweep \
+  --config experiments/double_dqn_composition_smoke.json
+```
+
+If the smoke result is structurally valid, run the controlled pilot:
+
+```bash
+docker compose run --rm --build sweep \
+  --config experiments/double_dqn_composition_pilot.json
+```
+
+The pilot evaluates two training budgets and two learning rates on three seeds,
+for 12 runs rather than reusing the much larger tabular grid. Model selection and
+analysis still use mean evaluation reward exactly as for the other agents.
+
+The extension can be removed without changing the environments or tabular
+agents: remove `double_dqn.py`, `requirements-dqn.txt`, its Docker install layer,
+the `double_dqn` registry/analysis entries, its two experiment JSON files, and
+`test_double_dqn.py`.
+
 ## Project layout
 
 ```text
@@ -64,7 +101,9 @@ not reasons to collapse or hash the state differently.
 |-- Dockerfile
 |-- docker-compose.yml
 |-- requirements.txt
+|-- requirements-dqn.txt
 |-- src/
+|   |-- agents/double_dqn.py
 |   |-- agents/monte_carlo.py
 |   |-- agents/temporal_difference.py
 |   |-- environments/blackjack.py
@@ -235,8 +274,11 @@ interval versus the runner-up includes zero.
 
 Generated models and JSON reports persist in `results/`. The reports include
 per-seed reward, win/draw/loss rates, episode and action counts, training time,
-inference latency, and a 95% normal-approximation confidence interval across
-independent training seeds. Environment wall-clock times are not directly
+inference latency, Q-table size, evaluation actions on unseen states, and a 95%
+normal-approximation confidence interval across independent training seeds.
+The unseen-state rate is especially important for Hi-Lo and composition states:
+a greedy tabular policy uses its deterministic tie-break action (`stick`) when
+an evaluation state has no learned values. Environment wall-clock times are not directly
 comparable across variants: Gymnasium's standard wrapper has substantially more
 per-call overhead than the purpose-built finite-shoe engine.
 

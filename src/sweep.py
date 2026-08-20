@@ -23,6 +23,7 @@ AGENTS = {
     "sarsa": SarsaAgent,
     "q_learning": QLearningAgent,
 }
+AGENT_NAMES = {*AGENTS, "double_dqn"}
 ALLOWED_PARAMETERS = {
     "monte_carlo": {
         "epsilon",
@@ -46,6 +47,21 @@ ALLOWED_PARAMETERS = {
         "epsilon_decay_fraction",
         "alpha",
         "gamma",
+    },
+    "double_dqn": {
+        "epsilon_start",
+        "epsilon_end",
+        "epsilon_decay_fraction",
+        "learning_rate",
+        "gamma",
+        "batch_size",
+        "replay_capacity",
+        "learning_starts",
+        "train_frequency",
+        "target_update_interval",
+        "hidden_size",
+        "gradient_clip",
+        "decks",
     },
 }
 
@@ -144,12 +160,15 @@ def validate_config(config: dict[str, Any]) -> None:
     training = config.get("training")
     evaluation = config.get("evaluation")
     algorithms = config.get("algorithms")
+    environment = config.get("environment", {"natural": False, "sab": True})
     if not isinstance(training, dict):
         raise ValueError("training must be an object")
     if not isinstance(evaluation, dict):
         raise ValueError("evaluation must be an object")
     if not isinstance(algorithms, list) or not algorithms:
         raise ValueError("algorithms must be a non-empty array")
+    if not isinstance(environment, dict):
+        raise ValueError("environment must be an object")
 
     episode_budgets = training.get("episodes")
     if isinstance(episode_budgets, list):
@@ -174,9 +193,16 @@ def validate_config(config: dict[str, Any]) -> None:
         if not isinstance(specification, dict):
             raise ValueError("each algorithms entry must be an object")
         name = specification.get("name")
-        if name not in AGENTS:
+        if name not in AGENT_NAMES:
             raise ValueError(
-                f"unknown algorithm {name!r}; expected one of {sorted(AGENTS)}"
+                f"unknown algorithm {name!r}; expected one of {sorted(AGENT_NAMES)}"
+            )
+        if (
+            name == "double_dqn"
+            and environment.get("variant") != "finite_composition"
+        ):
+            raise ValueError(
+                "double_dqn requires the finite_composition environment"
             )
         parameters = specification.get("parameters", {})
         if not isinstance(parameters, dict):
@@ -217,6 +243,10 @@ def expand_configurations(config: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _make_agent(name: str, parameters: dict[str, Any], seed: int) -> Any:
+    if name == "double_dqn":
+        from src.agents.double_dqn import DoubleDQNAgent
+
+        return DoubleDQNAgent(seed=seed, **parameters)
     return AGENTS[name](seed=seed, **parameters)
 
 
@@ -228,12 +258,16 @@ def _evaluate(
 ) -> dict[str, float | int]:
     rewards: list[float] = []
     action_count = 0
+    unseen_state_action_count = 0
     selection_ns = 0
+    q_values = getattr(agent, "q_values", None)
     with make_blackjack_environment(environment_config) as environment:
         for episode_index in range(episodes):
             state, _ = environment.reset(seed=seed if episode_index == 0 else None)
             episode_reward = 0.0
             while True:
+                if q_values is not None and state not in q_values:
+                    unseen_state_action_count += 1
                 started = time.perf_counter_ns()
                 action = agent.select_action(state, explore=False)
                 selection_ns += time.perf_counter_ns() - started
@@ -244,7 +278,7 @@ def _evaluate(
                     break
             rewards.append(episode_reward)
 
-    return {
+    result = {
         "episodes": episodes,
         "actions": action_count,
         "mean_actions_per_episode": action_count / episodes,
@@ -254,6 +288,17 @@ def _evaluate(
         "loss_rate": sum(reward < 0 for reward in rewards) / episodes,
         "mean_inference_microseconds_per_action": selection_ns / action_count / 1_000,
     }
+    if q_values is not None:
+        result.update(
+            {
+                "q_table_states": len(q_values),
+                "unseen_state_actions": unseen_state_action_count,
+                "unseen_state_action_rate": (
+                    unseen_state_action_count / action_count
+                ),
+            }
+        )
+    return result
 
 
 def _evaluate_baseline(
@@ -275,7 +320,6 @@ def _execute_run(job: dict[str, Any]) -> dict[str, Any]:
     seed = job["seed"]
     run_id = f"{configuration['configuration_id']}_seed_{seed}"
     output_dir = Path(job["output_dir"])
-    model_path = output_dir / "models" / f"{run_id}.json"
     report_path = output_dir / "runs" / f"{run_id}.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -283,6 +327,8 @@ def _execute_run(job: dict[str, Any]) -> dict[str, Any]:
     agent = _make_agent(
         configuration["algorithm"], configuration["parameters"], seed
     )
+    model_extension = getattr(agent, "model_extension", ".json")
+    model_path = output_dir / "models" / f"{run_id}{model_extension}"
     with make_blackjack_environment(job["environment"]) as environment:
         training_started = time.perf_counter()
         rewards = agent.train(environment, configuration["training_episodes"])
@@ -294,21 +340,29 @@ def _execute_run(job: dict[str, Any]) -> dict[str, Any]:
         job["evaluation_episodes"],
         job["evaluation_seed"],
     )
+    training = {
+        "episodes": configuration["training_episodes"],
+        "actions": agent.last_training_action_count,
+        "mean_actions_per_episode": (
+            agent.last_training_action_count
+            / configuration["training_episodes"]
+        ),
+        "mean_reward": sum(rewards) / len(rewards),
+        "seconds": training_seconds,
+    }
+    q_values = getattr(agent, "q_values", None)
+    if q_values is not None:
+        training["q_table_states"] = len(q_values)
+    diagnostics = getattr(agent, "training_diagnostics", None)
+    if diagnostics is not None:
+        training.update(diagnostics())
+
     report = {
         "run_id": run_id,
         "status": "completed",
         **configuration,
         "seed": seed,
-        "training": {
-            "episodes": configuration["training_episodes"],
-            "actions": agent.last_training_action_count,
-            "mean_actions_per_episode": (
-                agent.last_training_action_count
-                / configuration["training_episodes"]
-            ),
-            "mean_reward": sum(rewards) / len(rewards),
-            "seconds": training_seconds,
-        },
+        "training": training,
         "evaluation": evaluation,
         "model": str(model_path),
         "total_seconds": time.perf_counter() - started,

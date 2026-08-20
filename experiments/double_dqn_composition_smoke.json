@@ -1,0 +1,44 @@
+{
+  "experiment_name": "blackjack_double_dqn_composition_smoke",
+  "output_dir": "results/smoke",
+  "workers": 1,
+  "metadata": {
+    "phase": "smoke",
+    "description": "End-to-end smoke test for Double DQN on exact six-deck composition"
+  },
+  "environment": {
+    "variant": "finite_composition",
+    "decks": 6,
+    "penetration": 0.75,
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": 2000,
+    "seeds": [0]
+  },
+  "evaluation": {
+    "episodes": 10000,
+    "seed": 30000000
+  },
+  "algorithms": [
+    {
+      "name": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 10000,
+        "learning_starts": 500,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      }
+    }
+  ]
+}

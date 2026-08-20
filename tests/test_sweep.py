@@ -3,6 +3,7 @@
 import json
 import tempfile
 import unittest
+from collections import defaultdict
 from pathlib import Path
 from unittest.mock import patch
 
@@ -118,6 +119,35 @@ class SweepConfigurationTests(unittest.TestCase):
         self.assertEqual(len(configurations), 2)
         self.assertEqual(configurations[0]["parameters"]["epsilon_start"], 1.0)
 
+    def test_accepts_double_dqn_parameters_without_affecting_tabular_grid(self) -> None:
+        self.config["environment"] = {"variant": "finite_composition"}
+        self.config["algorithms"] = [
+            {
+                "name": "double_dqn",
+                "parameters": {
+                    "learning_rate": [0.001, 0.0003],
+                    "batch_size": 64,
+                    "hidden_size": 64,
+                },
+            }
+        ]
+
+        validate_config(self.config)
+        configurations = expand_configurations(self.config)
+
+        self.assertEqual(len(configurations), 2)
+        self.assertEqual(configurations[1]["algorithm"], "double_dqn")
+        self.assertEqual(configurations[1]["parameters"]["learning_rate"], 0.0003)
+
+    def test_rejects_double_dqn_without_exact_composition_state(self) -> None:
+        self.config["environment"] = {"variant": "finite_hidden"}
+        self.config["algorithms"] = [
+            {"name": "double_dqn", "parameters": {}}
+        ]
+
+        with self.assertRaisesRegex(ValueError, "finite_composition"):
+            validate_config(self.config)
+
     def test_progress_line_reports_percentage_elapsed_time_and_eta(self) -> None:
         progress = _progress_line(completed=5, total=10, elapsed=100.0)
 
@@ -175,6 +205,27 @@ class SweepConfigurationTests(unittest.TestCase):
         self.assertEqual(environment.actions, 7)
         self.assertEqual(result["episodes"], 7)
         self.assertEqual(result["actions"], 7)
+
+    def test_evaluation_reports_unseen_q_table_states_without_mutating_table(self) -> None:
+        class Agent:
+            def __init__(self) -> None:
+                self.q_values = defaultdict(lambda: [0.0, 0.0])
+
+            def select_action(self, state, *, explore=False):
+                del explore
+                return 0
+
+        agent = Agent()
+        result = _evaluate(
+            agent,
+            {"variant": "finite_hidden", "decks": 6, "penetration": 0.75},
+            episodes=10,
+            seed=700,
+        )
+
+        self.assertEqual(result["q_table_states"], 0)
+        self.assertEqual(result["unseen_state_action_rate"], 1.0)
+        self.assertEqual(len(agent.q_values), 0)
 
     def test_evaluation_supports_all_finite_observation_variants(self) -> None:
         policy = StickOnSeventeenPolicy()
