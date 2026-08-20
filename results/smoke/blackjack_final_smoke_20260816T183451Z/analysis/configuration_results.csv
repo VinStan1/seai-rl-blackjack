@@ -1,0 +1,4 @@
+rank,configuration_id,algorithm,parameters,seeds,mean_reward,reward_ci_95_lower,reward_ci_95_upper,win_rate,training_seconds
+1,sarsa_001,sarsa,"epsilon=0.2, alpha=0.05, gamma=1.0",2,-0.14100000000000001,-0.15864,-0.12336000000000003,0.3935,0.11523552899996048
+2,q_learning_002,q_learning,"epsilon=0.1, alpha=0.05, gamma=1.0",2,-0.14150000000000001,-0.16796,-0.11504000000000002,0.393,0.13886633249990155
+3,monte_carlo_000,monte_carlo,"epsilon=0.2, gamma=1.0",2,-0.14750000000000002,-0.16612000000000002,-0.12888000000000002,0.393,0.14162372549992597

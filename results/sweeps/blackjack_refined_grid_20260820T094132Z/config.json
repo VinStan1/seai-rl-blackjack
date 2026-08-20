@@ -1,0 +1,142 @@
+{
+  "experiment_name": "blackjack_refined_grid",
+  "output_dir": "results/sweeps",
+  "workers": 1,
+  "environment": {
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": [
+      20000,
+      50000,
+      100000,
+      200000,
+      500000
+    ],
+    "seeds": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "evaluation": {
+    "episodes": 100000,
+    "seed": 10000000
+  },
+  "algorithms": [
+    {
+      "name": "monte_carlo",
+      "parameters": {
+        "epsilon": [
+          0.2,
+          0.25,
+          0.3
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "monte_carlo",
+      "parameters": {
+        "epsilon_start": [
+          1.0
+        ],
+        "epsilon_end": [
+          0.05
+        ],
+        "epsilon_decay_fraction": [
+          0.8
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon": [
+          0.2,
+          0.25,
+          0.3
+        ],
+        "alpha": [
+          0.005,
+          0.01
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon_start": [
+          1.0
+        ],
+        "epsilon_end": [
+          0.05
+        ],
+        "epsilon_decay_fraction": [
+          0.8
+        ],
+        "alpha": [
+          0.005,
+          0.01
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon": [
+          0.2,
+          0.25,
+          0.3
+        ],
+        "alpha": [
+          0.005,
+          0.01
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon_start": [
+          1.0
+        ],
+        "epsilon_end": [
+          0.05
+        ],
+        "epsilon_decay_fraction": [
+          0.8
+        ],
+        "alpha": [
+          0.005,
+          0.01
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    }
+  ]
+}

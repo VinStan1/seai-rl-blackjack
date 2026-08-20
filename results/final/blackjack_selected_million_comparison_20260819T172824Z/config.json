@@ -1,0 +1,73 @@
+{
+  "experiment_name": "blackjack_selected_million_comparison",
+  "output_dir": "results/final",
+  "workers": 1,
+  "metadata": {
+    "phase": "final_validation",
+    "description": "One-million-episode comparison of pre-selected fixed-epsilon configurations"
+  },
+  "environment": {
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": 1000000,
+    "seeds": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109
+    ]
+  },
+  "evaluation": {
+    "episodes": 50000,
+    "seed": 30000000
+  },
+  "algorithms": [
+    {
+      "name": "monte_carlo",
+      "parameters": {
+        "epsilon": [
+          0.3
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon": [
+          0.25
+        ],
+        "alpha": [
+          0.005
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon": [
+          0.25
+        ],
+        "alpha": [
+          0.005
+        ],
+        "gamma": [
+          1.0
+        ]
+      }
+    }
+  ]
+}

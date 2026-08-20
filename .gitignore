@@ -1,35 +1,19 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
-results/*
+# For every current and future results/<category>/<run>/ directory, track only
+# the reproducibility metadata and generated analysis. Trained models and
+# per-seed run reports remain ignored.
+results/**
 !results/.gitkeep
+!results/*/
+!results/*/*/
+!results/*/*/config.json
+!results/*/*/summary.json
+!results/*/*/analysis/
+!results/*/*/analysis/**
 
-# Track only analysis artifacts from the selected refined sweep.
-!results/sweeps/
-results/sweeps/*
-!results/sweeps/blackjack_refined_grid_20260817T111811Z/
-results/sweeps/blackjack_refined_grid_20260817T111811Z/*
-!results/sweeps/blackjack_refined_grid_20260817T111811Z/analysis/
-!results/sweeps/blackjack_refined_grid_20260817T111811Z/analysis/**
-
-# Track only analysis artifacts from the selected pilot sweep.
-!results/sweeps/blackjack_pilot_grid_20260817T102656Z/
-results/sweeps/blackjack_pilot_grid_20260817T102656Z/*
-!results/sweeps/blackjack_pilot_grid_20260817T102656Z/analysis/
-!results/sweeps/blackjack_pilot_grid_20260817T102656Z/analysis/**
-
+# Track all current and future JSON experiment configurations.
 experiments/*
 !experiments/.gitkeep
-!experiments/hyperparameter_sweep.json
-!experiments/hyperparameter_refined_sweep.json
-!experiments/monte_carlo_epsilon_extension_sweep.json
-!experiments/selected_million_comparison.json
-
-
-# Track only analysis artifacts from the selected refined sweep.
-!results/sweeps/blackjack_refined_grid_20260820T091421Z/
-results/sweeps/blackjack_refined_grid_20260820T091421Z/models/
-results/sweeps/blackjack_refined_grid_20260820T091421Z/runs/
-!results/sweeps/blackjack_refined_grid_20260820T091421Z/analysis/
-!results/sweeps/blackjack_refined_grid_20260820T091421Z/analysis/**
-
+!experiments/*.json

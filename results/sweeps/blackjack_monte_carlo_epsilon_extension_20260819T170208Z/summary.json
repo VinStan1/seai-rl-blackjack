@@ -1,0 +1,1858 @@
+{
+  "experiment": "blackjack_monte_carlo_epsilon_extension",
+  "experiment_metadata": {},
+  "config_path": "experiments/monte_carlo_epsilon_extension_sweep.json",
+  "started_at_utc": "2026-08-19T17:02:08.425047+00:00",
+  "updated_at_utc": "2026-08-19T17:07:10.757673+00:00",
+  "workers": 8,
+  "status": "completed",
+  "total_runs": 60,
+  "completed_runs": 60,
+  "failed_runs": 0,
+  "configurations": [
+    {
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.054612,
+        "standard_deviation": 0.0011528977983036185,
+        "confidence_interval_95": [
+          -0.05532657345859844,
+          -0.05389742654140156
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.430275,
+        "standard_deviation": 0.0002486072315029414,
+        "confidence_interval_95": [
+          0.4301209116415098,
+          0.43042908835849025
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 33.761305492599995,
+        "standard_deviation": 0.837751548634622,
+        "confidence_interval_95": [
+          33.24206170322432,
+          34.28054928197567
+        ]
+      }
+    },
+    {
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.05484,
+        "standard_deviation": 0.0022609290125963698,
+        "confidence_interval_95": [
+          -0.05624133832032097,
+          -0.05343866167967903
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.429986,
+        "standard_deviation": 0.000407463699814676,
+        "confidence_interval_95": [
+          0.4297334513823703,
+          0.43023854861762967
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 45.71112600439999,
+        "standard_deviation": 2.2803826694598204,
+        "confidence_interval_95": [
+          44.29773018263548,
+          47.124521826164504
+        ]
+      }
+    },
+    {
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.057692,
+        "standard_deviation": 0.002212092021393122,
+        "confidence_interval_95": [
+          -0.059063068839571686,
+          -0.056320931160428314
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.428989,
+        "standard_deviation": 0.0004497517833946482,
+        "confidence_interval_95": [
+          0.428710240956619,
+          0.429267759043381
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 22.787711254900003,
+        "standard_deviation": 2.9045013557764245,
+        "confidence_interval_95": [
+          20.987482663645093,
+          24.587939846154914
+        ]
+      }
+    },
+    {
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.058247,
+        "standard_deviation": 0.001855712202303412,
+        "confidence_interval_95": [
+          -0.05939718233924501,
+          -0.057096817660754993
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.429263,
+        "standard_deviation": 0.00047902795093583575,
+        "confidence_interval_95": [
+          0.42896609539998326,
+          0.42955990460001675
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 17.529748457000004,
+        "standard_deviation": 0.7173390710521327,
+        "confidence_interval_95": [
+          17.085137094445802,
+          17.974359819554206
+        ]
+      }
+    },
+    {
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.058825,
+        "standard_deviation": 0.002098651683555155,
+        "confidence_interval_95": [
+          -0.060125757789734724,
+          -0.05752424221026528
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.429905,
+        "standard_deviation": 0.0003740246575353523,
+        "confidence_interval_95": [
+          0.42967317711550024,
+          0.4301368228844997
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 37.470837403,
+        "standard_deviation": 2.359298974165744,
+        "confidence_interval_95": [
+          36.008528748826144,
+          38.93314605717385
+        ]
+      }
+    },
+    {
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.061175,
+        "standard_deviation": 0.0016810396915136892,
+        "confidence_interval_95": [
+          -0.0622169191954167,
+          -0.0601330808045833
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.428768,
+        "standard_deviation": 0.0005105509007163059,
+        "confidence_interval_95": [
+          0.42845155727328804,
+          0.4290844427267119
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 13.474653992699979,
+        "standard_deviation": 0.3336933125897203,
+        "confidence_interval_95": [
+          13.267828734780968,
+          13.68147925061899
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "monte_carlo_000_seed_20",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 20,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.140825,
+        "seconds": 24.31088975899999
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05759,
+        "win_rate": 0.42887,
+        "draw_rate": 0.08467,
+        "loss_rate": 0.48646,
+        "mean_inference_microseconds_per_action": 2.0142820775867927
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_20.json",
+      "total_seconds": 34.463803824999985
+    },
+    {
+      "run_id": "monte_carlo_000_seed_21",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 21,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.14081,
+        "seconds": 23.88965123700001
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05667,
+        "win_rate": 0.43002,
+        "draw_rate": 0.08329,
+        "loss_rate": 0.48669,
+        "mean_inference_microseconds_per_action": 2.0665788165632257
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_21.json",
+      "total_seconds": 34.27410735800001
+    },
+    {
+      "run_id": "monte_carlo_000_seed_22",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 22,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.143355,
+        "seconds": 24.17317636599998
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05889,
+        "win_rate": 0.4287,
+        "draw_rate": 0.08371,
+        "loss_rate": 0.48759,
+        "mean_inference_microseconds_per_action": 2.0171104145325414
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_22.json",
+      "total_seconds": 34.40526007499997
+    },
+    {
+      "run_id": "monte_carlo_000_seed_23",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 23,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.135215,
+        "seconds": 24.307080895000013
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05684,
+        "win_rate": 0.42907,
+        "draw_rate": 0.08502,
+        "loss_rate": 0.48591,
+        "mean_inference_microseconds_per_action": 2.165543385839647
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_23.json",
+      "total_seconds": 34.997172595999984
+    },
+    {
+      "run_id": "monte_carlo_000_seed_24",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 24,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.14374,
+        "seconds": 24.042160619000015
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05652,
+        "win_rate": 0.42901,
+        "draw_rate": 0.08546,
+        "loss_rate": 0.48553,
+        "mean_inference_microseconds_per_action": 2.0210781019427335
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_24.json",
+      "total_seconds": 34.246362474999984
+    },
+    {
+      "run_id": "monte_carlo_000_seed_25",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 25,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.139545,
+        "seconds": 24.016700522999997
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05662,
+        "win_rate": 0.42877,
+        "draw_rate": 0.08584,
+        "loss_rate": 0.48539,
+        "mean_inference_microseconds_per_action": 2.0550240127886803
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_25.json",
+      "total_seconds": 34.30075953900001
+    },
+    {
+      "run_id": "monte_carlo_000_seed_26",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 26,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.139835,
+        "seconds": 24.328791636999995
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05556,
+        "win_rate": 0.42904,
+        "draw_rate": 0.08636,
+        "loss_rate": 0.4846,
+        "mean_inference_microseconds_per_action": 2.0217336637187158
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_26.json",
+      "total_seconds": 34.623270284
+    },
+    {
+      "run_id": "monte_carlo_000_seed_27",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 27,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.146305,
+        "seconds": 24.215246803000014
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06315,
+        "win_rate": 0.42852,
+        "draw_rate": 0.07981,
+        "loss_rate": 0.49167,
+        "mean_inference_microseconds_per_action": 2.099099195747857
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_27.json",
+      "total_seconds": 34.657119300999994
+    },
+    {
+      "run_id": "monte_carlo_000_seed_28",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 28,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.143915,
+        "seconds": 16.87025747300001
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05894,
+        "win_rate": 0.42851,
+        "draw_rate": 0.08404,
+        "loss_rate": 0.48745,
+        "mean_inference_microseconds_per_action": 1.7288638270542096
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_28.json",
+      "total_seconds": 25.901611680000002
+    },
+    {
+      "run_id": "monte_carlo_000_seed_29",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 29,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.142665,
+        "seconds": 17.72315723700001
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05614,
+        "win_rate": 0.42938,
+        "draw_rate": 0.0851,
+        "loss_rate": 0.48552,
+        "mean_inference_microseconds_per_action": 1.8325673381100447
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_000_seed_29.json",
+      "total_seconds": 27.462179840999994
+    },
+    {
+      "run_id": "monte_carlo_001_seed_20",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 20,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.136336,
+        "seconds": 42.130674803999995
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05446,
+        "win_rate": 0.42973,
+        "draw_rate": 0.08608,
+        "loss_rate": 0.48419,
+        "mean_inference_microseconds_per_action": 1.850789225290003
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_20.json",
+      "total_seconds": 51.702333681
+    },
+    {
+      "run_id": "monte_carlo_001_seed_21",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 21,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.135844,
+        "seconds": 44.75997902099999
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.0533,
+        "win_rate": 0.43064,
+        "draw_rate": 0.08542,
+        "loss_rate": 0.48394,
+        "mean_inference_microseconds_per_action": 1.8676202430951145
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_21.json",
+      "total_seconds": 54.25759888699997
+    },
+    {
+      "run_id": "monte_carlo_001_seed_22",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 22,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.138398,
+        "seconds": 44.798384954
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05592,
+        "win_rate": 0.43028,
+        "draw_rate": 0.08352,
+        "loss_rate": 0.4862,
+        "mean_inference_microseconds_per_action": 1.9172246408892462
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_22.json",
+      "total_seconds": 54.681904335999974
+    },
+    {
+      "run_id": "monte_carlo_001_seed_23",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 23,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.134278,
+        "seconds": 45.93516455400001
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05408,
+        "win_rate": 0.43,
+        "draw_rate": 0.08592,
+        "loss_rate": 0.48408,
+        "mean_inference_microseconds_per_action": 1.8294198763351706
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_23.json",
+      "total_seconds": 55.517968975
+    },
+    {
+      "run_id": "monte_carlo_001_seed_24",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 24,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.137986,
+        "seconds": 48.90617611000002
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05321,
+        "win_rate": 0.43004,
+        "draw_rate": 0.08671,
+        "loss_rate": 0.48325,
+        "mean_inference_microseconds_per_action": 1.912386535101519
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_24.json",
+      "total_seconds": 58.81288530300003
+    },
+    {
+      "run_id": "monte_carlo_001_seed_25",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 25,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.136532,
+        "seconds": 49.83566914099998
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05437,
+        "win_rate": 0.42942,
+        "draw_rate": 0.08679,
+        "loss_rate": 0.48379,
+        "mean_inference_microseconds_per_action": 2.0336962508171643
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_25.json",
+      "total_seconds": 60.03483770300002
+    },
+    {
+      "run_id": "monte_carlo_001_seed_26",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 26,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.136976,
+        "seconds": 43.75979410399998
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05346,
+        "win_rate": 0.42978,
+        "draw_rate": 0.08698,
+        "loss_rate": 0.48324,
+        "mean_inference_microseconds_per_action": 1.7998950467127333
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_26.json",
+      "total_seconds": 53.332515368
+    },
+    {
+      "run_id": "monte_carlo_001_seed_27",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 27,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.137612,
+        "seconds": 46.42956613599998
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06084,
+        "win_rate": 0.42953,
+        "draw_rate": 0.0801,
+        "loss_rate": 0.49037,
+        "mean_inference_microseconds_per_action": 1.9110758062836313
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_27.json",
+      "total_seconds": 56.18623226300002
+    },
+    {
+      "run_id": "monte_carlo_001_seed_28",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 28,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.138474,
+        "seconds": 45.64828108699999
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05386,
+        "win_rate": 0.43056,
+        "draw_rate": 0.08502,
+        "loss_rate": 0.48442,
+        "mean_inference_microseconds_per_action": 1.7287753788749343
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_28.json",
+      "total_seconds": 54.85255347200001
+    },
+    {
+      "run_id": "monte_carlo_001_seed_29",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 29,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.137468,
+        "seconds": 44.90757013299998
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.0549,
+        "win_rate": 0.42988,
+        "draw_rate": 0.08534,
+        "loss_rate": 0.48478,
+        "mean_inference_microseconds_per_action": 1.7009483829210574
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_001_seed_29.json",
+      "total_seconds": 53.94778710099996
+    },
+    {
+      "run_id": "monte_carlo_002_seed_20",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 20,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.15853,
+        "seconds": 17.852850461000003
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06064,
+        "win_rate": 0.42912,
+        "draw_rate": 0.08112,
+        "loss_rate": 0.48976,
+        "mean_inference_microseconds_per_action": 1.8247351789051145
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_20.json",
+      "total_seconds": 27.35091804999996
+    },
+    {
+      "run_id": "monte_carlo_002_seed_21",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 21,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.157225,
+        "seconds": 16.82937378500003
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06146,
+        "win_rate": 0.4286,
+        "draw_rate": 0.08134,
+        "loss_rate": 0.49006,
+        "mean_inference_microseconds_per_action": 1.956087310658221
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_21.json",
+      "total_seconds": 26.94208647800002
+    },
+    {
+      "run_id": "monte_carlo_002_seed_22",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 22,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.15649,
+        "seconds": 17.869771189999994
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05979,
+        "win_rate": 0.42855,
+        "draw_rate": 0.08311,
+        "loss_rate": 0.48834,
+        "mean_inference_microseconds_per_action": 1.9270123364306138
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_22.json",
+      "total_seconds": 27.651280695000025
+    },
+    {
+      "run_id": "monte_carlo_002_seed_23",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 23,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.156265,
+        "seconds": 17.370063552999966
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05653,
+        "win_rate": 0.42936,
+        "draw_rate": 0.08475,
+        "loss_rate": 0.48589,
+        "mean_inference_microseconds_per_action": 1.8168511443626016
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_23.json",
+      "total_seconds": 26.643665556999963
+    },
+    {
+      "run_id": "monte_carlo_002_seed_24",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 24,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.16201,
+        "seconds": 16.76655470899999
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05605,
+        "win_rate": 0.43,
+        "draw_rate": 0.08395,
+        "loss_rate": 0.48605,
+        "mean_inference_microseconds_per_action": 1.7227432604586177
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_24.json",
+      "total_seconds": 25.999373366000043
+    },
+    {
+      "run_id": "monte_carlo_002_seed_25",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 25,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.159285,
+        "seconds": 17.767562398999985
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05822,
+        "win_rate": 0.42905,
+        "draw_rate": 0.08368,
+        "loss_rate": 0.48727,
+        "mean_inference_microseconds_per_action": 1.5552369910084156
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_25.json",
+      "total_seconds": 26.075628117000008
+    },
+    {
+      "run_id": "monte_carlo_002_seed_26",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 26,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.15801,
+        "seconds": 17.111927000000037
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05774,
+        "win_rate": 0.42962,
+        "draw_rate": 0.08302,
+        "loss_rate": 0.48736,
+        "mean_inference_microseconds_per_action": 1.6282969152551663
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_26.json",
+      "total_seconds": 25.74313404100002
+    },
+    {
+      "run_id": "monte_carlo_002_seed_27",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 27,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.15576,
+        "seconds": 19.204740811000022
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05842,
+        "win_rate": 0.42945,
+        "draw_rate": 0.08268,
+        "loss_rate": 0.48787,
+        "mean_inference_microseconds_per_action": 1.5013369600418944
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_27.json",
+      "total_seconds": 27.15980429399997
+    },
+    {
+      "run_id": "monte_carlo_002_seed_28",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 28,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.158095,
+        "seconds": 17.004527930999984
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05638,
+        "win_rate": 0.42907,
+        "draw_rate": 0.08548,
+        "loss_rate": 0.48545,
+        "mean_inference_microseconds_per_action": 1.4842004931099702
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_28.json",
+      "total_seconds": 24.92705703499996
+    },
+    {
+      "run_id": "monte_carlo_002_seed_29",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 29,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.15486,
+        "seconds": 17.52011273100004
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05724,
+        "win_rate": 0.42981,
+        "draw_rate": 0.08314,
+        "loss_rate": 0.48705,
+        "mean_inference_microseconds_per_action": 1.4722268962570972
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_002_seed_29.json",
+      "total_seconds": 25.169884023999998
+    },
+    {
+      "run_id": "monte_carlo_003_seed_20",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 20,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.152906,
+        "seconds": 33.313622329
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05585,
+        "win_rate": 0.43037,
+        "draw_rate": 0.08341,
+        "loss_rate": 0.48622,
+        "mean_inference_microseconds_per_action": 1.4340699991820933
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_20.json",
+      "total_seconds": 41.06501968700002
+    },
+    {
+      "run_id": "monte_carlo_003_seed_21",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 21,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.15378,
+        "seconds": 33.21489766100001
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05611,
+        "win_rate": 0.43006,
+        "draw_rate": 0.08377,
+        "loss_rate": 0.48617,
+        "mean_inference_microseconds_per_action": 1.468365485950481
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_21.json",
+      "total_seconds": 41.00926151800002
+    },
+    {
+      "run_id": "monte_carlo_003_seed_22",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 22,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.152912,
+        "seconds": 33.60896336899998
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05328,
+        "win_rate": 0.4301,
+        "draw_rate": 0.08652,
+        "loss_rate": 0.48338,
+        "mean_inference_microseconds_per_action": 1.4701567147167283
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_22.json",
+      "total_seconds": 41.506595731000004
+    },
+    {
+      "run_id": "monte_carlo_003_seed_23",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 23,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.152826,
+        "seconds": 36.007836795
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05389,
+        "win_rate": 0.4302,
+        "draw_rate": 0.08571,
+        "loss_rate": 0.48409,
+        "mean_inference_microseconds_per_action": 1.4846259989993102
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_23.json",
+      "total_seconds": 43.834726343
+    },
+    {
+      "run_id": "monte_carlo_003_seed_24",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 24,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.156726,
+        "seconds": 33.531196884999986
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05435,
+        "win_rate": 0.43,
+        "draw_rate": 0.08565,
+        "loss_rate": 0.48435,
+        "mean_inference_microseconds_per_action": 1.4211783415347337
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_24.json",
+      "total_seconds": 41.28116351
+    },
+    {
+      "run_id": "monte_carlo_003_seed_25",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 25,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.15512,
+        "seconds": 33.24284545500001
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05441,
+        "win_rate": 0.43024,
+        "draw_rate": 0.08511,
+        "loss_rate": 0.48465,
+        "mean_inference_microseconds_per_action": 1.4652471322033898
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_25.json",
+      "total_seconds": 41.04196048800003
+    },
+    {
+      "run_id": "monte_carlo_003_seed_26",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 26,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.154636,
+        "seconds": 34.01888555700003
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05497,
+        "win_rate": 0.43037,
+        "draw_rate": 0.08429,
+        "loss_rate": 0.48534,
+        "mean_inference_microseconds_per_action": 1.400030695349169
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_26.json",
+      "total_seconds": 41.600765248000016
+    },
+    {
+      "run_id": "monte_carlo_003_seed_27",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 27,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.153364,
+        "seconds": 33.21972953899996
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05577,
+        "win_rate": 0.43067,
+        "draw_rate": 0.08289,
+        "loss_rate": 0.48644,
+        "mean_inference_microseconds_per_action": 1.530058330718116
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_27.json",
+      "total_seconds": 41.015281577999986
+    },
+    {
+      "run_id": "monte_carlo_003_seed_28",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 28,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.155712,
+        "seconds": 33.905966503
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05256,
+        "win_rate": 0.43005,
+        "draw_rate": 0.08734,
+        "loss_rate": 0.48261,
+        "mean_inference_microseconds_per_action": 1.4046204098262112
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_28.json",
+      "total_seconds": 41.67656375600001
+    },
+    {
+      "run_id": "monte_carlo_003_seed_29",
+      "status": "completed",
+      "configuration_id": "monte_carlo_003",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 29,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.150994,
+        "seconds": 33.549110832999986
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05493,
+        "win_rate": 0.43069,
+        "draw_rate": 0.08369,
+        "loss_rate": 0.48562,
+        "mean_inference_microseconds_per_action": 1.3988574459665974
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_003_seed_29.json",
+      "total_seconds": 41.15912731899999
+    },
+    {
+      "run_id": "monte_carlo_004_seed_20",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 20,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.191275,
+        "seconds": 13.42323716200002
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05887,
+        "win_rate": 0.42953,
+        "draw_rate": 0.08207,
+        "loss_rate": 0.4884,
+        "mean_inference_microseconds_per_action": 1.4909518488405225
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_20.json",
+      "total_seconds": 21.256135449
+    },
+    {
+      "run_id": "monte_carlo_004_seed_21",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 21,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.189555,
+        "seconds": 13.159759097000006
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06352,
+        "win_rate": 0.42893,
+        "draw_rate": 0.07862,
+        "loss_rate": 0.49245,
+        "mean_inference_microseconds_per_action": 1.3817722637853738
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_21.json",
+      "total_seconds": 20.598343992000025
+    },
+    {
+      "run_id": "monte_carlo_004_seed_22",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 22,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.18891,
+        "seconds": 13.43846932599996
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06206,
+        "win_rate": 0.42889,
+        "draw_rate": 0.08016,
+        "loss_rate": 0.49095,
+        "mean_inference_microseconds_per_action": 1.4477266387628693
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_22.json",
+      "total_seconds": 21.104047879999996
+    },
+    {
+      "run_id": "monte_carlo_004_seed_23",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 23,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.186795,
+        "seconds": 13.198337865999974
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06061,
+        "win_rate": 0.42874,
+        "draw_rate": 0.08191,
+        "loss_rate": 0.48935,
+        "mean_inference_microseconds_per_action": 1.4232120108178008
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_23.json",
+      "total_seconds": 20.71782708400002
+    },
+    {
+      "run_id": "monte_carlo_004_seed_24",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 24,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.19165,
+        "seconds": 13.358537980999984
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06052,
+        "win_rate": 0.4289,
+        "draw_rate": 0.08168,
+        "loss_rate": 0.48942,
+        "mean_inference_microseconds_per_action": 1.4268071275630054
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_24.json",
+      "total_seconds": 20.99979237499997
+    },
+    {
+      "run_id": "monte_carlo_004_seed_25",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 25,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.191605,
+        "seconds": 13.318272974999957
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06037,
+        "win_rate": 0.42869,
+        "draw_rate": 0.08225,
+        "loss_rate": 0.48906,
+        "mean_inference_microseconds_per_action": 1.5110952581912775
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_25.json",
+      "total_seconds": 21.049077245999968
+    },
+    {
+      "run_id": "monte_carlo_004_seed_26",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 26,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.19035,
+        "seconds": 13.956227239999976
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06051,
+        "win_rate": 0.42865,
+        "draw_rate": 0.08219,
+        "loss_rate": 0.48916,
+        "mean_inference_microseconds_per_action": 1.3724939598810775
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_26.json",
+      "total_seconds": 21.419855557000005
+    },
+    {
+      "run_id": "monte_carlo_004_seed_27",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 27,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.188065,
+        "seconds": 14.067302303999952
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06108,
+        "win_rate": 0.42864,
+        "draw_rate": 0.08164,
+        "loss_rate": 0.48972,
+        "mean_inference_microseconds_per_action": 1.4342195357095793
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_27.json",
+      "total_seconds": 21.723466470999995
+    },
+    {
+      "run_id": "monte_carlo_004_seed_28",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 28,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.19239,
+        "seconds": 13.72469612499998
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06437,
+        "win_rate": 0.42754,
+        "draw_rate": 0.08055,
+        "loss_rate": 0.49191,
+        "mean_inference_microseconds_per_action": 1.4122061957851229
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_28.json",
+      "total_seconds": 21.261772460999964
+    },
+    {
+      "run_id": "monte_carlo_004_seed_29",
+      "status": "completed",
+      "configuration_id": "monte_carlo_004",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 200000,
+      "seed": 29,
+      "training": {
+        "episodes": 200000,
+        "mean_reward": -0.187515,
+        "seconds": 13.101699850999978
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05984,
+        "win_rate": 0.42917,
+        "draw_rate": 0.08182,
+        "loss_rate": 0.48901,
+        "mean_inference_microseconds_per_action": 1.4342008679263654
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_004_seed_29.json",
+      "total_seconds": 20.689837994000015
+    },
+    {
+      "run_id": "monte_carlo_005_seed_20",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 20,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.186814,
+        "seconds": 33.40720256700001
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.0615,
+        "win_rate": 0.42959,
+        "draw_rate": 0.07932,
+        "loss_rate": 0.49109,
+        "mean_inference_microseconds_per_action": 1.8461317052939399
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_20.json",
+      "total_seconds": 42.634286753000026
+    },
+    {
+      "run_id": "monte_carlo_005_seed_21",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 21,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.188162,
+        "seconds": 32.974938554999994
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06096,
+        "win_rate": 0.43002,
+        "draw_rate": 0.079,
+        "loss_rate": 0.49098,
+        "mean_inference_microseconds_per_action": 2.0298931925293595
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_21.json",
+      "total_seconds": 42.62556808699998
+    },
+    {
+      "run_id": "monte_carlo_005_seed_22",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 22,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.184996,
+        "seconds": 37.677902958000004
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.0562,
+        "win_rate": 0.43048,
+        "draw_rate": 0.08284,
+        "loss_rate": 0.48668,
+        "mean_inference_microseconds_per_action": 1.7036468164614573
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_22.json",
+      "total_seconds": 46.24369573600001
+    },
+    {
+      "run_id": "monte_carlo_005_seed_23",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 23,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.18621,
+        "seconds": 37.65535599400005
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05688,
+        "win_rate": 0.43,
+        "draw_rate": 0.08312,
+        "loss_rate": 0.48688,
+        "mean_inference_microseconds_per_action": 1.6149518942003032
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_23.json",
+      "total_seconds": 45.97305812000002
+    },
+    {
+      "run_id": "monte_carlo_005_seed_24",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 24,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.187806,
+        "seconds": 38.26480315699996
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05684,
+        "win_rate": 0.43015,
+        "draw_rate": 0.08286,
+        "loss_rate": 0.48699,
+        "mean_inference_microseconds_per_action": 1.5961758512913309
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_24.json",
+      "total_seconds": 46.44391348800002
+    },
+    {
+      "run_id": "monte_carlo_005_seed_25",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 25,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.187512,
+        "seconds": 38.52147275499999
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.061,
+        "win_rate": 0.42956,
+        "draw_rate": 0.07988,
+        "loss_rate": 0.49056,
+        "mean_inference_microseconds_per_action": 1.6133452885669783
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_25.json",
+      "total_seconds": 46.55031316100002
+    },
+    {
+      "run_id": "monte_carlo_005_seed_26",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 26,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.187302,
+        "seconds": 38.52274240999998
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05715,
+        "win_rate": 0.43045,
+        "draw_rate": 0.08195,
+        "loss_rate": 0.4876,
+        "mean_inference_microseconds_per_action": 1.6261809345074827
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_26.json",
+      "total_seconds": 46.438658067999995
+    },
+    {
+      "run_id": "monte_carlo_005_seed_27",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 27,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.186624,
+        "seconds": 38.35691800400002
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.06082,
+        "win_rate": 0.42945,
+        "draw_rate": 0.08028,
+        "loss_rate": 0.49027,
+        "mean_inference_microseconds_per_action": 1.5347971928893975
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_27.json",
+      "total_seconds": 46.160441271000025
+    },
+    {
+      "run_id": "monte_carlo_005_seed_28",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 28,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.188584,
+        "seconds": 39.50242214599996
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05932,
+        "win_rate": 0.42958,
+        "draw_rate": 0.08152,
+        "loss_rate": 0.4889,
+        "mean_inference_microseconds_per_action": 1.903206988726074
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_28.json",
+      "total_seconds": 49.374027006999995
+    },
+    {
+      "run_id": "monte_carlo_005_seed_29",
+      "status": "completed",
+      "configuration_id": "monte_carlo_005",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.4,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 29,
+      "training": {
+        "episodes": 500000,
+        "mean_reward": -0.184948,
+        "seconds": 39.82461548399999
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "mean_reward": -0.05758,
+        "win_rate": 0.42977,
+        "draw_rate": 0.08288,
+        "loss_rate": 0.48735,
+        "mean_inference_microseconds_per_action": 2.131029613210989
+      },
+      "model": "results/sweeps/blackjack_monte_carlo_epsilon_extension_20260819T170208Z/models/monte_carlo_005_seed_29.json",
+      "total_seconds": 50.29653503600002
+    }
+  ]
+}

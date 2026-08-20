@@ -161,35 +161,6 @@ def _paired_comparison(
     }
 
 
-def _score_per_training_second(
-    configuration_id: str,
-    training_episodes: int,
-    runs: list[dict[str, Any]],
-) -> dict[str, float | int | list[float]]:
-    """Summarize per-seed reward/time multiplied by training episodes."""
-    ratios = [
-        (
-            float(run["evaluation"]["mean_reward"])
-            / float(run["training"]["seconds"])
-            * training_episodes
-        )
-        for run in runs
-        if run.get("status") == "completed"
-        and run["configuration_id"] == configuration_id
-    ]
-    if not ratios:
-        raise ValueError(f"no completed runs for configuration {configuration_id}")
-    ratio_mean = mean(ratios)
-    deviation = stdev(ratios) if len(ratios) > 1 else 0.0
-    margin = 1.96 * deviation / math.sqrt(len(ratios))
-    return {
-        "count": len(ratios),
-        "mean": ratio_mean,
-        "standard_deviation": deviation,
-        "confidence_interval_95": [ratio_mean - margin, ratio_mean + margin],
-    }
-
-
 def _pyplot() -> Any:
     import matplotlib
 
@@ -415,98 +386,89 @@ def plot_training_time(
 
 def plot_performance_vs_training_time(
     configurations: list[dict[str, Any]],
-    runs: list[dict[str, Any]],
-    output_path: Path,
-) -> None:
-    """Plot per-seed evaluation reward divided by training time."""
+    output_dir: Path,
+) -> list[Path]:
+    """Plot reward against training time in a separate chart per budget."""
     plt = _pyplot()
-    algorithms = [
-        name
-        for name in ALGORITHM_NAMES
-        if any(item["algorithm"] == name for item in configurations)
-    ]
     budgets = sorted({int(item["training_episodes"]) for item in configurations})
-    palette = plt.get_cmap("viridis")
-    budget_colors = {
-        budget: palette(index / max(1, len(budgets) - 1))
-        for index, budget in enumerate(budgets)
-    }
-    figure, axes = plt.subplots(
-        1,
-        len(algorithms),
-        figsize=(5.5 * len(algorithms), 6),
-        sharey=True,
-        squeeze=False,
-    )
-
-    for axis, algorithm in zip(axes[0], algorithms, strict=True):
-        matches = [item for item in configurations if item["algorithm"] == algorithm]
-        parameter_sets = sorted(
-            {json.dumps(item["parameters"], sort_keys=True) for item in matches}
-        )
-        labels = [
-            _parameters_text(json.loads(parameters)) for parameters in parameter_sets
+    output_paths: list[Path] = []
+    for budget in budgets:
+        matches = [
+            item
+            for item in configurations
+            if int(item["training_episodes"]) == budget
         ]
-        offsets = {
-            budget: (index - (len(budgets) - 1) / 2) * 0.14
-            for index, budget in enumerate(budgets)
+        best_ids = {
+            max(
+                (item for item in matches if item["algorithm"] == algorithm),
+                key=lambda item: float(item["mean_reward"]["mean"]),
+            )["configuration_id"]
+            for algorithm in ALGORITHM_NAMES
+            if any(item["algorithm"] == algorithm for item in matches)
         }
-        for budget in budgets:
-            for position, serialized in enumerate(parameter_sets):
-                item = next(
-                    (
-                        candidate
-                        for candidate in matches
-                        if int(candidate["training_episodes"]) == budget
-                        and json.dumps(candidate["parameters"], sort_keys=True)
-                        == serialized
-                    ),
-                    None,
-                )
-                if item is None:
-                    continue
-                score = _score_per_training_second(
-                    item["configuration_id"], int(item["training_episodes"]), runs
-                )
-                value = float(score["mean"])
-                lower, upper = score["confidence_interval_95"]
-                axis.errorbar(
-                    position + offsets[budget],
-                    value,
-                    yerr=[[value - float(lower)], [float(upper) - value]],
-                    fmt="o",
-                    color=budget_colors[budget],
-                    capsize=3,
-                    markersize=6,
-                    label=f"{budget:,} episodes" if position == 0 else None,
-                )
-        axis.set_xticks(
-            range(len(labels)), labels, rotation=35, ha="right", fontsize=8
-        )
-        axis.set_title(_algorithm_name(algorithm))
-        axis.set_xlabel("Agent hyperparameters")
-        axis.grid(axis="y", alpha=0.25)
 
-    axes[0][0].set_ylabel(
-        "Mean evaluation reward x training episodes / training second"
-    )
-    handles, legend_labels = axes[0][-1].get_legend_handles_labels()
-    figure.legend(
-        handles,
-        legend_labels,
-        title="Training budget",
-        loc="center left",
-        bbox_to_anchor=(0.995, 0.5),
-        frameon=True,
-        fontsize=9,
-    )
-    figure.suptitle(
-        "Episode-normalized score per training second with 95% confidence intervals\n"
-        "Ratios are computed per seed, then averaged"
-    )
-    figure.tight_layout(rect=(0, 0, 0.88, 1))
-    figure.savefig(output_path, dpi=180, bbox_inches="tight")
-    plt.close(figure)
+        figure, axis = plt.subplots(figsize=(9, 6))
+        for algorithm in ALGORITHM_NAMES:
+            algorithm_matches = [
+                item for item in matches if item["algorithm"] == algorithm
+            ]
+            if not algorithm_matches:
+                continue
+            color = COLORS.get(algorithm, "#777777")
+            for item in algorithm_matches:
+                reward = float(item["mean_reward"]["mean"])
+                reward_lower, reward_upper = _interval(item, "mean_reward")
+                seconds = float(item["training_seconds"]["mean"])
+                seconds_lower, seconds_upper = _interval(item, "training_seconds")
+                is_best = item["configuration_id"] in best_ids
+                axis.errorbar(
+                    seconds,
+                    reward,
+                    xerr=[[seconds - seconds_lower], [seconds_upper - seconds]],
+                    yerr=[[reward - reward_lower], [reward_upper - reward]],
+                    fmt="o",
+                    color=color,
+                    ecolor=color,
+                    alpha=0.9 if is_best else 0.45,
+                    capsize=2,
+                    markersize=9 if is_best else 6,
+                    markeredgecolor="black" if is_best else color,
+                    markeredgewidth=1.5 if is_best else 0.5,
+                    zorder=3 if is_best else 2,
+                )
+            axis.scatter([], [], color=color, label=_algorithm_name(algorithm))
+
+        axis.scatter(
+            [],
+            [],
+            facecolors="none",
+            edgecolors="black",
+            linewidths=1.5,
+            label="Best reward per algorithm",
+        )
+        axis.text(
+            0.02,
+            0.98,
+            "Preferred direction: upper-left\n(higher reward, less time)",
+            transform=axis.transAxes,
+            ha="left",
+            va="top",
+            fontsize=9,
+            bbox={"facecolor": "white", "alpha": 0.85, "edgecolor": "#bbbbbb"},
+        )
+        axis.set_xlabel("Mean training seconds per run (lower is better)")
+        axis.set_ylabel("Mean evaluation reward (higher is better)")
+        axis.set_title(f"Performance versus training time — {budget:,} episodes")
+        axis.grid(alpha=0.25)
+        axis.legend(fontsize=9)
+        figure.tight_layout()
+
+        output_path = output_dir / f"performance_vs_training_time_{budget}.png"
+        figure.savefig(output_path, dpi=180, bbox_inches="tight")
+        plt.close(figure)
+        output_paths.append(output_path)
+
+    return output_paths
 
 
 def write_configuration_csv(
@@ -724,18 +686,25 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             "",
             "## Efficiency",
             "",
-            "![Performance versus training cost](performance_vs_training_time.png)",
-            "",
+            *[
+                line
+                for budget in sorted(
+                    {int(item["training_episodes"]) for item in configurations}
+                )
+                for line in (
+                    f"### {budget:,} training episodes",
+                    "",
+                    f"![Performance versus training time at {budget:,} episodes]"
+                    f"(performance_vs_training_time_{budget}.png)",
+                    "",
+                )
+            ],
             (
-                "This chart uses the same hyperparameter axis as the configuration-performance "
-                "plot. For each seed, the evaluation mean reward is divided by that run's "
-                "training time and multiplied by its training episode count; points and 95% "
-                "intervals summarize those per-seed values."
-            ),
-            "",
-            (
-                "Because Blackjack rewards are negative, this literal metric remains descriptive. "
-                "Model selection remains based only on mean evaluation reward."
+                "Each chart holds the training budget fixed. Every point is one hyperparameter "
+                "configuration, horizontal intervals show uncertainty in mean training time, "
+                "and vertical intervals show uncertainty in mean evaluation reward. The preferred "
+                "region is the upper-left; black outlines identify the best-reward configuration "
+                "for each algorithm at that budget."
             ),
             "",
             "![Training time](training_time.png)",
@@ -757,7 +726,7 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             "- Final reward chart: `configuration_performance.png`",
             "- Sample-efficiency chart: `sample_efficiency.png`",
             "- Training-time chart: `training_time.png`",
-            "- Performance-versus-training-time chart: `performance_vs_training_time.png`",
+            "- Performance-versus-training-time charts: one `performance_vs_training_time_<episodes>.png` file per training budget",
             "",
         ]
     )
@@ -773,7 +742,6 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
     performance_path = output_dir / "configuration_performance.png"
     sample_efficiency_path = output_dir / "sample_efficiency.png"
     training_time_path = output_dir / "training_time.png"
-    performance_time_path = output_dir / "performance_vs_training_time.png"
     csv_path = output_dir / "configuration_results.csv"
     report_path = output_dir / "analysis.md"
 
@@ -781,7 +749,9 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
     plot_configuration_performance(configurations, performance_path, baseline)
     plot_sample_efficiency(configurations, sample_efficiency_path, baseline)
     plot_training_time(configurations, training_time_path)
-    plot_performance_vs_training_time(configurations, summary["runs"], performance_time_path)
+    performance_time_paths = plot_performance_vs_training_time(
+        configurations, output_dir
+    )
     write_configuration_csv(configurations, csv_path)
     report_path.write_text(
         build_report(summary, summary_path), encoding="utf-8"
@@ -791,7 +761,7 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
         performance_path,
         sample_efficiency_path,
         training_time_path,
-        performance_time_path,
+        *performance_time_paths,
         csv_path,
     ]
 
