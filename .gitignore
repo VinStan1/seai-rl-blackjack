@@ -28,7 +28,8 @@ experiments/*
 
 # Track only analysis artifacts from the selected refined sweep.
 !results/sweeps/blackjack_refined_grid_20260820T091421Z/
-results/sweeps/blackjack_refined_grid_20260820T091421Z/*
+results/sweeps/blackjack_refined_grid_20260820T091421Z/models/
+results/sweeps/blackjack_refined_grid_20260820T091421Z/runs/
 !results/sweeps/blackjack_refined_grid_20260820T091421Z/analysis/
 !results/sweeps/blackjack_refined_grid_20260820T091421Z/analysis/**
 
