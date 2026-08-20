@@ -34,6 +34,15 @@ class FiniteBlackjackEnvironmentTests(unittest.TestCase):
                 self.assertEqual(info["cut_card"], 234)
                 self.assertTrue(info["shuffled"])
 
+    def test_reset_does_not_auto_play_player_totals_below_twelve(self) -> None:
+        environment = FiniteBlackjackEnvironment(observation="hidden")
+        environment._shoe = [10, 2, 10, 2]
+
+        state, info = environment.reset()
+
+        self.assertEqual(state, (4, 10, False))
+        self.assertEqual(info["cards_dealt"], 4)
+
     def test_composition_tracks_public_cards_without_revealing_hole_card(self) -> None:
         environment = FiniteBlackjackEnvironment(observation="composition")
         state, _ = environment.reset(seed=7)

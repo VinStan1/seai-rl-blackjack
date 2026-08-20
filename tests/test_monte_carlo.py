@@ -49,6 +49,23 @@ class MonteCarloAgentTests(unittest.TestCase):
 
         self.assertEqual(environment.seeds, [17, None, None])
 
+    def test_training_records_every_agent_action(self) -> None:
+        class TwoStepEnvironment:
+            def reset(self, *, seed=None):
+                return (12, 10, False), {}
+
+            def step(self, action):
+                if not hasattr(self, "second_step"):
+                    self.second_step = True
+                    return (16, 10, False), 0.0, False, False, {}
+                del self.second_step
+                return (20, 10, False), 1.0, True, False, {}
+
+        agent = MonteCarloAgent(seed=17)
+        agent.train(TwoStepEnvironment(), episodes=3)
+
+        self.assertEqual(agent.last_training_action_count, 6)
+
     def test_linear_epsilon_schedule_reaches_end_after_decay_fraction(self) -> None:
         agent = MonteCarloAgent(
             epsilon_start=1.0,

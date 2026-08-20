@@ -74,6 +74,7 @@ class MonteCarloAgent:
         self.number_actions = number_actions
         self.seed = seed
         self._random = random.Random(seed)
+        self.last_training_action_count = 0
         self.q_values: defaultdict[BlackjackState, list[float]] = defaultdict(
             self._empty_action_values
         )
@@ -165,6 +166,7 @@ class MonteCarloAgent:
             raise ValueError("episodes must be positive")
 
         rewards: list[float] = []
+        self.last_training_action_count = 0
         for episode_index in range(episodes):
             self._active_epsilon = self.epsilon_for_episode(
                 episode_index, episodes
@@ -174,6 +176,7 @@ class MonteCarloAgent:
                 seed=self.seed if episode_index == 0 else None,
                 explore=True,
             )
+            self.last_training_action_count += len(episode)
             self.update_episode(episode)
             rewards.append(sum(step[2] for step in episode))
         return rewards

@@ -76,8 +76,10 @@ class TemporalDifferenceAgentTests(unittest.TestCase):
         for agent_type in (SarsaAgent, QLearningAgent):
             with self.subTest(agent=agent_type.__name__):
                 environment = OneStepEnvironment()
-                agent_type(seed=23).train(environment, episodes=3)
+                agent = agent_type(seed=23)
+                agent.train(environment, episodes=3)
                 self.assertEqual(environment.seeds, [23, None, None])
+                self.assertEqual(agent.last_training_action_count, 3)
 
     def test_linear_epsilon_schedule_is_shared_by_td_agents(self) -> None:
         for agent_type in (SarsaAgent, QLearningAgent):

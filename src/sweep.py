@@ -246,6 +246,8 @@ def _evaluate(
 
     return {
         "episodes": episodes,
+        "actions": action_count,
+        "mean_actions_per_episode": action_count / episodes,
         "mean_reward": sum(rewards) / episodes,
         "win_rate": sum(reward > 0 for reward in rewards) / episodes,
         "draw_rate": sum(reward == 0 for reward in rewards) / episodes,
@@ -299,6 +301,11 @@ def _execute_run(job: dict[str, Any]) -> dict[str, Any]:
         "seed": seed,
         "training": {
             "episodes": configuration["training_episodes"],
+            "actions": agent.last_training_action_count,
+            "mean_actions_per_episode": (
+                agent.last_training_action_count
+                / configuration["training_episodes"]
+            ),
             "mean_reward": sum(rewards) / len(rewards),
             "seconds": training_seconds,
         },

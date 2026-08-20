@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from src.baselines import StickOnSeventeenPolicy
 from src.sweep import (
@@ -142,6 +143,39 @@ class SweepConfigurationTests(unittest.TestCase):
         self.assertEqual(policy.select_action((17, 10, False)), 0)
         self.assertEqual(policy.select_action((21, 1, True)), 0)
 
+    def test_evaluation_executes_every_episode_and_seeds_only_the_first(self) -> None:
+        class CountingEnvironment:
+            def __init__(self) -> None:
+                self.seeds = []
+                self.actions = 0
+
+            def reset(self, *, seed=None):
+                self.seeds.append(seed)
+                return (17, 10, False), {}
+
+            def step(self, action):
+                self.actions += 1
+                return (17, 10, False), 0.0, True, False, {}
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_):
+                pass
+
+        environment = CountingEnvironment()
+        with patch(
+            "src.sweep.make_blackjack_environment", return_value=environment
+        ):
+            result = _evaluate(
+                StickOnSeventeenPolicy(), {}, episodes=7, seed=500
+            )
+
+        self.assertEqual(environment.seeds, [500, None, None, None, None, None, None])
+        self.assertEqual(environment.actions, 7)
+        self.assertEqual(result["episodes"], 7)
+        self.assertEqual(result["actions"], 7)
+
     def test_evaluation_supports_all_finite_observation_variants(self) -> None:
         policy = StickOnSeventeenPolicy()
         for variant in (
@@ -164,6 +198,8 @@ class SweepConfigurationTests(unittest.TestCase):
                 )
 
                 self.assertEqual(result["episodes"], 20)
+                self.assertGreaterEqual(result["actions"], 20)
+                self.assertGreaterEqual(result["mean_actions_per_episode"], 1.0)
                 self.assertAlmostEqual(
                     result["win_rate"]
                     + result["draw_rate"]

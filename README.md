@@ -37,8 +37,8 @@ An experiment seed initializes the shuffle once and the deterministic random
 stream then advances across hands.
 
 The initial deal and dealer behavior match the Sutton and Barto mode of
-`Blackjack-v1`: the player automatically draws until reaching at least 12, the
-dealer sticks on 17, and a player natural beats a non-natural dealer 21. The
+`Blackjack-v1`: the player receives exactly two initial cards, the dealer sticks
+on 17, and a player natural beats a non-natural dealer 21. The
 available finite observations are:
 
 - `finite_hidden`: `(player_sum, dealer_upcard, usable_ace)`. The physical shoe
@@ -234,8 +234,11 @@ The selected model is reported as provisional when its paired 95% confidence
 interval versus the runner-up includes zero.
 
 Generated models and JSON reports persist in `results/`. The reports include
-per-seed reward, win/draw/loss rates, training time, inference latency, and a 95%
-normal-approximation confidence interval across independent training seeds.
+per-seed reward, win/draw/loss rates, episode and action counts, training time,
+inference latency, and a 95% normal-approximation confidence interval across
+independent training seeds. Environment wall-clock times are not directly
+comparable across variants: Gymnasium's standard wrapper has substantially more
+per-call overhead than the purpose-built finite-shoe engine.
 
 ## Reproducibility and experimental scope
 

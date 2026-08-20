@@ -159,8 +159,6 @@ class FiniteBlackjackEnvironment:
         self._dealer.append(self._draw(visible=True))
         self._player.append(self._draw(visible=True))
         self._dealer.append(self._draw(visible=False))
-        while _hand_value(self._player) < 12:
-            self._player.append(self._draw(visible=True))
         return self._observation(), self._info(shuffled=shuffled)
 
     def step(

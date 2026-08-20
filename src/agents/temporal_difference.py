@@ -78,6 +78,7 @@ class TabularTDAgent:
         self.number_actions = number_actions
         self.seed = seed
         self._random = random.Random(seed)
+        self.last_training_action_count = 0
         self.q_values: defaultdict[BlackjackState, list[float]] = defaultdict(
             self._empty_action_values
         )
@@ -141,6 +142,7 @@ class TabularTDAgent:
             raise ValueError("episodes must be positive")
 
         rewards: list[float] = []
+        self.last_training_action_count = 0
         for episode_index in range(episodes):
             self._active_epsilon = self.epsilon_for_episode(
                 episode_index, episodes
@@ -153,6 +155,7 @@ class TabularTDAgent:
 
             while True:
                 next_state, reward, terminated, truncated, _ = environment.step(action)
+                self.last_training_action_count += 1
                 reward = float(reward)
                 episode_reward += reward
                 finished = terminated or truncated
