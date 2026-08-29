@@ -6,10 +6,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from src.agents import QLearningAgent
 from src.analyze import (
     _best_by_algorithm,
     _paired_comparison,
     build_report,
+    generate_analysis,
     load_summary,
     resolve_summary_path,
 )
@@ -117,6 +119,38 @@ class AnalyzeTests(unittest.TestCase):
         self.assertIn("Final configuration scope", report)
         self.assertIn("separate pilot sweep", report)
         self.assertNotIn("![Hyperparameter sensitivity]", report)
+
+    def test_generates_best_policy_heatmap_for_finite_hidden_blackjack(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            result_directory = Path(temporary_directory)
+            model_path = result_directory / "models" / "best_model.json"
+            agent = QLearningAgent(seed=1)
+            agent.q_values[(12, 2, False)] = [0.2, 0.7]
+            agent.save(model_path)
+
+            summary = json.loads(json.dumps(self.summary))
+            summary["environment"] = {"variant": "finite_hidden"}
+            summary["runs"] = [
+                {
+                    "status": "completed",
+                    "configuration_id": "q_0",
+                    "seed": 1,
+                    "evaluation": {"mean_reward": -0.05},
+                    "model": str(model_path),
+                }
+            ]
+            summary_path = result_directory / "summary.json"
+            summary_path.write_text(json.dumps(summary), encoding="utf-8")
+
+            generated = generate_analysis(summary_path, result_directory / "analysis")
+            heatmap_path = result_directory / "analysis" / "best_policy_heatmap.png"
+            report = (result_directory / "analysis" / "analysis.md").read_text(
+                encoding="utf-8"
+            )
+
+            self.assertIn(heatmap_path, generated)
+            self.assertTrue(heatmap_path.is_file())
+        self.assertIn("best_policy_heatmap.png", report)
 
     def test_latest_summary_is_resolved_and_loaded(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

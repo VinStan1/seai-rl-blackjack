@@ -473,6 +473,124 @@ def plot_performance_vs_training_time(
     return output_paths
 
 
+def _representative_best_run(
+    configuration: dict[str, Any], runs: list[dict[str, Any]]
+) -> dict[str, Any] | None:
+    """Select the run closest to the best configuration's aggregate reward."""
+    matches = [
+        run
+        for run in runs
+        if run.get("status") == "completed"
+        and run.get("configuration_id") == configuration["configuration_id"]
+        and isinstance(run.get("model"), str)
+        and isinstance(run.get("evaluation"), dict)
+        and "mean_reward" in run["evaluation"]
+    ]
+    if not matches:
+        return None
+    aggregate_reward = float(configuration["mean_reward"]["mean"])
+    return min(
+        matches,
+        key=lambda run: (
+            abs(float(run["evaluation"]["mean_reward"]) - aggregate_reward),
+            int(run.get("seed", 0)),
+            str(run.get("run_id", "")),
+        ),
+    )
+
+
+def _load_tabular_q_values(model_path: Path) -> dict[tuple[int | bool, ...], list[float]]:
+    payload = json.loads(model_path.read_text(encoding="utf-8"))
+    table = payload.get("q_table")
+    if not isinstance(table, list):
+        raise ValueError("model does not contain a tabular q_table")
+
+    q_values: dict[tuple[int | bool, ...], list[float]] = {}
+    for entry in table:
+        if not isinstance(entry, dict):
+            continue
+        state = entry.get("state")
+        values = entry.get("values")
+        if not isinstance(state, list) or len(state) != 3:
+            continue
+        if not isinstance(values, list) or len(values) < 2:
+            continue
+        q_values[(int(state[0]), int(state[1]), bool(state[2]))] = [
+            float(value) for value in values
+        ]
+    return q_values
+
+
+def plot_best_policy_heatmap(
+    summary: dict[str, Any], output_path: Path
+) -> bool:
+    """Plot greedy actions of the representative model for simple Blackjack states."""
+    environment = summary.get("environment")
+    variant = environment.get("variant", "standard") if isinstance(environment, dict) else "standard"
+    if variant not in {"standard", "finite_hidden"}:
+        return False
+
+    configurations = summary["configurations"]
+    best_configuration = max(
+        configurations, key=lambda item: float(item["mean_reward"]["mean"])
+    )
+    run = _representative_best_run(best_configuration, summary["runs"])
+    if run is None:
+        return False
+    model_path = Path(run["model"])
+    if not model_path.is_file():
+        return False
+    q_values = _load_tabular_q_values(model_path)
+    if not q_values:
+        return False
+
+    plt = _pyplot()
+    from matplotlib.colors import BoundaryNorm, ListedColormap
+
+    player_totals = list(range(4, 22))
+    dealer_upcards = list(range(1, 11))
+    color_map = ListedColormap(["#d9d9d9", "#e45756", "#4c78a8"])
+    normalizer = BoundaryNorm([-1.5, -0.5, 0.5, 1.5], color_map.N)
+    figure, axes = plt.subplots(1, 2, figsize=(12, 7), sharey=True)
+    image = None
+    for axis, usable_ace in zip(axes, (False, True), strict=True):
+        actions = []
+        for player_total in player_totals:
+            row = []
+            for dealer_upcard in dealer_upcards:
+                values = q_values.get((player_total, dealer_upcard, usable_ace))
+                row.append(-1 if values is None else values.index(max(values)))
+            actions.append(row)
+        image = axis.imshow(
+            actions,
+            cmap=color_map,
+            norm=normalizer,
+            origin="lower",
+            aspect="auto",
+        )
+        axis.set_title("Usable ace" if usable_ace else "No usable ace")
+        axis.set_xticks(range(len(dealer_upcards)), dealer_upcards)
+        axis.set_xlabel("Dealer upcard")
+        axis.set_yticks(range(len(player_totals)), player_totals)
+        axis.grid(False)
+
+    axes[0].set_ylabel("Player total")
+    figure.colorbar(
+        image,
+        ax=axes,
+        ticks=[-1, 0, 1],
+        label="Greedy action",
+    ).ax.set_yticklabels(["Unseen", "Stick", "Hit"])
+    figure.suptitle(
+        f"Best policy: {_algorithm_name(best_configuration['algorithm'])} "
+        f"(representative seed {run.get('seed', 'unknown')})"
+    )
+    figure.subplots_adjust(top=0.86, bottom=0.12, wspace=0.12)
+    figure.savefig(output_path, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+    return True
+
+
 def write_configuration_csv(
     configurations: list[dict[str, Any]], output_path: Path
 ) -> None:
@@ -516,7 +634,12 @@ def write_configuration_csv(
             )
 
 
-def build_report(summary: dict[str, Any], summary_path: Path) -> str:
+def build_report(
+    summary: dict[str, Any],
+    summary_path: Path,
+    *,
+    include_best_policy_heatmap: bool = False,
+) -> str:
     configurations = summary["configurations"]
     runs = summary["runs"]
     metadata = summary.get("experiment_metadata", {})
@@ -699,6 +822,23 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             ]
         )
 
+    if include_best_policy_heatmap:
+        lines.extend(
+            [
+                "## Best-model policy",
+                "",
+                "![Best-model action heatmap](best_policy_heatmap.png)",
+                "",
+                (
+                    "Each cell shows the greedy action of the representative trained "
+                    "model for the highest-reward configuration. The representative seed "
+                    "is the completed run closest to that configuration's mean reward; "
+                    "gray cells were not present in its learned Q-table."
+                ),
+                "",
+            ]
+        )
+
     lines.extend(
         [
             "",
@@ -745,6 +885,11 @@ def build_report(summary: dict[str, Any], summary_path: Path) -> str:
             "- Sample-efficiency chart: `sample_efficiency.png`",
             "- Training-time chart: `training_time.png`",
             "- Performance-versus-training-time charts: one `performance_vs_training_time_<episodes>.png` file per training budget",
+            *(
+                ["- Best-model policy heatmap: `best_policy_heatmap.png`"]
+                if include_best_policy_heatmap
+                else []
+            ),
             "",
         ]
     )
@@ -760,6 +905,7 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
     performance_path = output_dir / "configuration_performance.png"
     sample_efficiency_path = output_dir / "sample_efficiency.png"
     training_time_path = output_dir / "training_time.png"
+    best_policy_path = output_dir / "best_policy_heatmap.png"
     csv_path = output_dir / "configuration_results.csv"
     report_path = output_dir / "analysis.md"
 
@@ -770,9 +916,15 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
     performance_time_paths = plot_performance_vs_training_time(
         configurations, output_dir
     )
+    best_policy_generated = plot_best_policy_heatmap(summary, best_policy_path)
     write_configuration_csv(configurations, csv_path)
     report_path.write_text(
-        build_report(summary, summary_path), encoding="utf-8"
+        build_report(
+            summary,
+            summary_path,
+            include_best_policy_heatmap=best_policy_generated,
+        ),
+        encoding="utf-8",
     )
     return [
         report_path,
@@ -780,6 +932,7 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
         sample_efficiency_path,
         training_time_path,
         *performance_time_paths,
+        *([best_policy_path] if best_policy_generated else []),
         csv_path,
     ]
 
