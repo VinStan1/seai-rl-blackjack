@@ -57,6 +57,35 @@ The composition representation is deliberately large for a tabular method.
 Sparse state visitation and slower learning are expected experimental outcomes,
 not reasons to collapse or hash the state differently.
 
+## Experimental design
+
+Mean greedy-policy evaluation reward is the primary metric. Win rate and
+training time are secondary diagnostics. The intended from-scratch protocol is:
+
+1. Run the broad and then refined tabular grids on standard Gymnasium Blackjack.
+2. Select one configuration per tabular algorithm at the largest refined budget,
+   then validate longer training with fresh seeds.
+3. Retrain those base-selected hyperparameters in `finite_hidden` without
+   retuning. This is a transfer/robustness control for hidden finite-shoe
+   dynamics, not an environment-specific optimization.
+4. Run the refined tabular grid and fresh-seed long validation in `finite_hi_lo`.
+5. Repeat the refined tabular process in `finite_composition`, then compare it
+   with a separately tuned Double DQN at matched training/evaluation budgets.
+
+The comparisons have different interpretations. Standard versus finite-hidden
+measures the effect of a persistent finite shoe when its composition is omitted
+from the observation. Finite-hidden versus Hi-Lo measures the net effect of
+adding a compressed count, including both useful information and the cost of a
+larger state representation. Hi-Lo versus exact composition similarly changes
+both information detail and representation size; it does not isolate those two
+effects individually.
+
+Grid-search seeds are selection data. Final comparisons must use fresh training
+seeds, while every algorithm in a given final comparison shares the same seed
+list and evaluation protocol. Mean-reward differences should be calculated
+seed-by-seed; overlapping marginal confidence intervals alone are not an
+equivalence test.
+
 ## Optional Double DQN
 
 `src/agents/double_dqn.py` is an isolated neural alternative for the exact
@@ -88,6 +117,18 @@ docker compose run --rm --build sweep \
 The pilot evaluates two training budgets and two learning rates on three seeds,
 for 12 runs rather than reusing the much larger tabular grid. Model selection and
 analysis still use mean evaluation reward exactly as for the other agents.
+
+After using the pilot to verify learning, run the focused neural analysis:
+
+```bash
+docker compose run --rm --build sweep \
+  --config experiments/double_dqn_composition_refined.json --workers 2
+```
+
+This evaluates 100,000, 200,000, and 500,000 training episodes, learning rates
+`0.001` and `0.0003`, hidden widths 64 and 128, and five seeds: 60 runs in total.
+It is intentionally separate from the tabular grid because neural and tabular
+agents do not share the same meaningful hyperparameters.
 
 The extension can be removed without changing the environments or tabular
 agents: remove `double_dqn.py`, `requirements-dqn.txt`, its Docker install layer,
@@ -164,9 +205,10 @@ expanded as part of the Cartesian product. The supplied pilot grid trains every
 agent setting at 20,000, 50,000, 100,000, and 200,000 episodes. Monte Carlo
 accepts `epsilon` and `gamma`; SARSA and Q-learning also accept `alpha`.
 
-The supplied grid contains 84 configurations: 12 Monte Carlo, 36 SARSA, and 36
-Q-learning settings after including the four episode budgets. With five seeds,
-this produces 420 independent runs.
+The supplied broad grid contains 180 configurations after combining four episode
+budgets with five epsilon values and, for the TD agents, four alpha values. With
+ten seeds this produces 1,800 independent runs. It is deliberately broader than
+the refined grid and uses 100,000 evaluation episodes per trained model.
 
 After reviewing the coarse results, run the separate refined grid:
 
@@ -183,11 +225,10 @@ pilot seeds `10` through `19`. This produces 100 configurations and 1,000 runs.
 Its timestamped summary is stored beside the coarse sweep under
 `results/sweeps/`, so the two experiment histories remain separate.
 
-Run the same refined grid independently on each finite variant:
+Run the same refined tabular grid in the two information-augmented finite
+variants:
 
 ```bash
-docker compose run --rm --build sweep \
-  --config experiments/finite_hidden_sweep.json --workers 4
 docker compose run --rm --build sweep \
   --config experiments/finite_hi_lo_sweep.json --workers 4
 docker compose run --rm --build sweep \
@@ -198,7 +239,9 @@ These compact files inherit the complete refined grid through `extends` and
 override only experiment metadata and environment settings. The generated
 `config.json` is fully resolved, so results do not depend on the parent file
 after execution. Composition runs can consume substantially more memory and
-storage because their Q-tables contain many more distinct states.
+storage because their Q-tables contain many more distinct states. Finite-hidden
+is intentionally not given another full grid: it uses the base-selected settings
+through the transfer command documented below.
 
 Every invocation creates a timestamped directory under `results/sweeps/`. Each
 seed/configuration run saves a model and run report. `summary.json` is refreshed
@@ -224,17 +267,14 @@ docker compose run --rm analyze \
   --output-dir results/my_analysis
 ```
 
-The analyzer creates `analysis.md`, a ranked configuration CSV, and four PNG
-figures: a point-and-confidence-interval comparison of every configuration, a
-sample-efficiency plot of reward against training episodes, and a training-time
-scaling plot. The fourth figure keeps the same per-algorithm hyperparameter axis
-as the configuration-performance plot and reports evaluation mean reward divided
-by training seconds and multiplied by the training episode count. The metric is
-computed independently for each training seed and then summarized with a 95%
-confidence interval. Win rate remains in the report and CSV as a secondary
-diagnostic, but is not given a separate plot because mean reward is the primary
-objective. With `latest`, the most recently modified sweep summary is selected
-automatically.
+The analyzer creates `analysis.md`, a ranked configuration CSV, a
+point-and-confidence-interval performance comparison, a sample-efficiency plot,
+a training-time scaling plot, and one reward-versus-training-time scatter plot
+per episode budget. Each scatter plot holds training experience fixed; its
+preferred region is upper-left (higher reward, less time). Win rate remains in
+the report and CSV as a secondary diagnostic, but is not given a separate plot
+because mean reward is the primary objective. With `latest`, the most recently
+modified sweep summary is selected automatically.
 
 ## Final million-episode comparison
 
@@ -271,6 +311,26 @@ docker compose run --rm final \
 
 The selected model is reported as provisional when its paired 95% confidence
 interval versus the runner-up includes zero.
+
+To run the base-selected tabular configurations as the finite-hidden transfer
+control, point the same command at the base refined summary and override only the
+validation environment. Use the base grid's largest budget for a matched
+comparison, fresh seeds, and a distinct experiment name:
+
+```bash
+docker compose run --rm final \
+  --summary results/sweeps/<base-refined-run>/summary.json \
+  --episodes 500000 --evaluation-episodes 100000 \
+  --evaluation-seed 20000000 \
+  --seeds 200 201 202 203 204 205 206 207 208 209 \
+  --environment-variant finite_hidden --decks 6 --penetration 0.75 \
+  --experiment-name blackjack_finite_hidden_transfer --workers 4
+```
+
+This selects hyperparameters from the base summary and retrains them in the
+finite-hidden environment. Do not select new hyperparameters from the hidden
+results if the intended claim is transfer robustness rather than hidden-specific
+tuning.
 
 Generated models and JSON reports persist in `results/`. The reports include
 per-seed reward, win/draw/loss rates, episode and action counts, training time,

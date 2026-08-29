@@ -1,0 +1,6120 @@
+{
+  "experiment": "blackjack_finite_hidden_selected_transfer",
+  "experiment_metadata": {
+    "phase": "environment_transfer_validation",
+    "selection_source": "results/final/blackjack_selected_long_budget_comparison_20260828T132601Z/summary.json",
+    "selection_metric": "mean_evaluation_reward",
+    "source_environment": "standard",
+    "target_environment": "finite_hidden",
+    "purpose": "Retrain one selected configuration per tabular algorithm in finite-hidden Blackjack at matched training budgets."
+  },
+  "environment": {
+    "variant": "finite_hidden",
+    "decks": 6,
+    "penetration": 0.75,
+    "natural": false,
+    "sab": true
+  },
+  "config_path": "experiments/finite_hidden_selected_transfer.json",
+  "started_at_utc": "2026-08-28T13:51:25.152967+00:00",
+  "updated_at_utc": "2026-08-28T13:54:04.504492+00:00",
+  "workers": 8,
+  "status": "completed",
+  "total_runs": 150,
+  "completed_runs": 150,
+  "failed_runs": 0,
+  "baseline": {
+    "name": "stick_on_17",
+    "description": "Hit when the player sum is below 17; stick on 17 or above.",
+    "reference": {
+      "title": "Reinforcement Learning: An Introduction",
+      "authors": "Richard S. Sutton and Andrew G. Barto",
+      "edition": "Second edition",
+      "year": 2018,
+      "location": "Example 5.1: Blackjack",
+      "url": "http://incompleteideas.net/book/RLbook2020.pdf"
+    },
+    "evaluation_seed": 30000000,
+    "episodes": 100000,
+    "actions": 162560,
+    "mean_actions_per_episode": 1.6256,
+    "mean_reward": -0.08031,
+    "win_rate": 0.40961,
+    "draw_rate": 0.10047,
+    "loss_rate": 0.48992,
+    "mean_inference_microseconds_per_action": 0.09896564345472442
+  },
+  "configurations": [
+    {
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.046612,
+        "standard_deviation": 0.0025775474992929042,
+        "confidence_interval_95": [
+          -0.04820958049150722,
+          -0.04501441950849278
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.431882,
+        "standard_deviation": 0.0012971061808674162,
+        "confidence_interval_95": [
+          0.4310780452598698,
+          0.43268595474013016
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 6.266960864599969,
+        "standard_deviation": 0.044623973773469765,
+        "confidence_interval_95": [
+          6.239302639107099,
+          6.294619090092838
+        ]
+      }
+    },
+    {
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.046661,
+        "standard_deviation": 0.0012911360200312837,
+        "confidence_interval_95": [
+          -0.0474612543961072,
+          -0.045860745603892805
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.431045,
+        "standard_deviation": 0.0008513159747642906,
+        "confidence_interval_95": [
+          0.43051734889220666,
+          0.43157265110779336
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 6.332548574399698,
+        "standard_deviation": 0.05744946928137027,
+        "confidence_interval_95": [
+          6.296941024433484,
+          6.368156124365911
+        ]
+      }
+    },
+    {
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.046731,
+        "standard_deviation": 0.002113777293009943,
+        "confidence_interval_95": [
+          -0.04804113273960228,
+          -0.04542086726039772
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.431229,
+        "standard_deviation": 0.0012839647797177017,
+        "confidence_interval_95": [
+          0.43043319038468847,
+          0.4320248096153115
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 6.60633433119965,
+        "standard_deviation": 0.03137110556990733,
+        "confidence_interval_95": [
+          6.586890318521224,
+          6.625778343878077
+        ]
+      }
+    },
+    {
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.046932,
+        "standard_deviation": 0.0011289601902242212,
+        "confidence_interval_95": [
+          -0.04763173677539804,
+          -0.046232263224601965
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.430962,
+        "standard_deviation": 0.0010000422213309104,
+        "confidence_interval_95": [
+          0.430342167409555,
+          0.431581832590445
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 3.3012747104998197,
+        "standard_deviation": 0.05093901659766789,
+        "confidence_interval_95": [
+          3.2697023809131402,
+          3.332847040086499
+        ]
+      }
+    },
+    {
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.047058,
+        "standard_deviation": 0.0013871217202057885,
+        "confidence_interval_95": [
+          -0.047917746949437255,
+          -0.04619825305056275
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.431564,
+        "standard_deviation": 0.0008984084693377426,
+        "confidence_interval_95": [
+          0.4310071606616706,
+          0.4321208393383294
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 3.2584737791999943,
+        "standard_deviation": 0.09193225517161865,
+        "confidence_interval_95": [
+          3.201493577111485,
+          3.3154539812885035
+        ]
+      }
+    },
+    {
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.047136,
+        "standard_deviation": 0.002284548095357154,
+        "confidence_interval_95": [
+          -0.04855197757948351,
+          -0.04572002242051648
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.430796,
+        "standard_deviation": 0.0014414128871045725,
+        "confidence_interval_95": [
+          0.429902603036694,
+          0.43168939696330605
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 12.716629674900286,
+        "standard_deviation": 0.12498532536898199,
+        "confidence_interval_95": [
+          12.639162967656697,
+          12.794096382143875
+        ]
+      }
+    },
+    {
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.047184000000000004,
+        "standard_deviation": 0.0014098873083414226,
+        "confidence_interval_95": [
+          -0.048057857207150514,
+          -0.04631014279284949
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.430405,
+        "standard_deviation": 0.0007736098643516738,
+        "confidence_interval_95": [
+          0.42992551163842185,
+          0.4308844883615781
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 13.039555700900019,
+        "standard_deviation": 0.08187463930706591,
+        "confidence_interval_95": [
+          12.988809273708263,
+          13.090302128091775
+        ]
+      }
+    },
+    {
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.04738,
+        "standard_deviation": 0.0008181551061857274,
+        "confidence_interval_95": [
+          -0.047887097788509386,
+          -0.04687290221149061
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.433771,
+        "standard_deviation": 0.0004663915855920965,
+        "confidence_interval_95": [
+          0.43348192750036635,
+          0.4340600724996337
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 14.33852749100006,
+        "standard_deviation": 0.5027891690785222,
+        "confidence_interval_95": [
+          14.026895535398339,
+          14.65015944660178
+        ]
+      }
+    },
+    {
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.047408,
+        "standard_deviation": 0.0019310779948573341,
+        "confidence_interval_95": [
+          -0.0486048945414233,
+          -0.0462111054585767
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.43301,
+        "standard_deviation": 0.0008896815909826013,
+        "confidence_interval_95": [
+          0.43245856963691387,
+          0.43356143036308614
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 6.199604351200105,
+        "standard_deviation": 0.2878904963497977,
+        "confidence_interval_95": [
+          6.0211679729044825,
+          6.378040729495728
+        ]
+      }
+    },
+    {
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.047545000000000004,
+        "standard_deviation": 0.0027475170609115437,
+        "confidence_interval_95": [
+          -0.049247928717239806,
+          -0.0458420712827602
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.431534,
+        "standard_deviation": 0.0012684040716147691,
+        "confidence_interval_95": [
+          0.4307478350114921,
+          0.43232016498850784
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 11.874658583099881,
+        "standard_deviation": 1.0739058033981699,
+        "confidence_interval_95": [
+          11.209044870182485,
+          12.540272296017278
+        ]
+      }
+    },
+    {
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.047559000000000004,
+        "standard_deviation": 0.001079068013508776,
+        "confidence_interval_95": [
+          -0.048227813283892536,
+          -0.04689018671610747
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.433657,
+        "standard_deviation": 0.0009147197506461928,
+        "confidence_interval_95": [
+          0.4330900508247745,
+          0.43422394917522555
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 6.746066915799747,
+        "standard_deviation": 0.120728281308435,
+        "confidence_interval_95": [
+          6.671238751801038,
+          6.820895079798456
+        ]
+      }
+    },
+    {
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.047674,
+        "standard_deviation": 0.002081234676286597,
+        "confidence_interval_95": [
+          -0.04896396261678822,
+          -0.046384037383211785
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.43125,
+        "standard_deviation": 0.0006471819253072857,
+        "confidence_interval_95": [
+          0.4308488724868851,
+          0.43165112751311496
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 3.185032775200125,
+        "standard_deviation": 0.06890368917139032,
+        "confidence_interval_95": [
+          3.1423258261940297,
+          3.2277397242062205
+        ]
+      }
+    },
+    {
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.047793,
+        "standard_deviation": 0.0007874720453592128,
+        "confidence_interval_95": [
+          -0.04828108023038112,
+          -0.04730491976961888
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.433521,
+        "standard_deviation": 0.00057591376669313,
+        "confidence_interval_95": [
+          0.43316404494923494,
+          0.43387795505076504
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 3.2526813009999387,
+        "standard_deviation": 0.05818719675071523,
+        "confidence_interval_95": [
+          3.216616502810987,
+          3.28874609918889
+        ]
+      }
+    },
+    {
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.048966,
+        "standard_deviation": 0.0017413034709026966,
+        "confidence_interval_95": [
+          -0.050045271072859415,
+          -0.04788672892714059
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.43261700000000003,
+        "standard_deviation": 0.0010291317807852546,
+        "confidence_interval_95": [
+          0.43197913751380973,
+          0.43325486248619033
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 12.95064206190018,
+        "standard_deviation": 0.15267012756938453,
+        "confidence_interval_95": [
+          12.856016136477786,
+          13.045267987322573
+        ]
+      }
+    },
+    {
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 10,
+      "mean_reward": {
+        "count": 10,
+        "mean": -0.049518,
+        "standard_deviation": 0.002376121021983332,
+        "confidence_interval_95": [
+          -0.05099073506743217,
+          -0.048045264932567826
+        ]
+      },
+      "win_rate": {
+        "count": 10,
+        "mean": 0.431994,
+        "standard_deviation": 0.001020252692010936,
+        "confidence_interval_95": [
+          0.43136164083004813,
+          0.43262635916995185
+        ]
+      },
+      "training_seconds": {
+        "count": 10,
+        "mean": 2.7945802295998874,
+        "standard_deviation": 0.06897729367828496,
+        "confidence_interval_95": [
+          2.7518276600477756,
+          2.837332799151999
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "monte_carlo_000_seed_200",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 200,
+      "training": {
+        "episodes": 500000,
+        "actions": 720091,
+        "mean_actions_per_episode": 1.440182,
+        "mean_reward": -0.137588,
+        "seconds": 3.2464812970010826,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 147365,
+        "mean_actions_per_episode": 1.47365,
+        "mean_reward": -0.04696,
+        "win_rate": 0.43401,
+        "draw_rate": 0.08502,
+        "loss_rate": 0.48097,
+        "mean_inference_microseconds_per_action": 0.3927982696026872,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_200.json",
+      "total_seconds": 3.689647014000002
+    },
+    {
+      "run_id": "monte_carlo_000_seed_201",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 201,
+      "training": {
+        "episodes": 500000,
+        "actions": 725513,
+        "mean_actions_per_episode": 1.451026,
+        "mean_reward": -0.137358,
+        "seconds": 3.2167397449993587,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148889,
+        "mean_actions_per_episode": 1.48889,
+        "mean_reward": -0.04912,
+        "win_rate": 0.43246,
+        "draw_rate": 0.08596,
+        "loss_rate": 0.48158,
+        "mean_inference_microseconds_per_action": 0.45536298853508317,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_201.json",
+      "total_seconds": 3.7293451290006487
+    },
+    {
+      "run_id": "monte_carlo_000_seed_202",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 202,
+      "training": {
+        "episodes": 500000,
+        "actions": 720492,
+        "mean_actions_per_episode": 1.440984,
+        "mean_reward": -0.134878,
+        "seconds": 3.2186489359992265,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 147790,
+        "mean_actions_per_episode": 1.4779,
+        "mean_reward": -0.04873,
+        "win_rate": 0.43332,
+        "draw_rate": 0.08463,
+        "loss_rate": 0.48205,
+        "mean_inference_microseconds_per_action": 0.48418685296704783,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_202.json",
+      "total_seconds": 3.7604184939991683
+    },
+    {
+      "run_id": "monte_carlo_000_seed_203",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 203,
+      "training": {
+        "episodes": 500000,
+        "actions": 722255,
+        "mean_actions_per_episode": 1.44451,
+        "mean_reward": -0.136214,
+        "seconds": 3.323091864000162,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 147702,
+        "mean_actions_per_episode": 1.47702,
+        "mean_reward": -0.04828,
+        "win_rate": 0.43401,
+        "draw_rate": 0.0837,
+        "loss_rate": 0.48229,
+        "mean_inference_microseconds_per_action": 0.4707540453074434,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_203.json",
+      "total_seconds": 3.8517902700004925
+    },
+    {
+      "run_id": "monte_carlo_000_seed_204",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 204,
+      "training": {
+        "episodes": 500000,
+        "actions": 730087,
+        "mean_actions_per_episode": 1.460174,
+        "mean_reward": -0.137974,
+        "seconds": 3.3512051359994075,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150745,
+        "mean_actions_per_episode": 1.50745,
+        "mean_reward": -0.04672,
+        "win_rate": 0.43345,
+        "draw_rate": 0.08638,
+        "loss_rate": 0.48017,
+        "mean_inference_microseconds_per_action": 0.4727837208530963,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_204.json",
+      "total_seconds": 3.889471146001597
+    },
+    {
+      "run_id": "monte_carlo_000_seed_205",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 205,
+      "training": {
+        "episodes": 500000,
+        "actions": 718237,
+        "mean_actions_per_episode": 1.436474,
+        "mean_reward": -0.136274,
+        "seconds": 3.263466308000716,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148473,
+        "mean_actions_per_episode": 1.48473,
+        "mean_reward": -0.04746,
+        "win_rate": 0.434,
+        "draw_rate": 0.08454,
+        "loss_rate": 0.48146,
+        "mean_inference_microseconds_per_action": 0.4370910131808477,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_205.json",
+      "total_seconds": 3.7499649840010534
+    },
+    {
+      "run_id": "monte_carlo_000_seed_206",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 206,
+      "training": {
+        "episodes": 500000,
+        "actions": 720895,
+        "mean_actions_per_episode": 1.44179,
+        "mean_reward": -0.135596,
+        "seconds": 3.23543207900002,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 147865,
+        "mean_actions_per_episode": 1.47865,
+        "mean_reward": -0.04836,
+        "win_rate": 0.43395,
+        "draw_rate": 0.08374,
+        "loss_rate": 0.48231,
+        "mean_inference_microseconds_per_action": 0.41449295641294426,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_206.json",
+      "total_seconds": 3.7050054619994626
+    },
+    {
+      "run_id": "monte_carlo_000_seed_207",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 207,
+      "training": {
+        "episodes": 500000,
+        "actions": 720250,
+        "mean_actions_per_episode": 1.4405,
+        "mean_reward": -0.13801,
+        "seconds": 3.18469886299863,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 146995,
+        "mean_actions_per_episode": 1.46995,
+        "mean_reward": -0.04739,
+        "win_rate": 0.43399,
+        "draw_rate": 0.08463,
+        "loss_rate": 0.48138,
+        "mean_inference_microseconds_per_action": 0.4731206435593047,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_207.json",
+      "total_seconds": 3.69282350299909
+    },
+    {
+      "run_id": "monte_carlo_000_seed_208",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 208,
+      "training": {
+        "episodes": 500000,
+        "actions": 730600,
+        "mean_actions_per_episode": 1.4612,
+        "mean_reward": -0.135996,
+        "seconds": 3.307225082000514,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150255,
+        "mean_actions_per_episode": 1.50255,
+        "mean_reward": -0.04759,
+        "win_rate": 0.43271,
+        "draw_rate": 0.08699,
+        "loss_rate": 0.4803,
+        "mean_inference_microseconds_per_action": 0.4531848391068517,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_208.json",
+      "total_seconds": 3.826327835000484
+    },
+    {
+      "run_id": "monte_carlo_000_seed_209",
+      "status": "completed",
+      "configuration_id": "monte_carlo_000",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 209,
+      "training": {
+        "episodes": 500000,
+        "actions": 723812,
+        "mean_actions_per_episode": 1.447624,
+        "mean_reward": -0.136098,
+        "seconds": 3.17982370000027,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149356,
+        "mean_actions_per_episode": 1.49356,
+        "mean_reward": -0.04732,
+        "win_rate": 0.43331,
+        "draw_rate": 0.08606,
+        "loss_rate": 0.48063,
+        "mean_inference_microseconds_per_action": 0.487089504271673,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_000_seed_209.json",
+      "total_seconds": 3.711987300999681
+    },
+    {
+      "run_id": "monte_carlo_001_seed_200",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 200,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1443042,
+        "mean_actions_per_episode": 1.443042,
+        "mean_reward": -0.135254,
+        "seconds": 6.748578562999683,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 147242,
+        "mean_actions_per_episode": 1.47242,
+        "mean_reward": -0.04701,
+        "win_rate": 0.43432,
+        "draw_rate": 0.08435,
+        "loss_rate": 0.48133,
+        "mean_inference_microseconds_per_action": 0.45040575379307535,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_200.json",
+      "total_seconds": 7.2652151199999935
+    },
+    {
+      "run_id": "monte_carlo_001_seed_201",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 201,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1454708,
+        "mean_actions_per_episode": 1.454708,
+        "mean_reward": -0.134855,
+        "seconds": 6.612844867000604,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149282,
+        "mean_actions_per_episode": 1.49282,
+        "mean_reward": -0.04789,
+        "win_rate": 0.43327,
+        "draw_rate": 0.08557,
+        "loss_rate": 0.48116,
+        "mean_inference_microseconds_per_action": 0.4578795769081336,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_201.json",
+      "total_seconds": 7.140189071998975
+    },
+    {
+      "run_id": "monte_carlo_001_seed_202",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 202,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1447030,
+        "mean_actions_per_episode": 1.44703,
+        "mean_reward": -0.133729,
+        "seconds": 6.770967198001017,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148924,
+        "mean_actions_per_episode": 1.48924,
+        "mean_reward": -0.04753,
+        "win_rate": 0.43388,
+        "draw_rate": 0.08471,
+        "loss_rate": 0.48141,
+        "mean_inference_microseconds_per_action": 0.45285745749509815,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_202.json",
+      "total_seconds": 7.286069234000024
+    },
+    {
+      "run_id": "monte_carlo_001_seed_203",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 203,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1449688,
+        "mean_actions_per_episode": 1.449688,
+        "mean_reward": -0.134978,
+        "seconds": 6.765815882001334,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148886,
+        "mean_actions_per_episode": 1.48886,
+        "mean_reward": -0.04802,
+        "win_rate": 0.43311,
+        "draw_rate": 0.08576,
+        "loss_rate": 0.48113,
+        "mean_inference_microseconds_per_action": 0.4921309995567078,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_203.json",
+      "total_seconds": 7.318531344000803
+    },
+    {
+      "run_id": "monte_carlo_001_seed_204",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 204,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1464193,
+        "mean_actions_per_episode": 1.464193,
+        "mean_reward": -0.134593,
+        "seconds": 6.552841095999611,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150160,
+        "mean_actions_per_episode": 1.5016,
+        "mean_reward": -0.04811,
+        "win_rate": 0.43326,
+        "draw_rate": 0.08537,
+        "loss_rate": 0.48137,
+        "mean_inference_microseconds_per_action": 0.42884138918486947,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_204.json",
+      "total_seconds": 7.0487481199998
+    },
+    {
+      "run_id": "monte_carlo_001_seed_205",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 205,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1444909,
+        "mean_actions_per_episode": 1.444909,
+        "mean_reward": -0.134363,
+        "seconds": 6.606274227999165,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148621,
+        "mean_actions_per_episode": 1.48621,
+        "mean_reward": -0.04722,
+        "win_rate": 0.43419,
+        "draw_rate": 0.0844,
+        "loss_rate": 0.48141,
+        "mean_inference_microseconds_per_action": 0.494540206296553,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_205.json",
+      "total_seconds": 7.163585668000451
+    },
+    {
+      "run_id": "monte_carlo_001_seed_206",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 206,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1448251,
+        "mean_actions_per_episode": 1.448251,
+        "mean_reward": -0.13353,
+        "seconds": 6.931767872998535,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148046,
+        "mean_actions_per_episode": 1.48046,
+        "mean_reward": -0.04827,
+        "win_rate": 0.43395,
+        "draw_rate": 0.08383,
+        "loss_rate": 0.48222,
+        "mean_inference_microseconds_per_action": 0.4409408089377626,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_206.json",
+      "total_seconds": 7.425671884999247
+    },
+    {
+      "run_id": "monte_carlo_001_seed_207",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 207,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1444231,
+        "mean_actions_per_episode": 1.444231,
+        "mean_reward": -0.135544,
+        "seconds": 6.81757805199959,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148085,
+        "mean_actions_per_episode": 1.48085,
+        "mean_reward": -0.04699,
+        "win_rate": 0.43433,
+        "draw_rate": 0.08435,
+        "loss_rate": 0.48132,
+        "mean_inference_microseconds_per_action": 0.4397993787351859,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_207.json",
+      "total_seconds": 7.32040914999925
+    },
+    {
+      "run_id": "monte_carlo_001_seed_208",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 208,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1466433,
+        "mean_actions_per_episode": 1.466433,
+        "mean_reward": -0.134353,
+        "seconds": 6.789344776998405,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150622,
+        "mean_actions_per_episode": 1.50622,
+        "mean_reward": -0.04933,
+        "win_rate": 0.43154,
+        "draw_rate": 0.08759,
+        "loss_rate": 0.48087,
+        "mean_inference_microseconds_per_action": 0.48085639548007597,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_208.json",
+      "total_seconds": 7.339848170999176
+    },
+    {
+      "run_id": "monte_carlo_001_seed_209",
+      "status": "completed",
+      "configuration_id": "monte_carlo_001",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 209,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1453332,
+        "mean_actions_per_episode": 1.453332,
+        "mean_reward": -0.134792,
+        "seconds": 6.864656621999529,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148939,
+        "mean_actions_per_episode": 1.48939,
+        "mean_reward": -0.04522,
+        "win_rate": 0.43472,
+        "draw_rate": 0.08534,
+        "loss_rate": 0.47994,
+        "mean_inference_microseconds_per_action": 0.4883278053431271,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_001_seed_209.json",
+      "total_seconds": 7.397096083999713
+    },
+    {
+      "run_id": "monte_carlo_002_seed_200",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 200,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2891802,
+        "mean_actions_per_episode": 1.445901,
+        "mean_reward": -0.134077,
+        "seconds": 13.718569906000994,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 147869,
+        "mean_actions_per_episode": 1.47869,
+        "mean_reward": -0.04852,
+        "win_rate": 0.43377,
+        "draw_rate": 0.08394,
+        "loss_rate": 0.48229,
+        "mean_inference_microseconds_per_action": 0.5208822809378572,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_200.json",
+      "total_seconds": 14.311291712001548
+    },
+    {
+      "run_id": "monte_carlo_002_seed_201",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 201,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2916432,
+        "mean_actions_per_episode": 1.458216,
+        "mean_reward": -0.133295,
+        "seconds": 14.288452478000181,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149451,
+        "mean_actions_per_episode": 1.49451,
+        "mean_reward": -0.0473,
+        "win_rate": 0.43366,
+        "draw_rate": 0.08538,
+        "loss_rate": 0.48096,
+        "mean_inference_microseconds_per_action": 0.5288710480358111,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_201.json",
+      "total_seconds": 14.864191251999728
+    },
+    {
+      "run_id": "monte_carlo_002_seed_202",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 202,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2902978,
+        "mean_actions_per_episode": 1.451489,
+        "mean_reward": -0.1334615,
+        "seconds": 14.110179899000286,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148475,
+        "mean_actions_per_episode": 1.48475,
+        "mean_reward": -0.04779,
+        "win_rate": 0.43364,
+        "draw_rate": 0.08493,
+        "loss_rate": 0.48143,
+        "mean_inference_microseconds_per_action": 0.48657753157097156,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_202.json",
+      "total_seconds": 14.66537168099967
+    },
+    {
+      "run_id": "monte_carlo_002_seed_203",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 203,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2906795,
+        "mean_actions_per_episode": 1.4533975,
+        "mean_reward": -0.133218,
+        "seconds": 13.821792654000092,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149016,
+        "mean_actions_per_episode": 1.49016,
+        "mean_reward": -0.04823,
+        "win_rate": 0.43306,
+        "draw_rate": 0.08565,
+        "loss_rate": 0.48129,
+        "mean_inference_microseconds_per_action": 0.5189131502657433,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_203.json",
+      "total_seconds": 14.41010965500027
+    },
+    {
+      "run_id": "monte_carlo_002_seed_204",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 204,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2924649,
+        "mean_actions_per_episode": 1.4623245,
+        "mean_reward": -0.133879,
+        "seconds": 14.298446031998537,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149195,
+        "mean_actions_per_episode": 1.49195,
+        "mean_reward": -0.04785,
+        "win_rate": 0.43341,
+        "draw_rate": 0.08533,
+        "loss_rate": 0.48126,
+        "mean_inference_microseconds_per_action": 0.5056267971446764,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_204.json",
+      "total_seconds": 14.873668733000159
+    },
+    {
+      "run_id": "monte_carlo_002_seed_205",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 205,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2906025,
+        "mean_actions_per_episode": 1.4530125,
+        "mean_reward": -0.133224,
+        "seconds": 13.882215890000225,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149171,
+        "mean_actions_per_episode": 1.49171,
+        "mean_reward": -0.04751,
+        "win_rate": 0.43399,
+        "draw_rate": 0.08451,
+        "loss_rate": 0.4815,
+        "mean_inference_microseconds_per_action": 0.4642585153950835,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_205.json",
+      "total_seconds": 14.415680120000616
+    },
+    {
+      "run_id": "monte_carlo_002_seed_206",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 206,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2899027,
+        "mean_actions_per_episode": 1.4495135,
+        "mean_reward": -0.132371,
+        "seconds": 14.700468606000868,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 147647,
+        "mean_actions_per_episode": 1.47647,
+        "mean_reward": -0.04691,
+        "win_rate": 0.43457,
+        "draw_rate": 0.08395,
+        "loss_rate": 0.48148,
+        "mean_inference_microseconds_per_action": 0.49157088190074977,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_206.json",
+      "total_seconds": 15.260422207000374
+    },
+    {
+      "run_id": "monte_carlo_002_seed_207",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 207,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2896105,
+        "mean_actions_per_episode": 1.4480525,
+        "mean_reward": -0.1342945,
+        "seconds": 14.321559037000043,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148085,
+        "mean_actions_per_episode": 1.48085,
+        "mean_reward": -0.04699,
+        "win_rate": 0.43433,
+        "draw_rate": 0.08435,
+        "loss_rate": 0.48132,
+        "mean_inference_microseconds_per_action": 0.514186149846372,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_207.json",
+      "total_seconds": 14.90375584100002
+    },
+    {
+      "run_id": "monte_carlo_002_seed_208",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 208,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2932683,
+        "mean_actions_per_episode": 1.4663415,
+        "mean_reward": -0.1336235,
+        "seconds": 15.099130385000535,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149525,
+        "mean_actions_per_episode": 1.49525,
+        "mean_reward": -0.04709,
+        "win_rate": 0.43328,
+        "draw_rate": 0.08635,
+        "loss_rate": 0.48037,
+        "mean_inference_microseconds_per_action": 0.5443761845845176,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_208.json",
+      "total_seconds": 15.732290705000196
+    },
+    {
+      "run_id": "monte_carlo_002_seed_209",
+      "status": "completed",
+      "configuration_id": "monte_carlo_002",
+      "algorithm": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 209,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2914591,
+        "mean_actions_per_episode": 1.4572955,
+        "mean_reward": -0.1333735,
+        "seconds": 15.144460022998828,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149160,
+        "mean_actions_per_episode": 1.4916,
+        "mean_reward": -0.04561,
+        "win_rate": 0.434,
+        "draw_rate": 0.08639,
+        "loss_rate": 0.47961,
+        "mean_inference_microseconds_per_action": 0.6121460378117458,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/monte_carlo_002_seed_209.json",
+      "total_seconds": 15.818747764000364
+    },
+    {
+      "run_id": "q_learning_009_seed_200",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 200,
+      "training": {
+        "episodes": 500000,
+        "actions": 736021,
+        "mean_actions_per_episode": 1.472042,
+        "mean_reward": -0.195728,
+        "seconds": 3.3179491009996127,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155391,
+        "mean_actions_per_episode": 1.55391,
+        "mean_reward": -0.04686,
+        "win_rate": 0.43152,
+        "draw_rate": 0.0901,
+        "loss_rate": 0.47838,
+        "mean_inference_microseconds_per_action": 0.5418815117992676,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_200.json",
+      "total_seconds": 3.9351707989990246
+    },
+    {
+      "run_id": "q_learning_009_seed_201",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 201,
+      "training": {
+        "episodes": 500000,
+        "actions": 737069,
+        "mean_actions_per_episode": 1.474138,
+        "mean_reward": -0.197106,
+        "seconds": 3.285599541999545,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154699,
+        "mean_actions_per_episode": 1.54699,
+        "mean_reward": -0.04668,
+        "win_rate": 0.4318,
+        "draw_rate": 0.08972,
+        "loss_rate": 0.47848,
+        "mean_inference_microseconds_per_action": 0.541665964227306,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_201.json",
+      "total_seconds": 3.9054951470006927
+    },
+    {
+      "run_id": "q_learning_009_seed_202",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 202,
+      "training": {
+        "episodes": 500000,
+        "actions": 732219,
+        "mean_actions_per_episode": 1.464438,
+        "mean_reward": -0.196642,
+        "seconds": 3.2558738440002344,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156389,
+        "mean_actions_per_episode": 1.56389,
+        "mean_reward": -0.04519,
+        "win_rate": 0.43141,
+        "draw_rate": 0.09199,
+        "loss_rate": 0.4766,
+        "mean_inference_microseconds_per_action": 0.5788260299637443,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_202.json",
+      "total_seconds": 3.9024691169997823
+    },
+    {
+      "run_id": "q_learning_009_seed_203",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 203,
+      "training": {
+        "episodes": 500000,
+        "actions": 736374,
+        "mean_actions_per_episode": 1.472748,
+        "mean_reward": -0.19746,
+        "seconds": 3.339471273999152,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156054,
+        "mean_actions_per_episode": 1.56054,
+        "mean_reward": -0.04771,
+        "win_rate": 0.43066,
+        "draw_rate": 0.09097,
+        "loss_rate": 0.47837,
+        "mean_inference_microseconds_per_action": 0.5857246209645379,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_203.json",
+      "total_seconds": 3.990576152000358
+    },
+    {
+      "run_id": "q_learning_009_seed_204",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 204,
+      "training": {
+        "episodes": 500000,
+        "actions": 734430,
+        "mean_actions_per_episode": 1.46886,
+        "mean_reward": -0.197396,
+        "seconds": 3.3418179390009755,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156815,
+        "mean_actions_per_episode": 1.56815,
+        "mean_reward": -0.04516,
+        "win_rate": 0.43128,
+        "draw_rate": 0.09228,
+        "loss_rate": 0.47644,
+        "mean_inference_microseconds_per_action": 0.526973918311386,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_204.json",
+      "total_seconds": 3.943463339999653
+    },
+    {
+      "run_id": "q_learning_009_seed_205",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 205,
+      "training": {
+        "episodes": 500000,
+        "actions": 734639,
+        "mean_actions_per_episode": 1.469278,
+        "mean_reward": -0.196698,
+        "seconds": 3.314286816001186,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154316,
+        "mean_actions_per_episode": 1.54316,
+        "mean_reward": -0.04711,
+        "win_rate": 0.43268,
+        "draw_rate": 0.08753,
+        "loss_rate": 0.47979,
+        "mean_inference_microseconds_per_action": 0.5337870991990461,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_205.json",
+      "total_seconds": 3.926092190999043
+    },
+    {
+      "run_id": "q_learning_009_seed_206",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 206,
+      "training": {
+        "episodes": 500000,
+        "actions": 736549,
+        "mean_actions_per_episode": 1.473098,
+        "mean_reward": -0.19758,
+        "seconds": 3.393108337999365,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157708,
+        "mean_actions_per_episode": 1.57708,
+        "mean_reward": -0.04792,
+        "win_rate": 0.42905,
+        "draw_rate": 0.09398,
+        "loss_rate": 0.47697,
+        "mean_inference_microseconds_per_action": 0.5367342620539224,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_206.json",
+      "total_seconds": 4.010209653999482
+    },
+    {
+      "run_id": "q_learning_009_seed_207",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 207,
+      "training": {
+        "episodes": 500000,
+        "actions": 738439,
+        "mean_actions_per_episode": 1.476878,
+        "mean_reward": -0.197254,
+        "seconds": 3.2961151049985347,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156500,
+        "mean_actions_per_episode": 1.565,
+        "mean_reward": -0.04664,
+        "win_rate": 0.43039,
+        "draw_rate": 0.09258,
+        "loss_rate": 0.47703,
+        "mean_inference_microseconds_per_action": 0.533289284345048,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_207.json",
+      "total_seconds": 3.9028975080000237
+    },
+    {
+      "run_id": "q_learning_009_seed_208",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 208,
+      "training": {
+        "episodes": 500000,
+        "actions": 732056,
+        "mean_actions_per_episode": 1.464112,
+        "mean_reward": -0.198208,
+        "seconds": 3.2290314029996807,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155194,
+        "mean_actions_per_episode": 1.55194,
+        "mean_reward": -0.04878,
+        "win_rate": 0.43024,
+        "draw_rate": 0.09074,
+        "loss_rate": 0.47902,
+        "mean_inference_microseconds_per_action": 0.5115667229403198,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_208.json",
+      "total_seconds": 3.8176134940003976
+    },
+    {
+      "run_id": "q_learning_009_seed_209",
+      "status": "completed",
+      "configuration_id": "q_learning_009",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 209,
+      "training": {
+        "episodes": 500000,
+        "actions": 734849,
+        "mean_actions_per_episode": 1.469698,
+        "mean_reward": -0.197044,
+        "seconds": 3.2394937429999118,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155061,
+        "mean_actions_per_episode": 1.55061,
+        "mean_reward": -0.04727,
+        "win_rate": 0.43059,
+        "draw_rate": 0.09155,
+        "loss_rate": 0.47786,
+        "mean_inference_microseconds_per_action": 0.5671803096845757,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_009_seed_209.json",
+      "total_seconds": 3.877568113999587
+    },
+    {
+      "run_id": "q_learning_010_seed_200",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 200,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1473299,
+        "mean_actions_per_episode": 1.473299,
+        "mean_reward": -0.198429,
+        "seconds": 6.592571646999204,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157541,
+        "mean_actions_per_episode": 1.57541,
+        "mean_reward": -0.04562,
+        "win_rate": 0.43145,
+        "draw_rate": 0.09148,
+        "loss_rate": 0.47707,
+        "mean_inference_microseconds_per_action": 0.5672653341035032,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_200.json",
+      "total_seconds": 7.24192602400035
+    },
+    {
+      "run_id": "q_learning_010_seed_201",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 201,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1472207,
+        "mean_actions_per_episode": 1.472207,
+        "mean_reward": -0.195825,
+        "seconds": 6.556827303000318,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154307,
+        "mean_actions_per_episode": 1.54307,
+        "mean_reward": -0.04497,
+        "win_rate": 0.4318,
+        "draw_rate": 0.09143,
+        "loss_rate": 0.47677,
+        "mean_inference_microseconds_per_action": 0.5543434516904613,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_201.json",
+      "total_seconds": 7.179348240000763
+    },
+    {
+      "run_id": "q_learning_010_seed_202",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 202,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1469515,
+        "mean_actions_per_episode": 1.469515,
+        "mean_reward": -0.197448,
+        "seconds": 6.614424395000242,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156157,
+        "mean_actions_per_episode": 1.56157,
+        "mean_reward": -0.04556,
+        "win_rate": 0.43094,
+        "draw_rate": 0.09256,
+        "loss_rate": 0.4765,
+        "mean_inference_microseconds_per_action": 0.5709126584142882,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_202.json",
+      "total_seconds": 7.273619012999916
+    },
+    {
+      "run_id": "q_learning_010_seed_203",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 203,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1473830,
+        "mean_actions_per_episode": 1.47383,
+        "mean_reward": -0.197929,
+        "seconds": 6.629622024998753,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155376,
+        "mean_actions_per_episode": 1.55376,
+        "mean_reward": -0.04985,
+        "win_rate": 0.42989,
+        "draw_rate": 0.09037,
+        "loss_rate": 0.47974,
+        "mean_inference_microseconds_per_action": 0.5427823344660694,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_203.json",
+      "total_seconds": 7.261704298000041
+    },
+    {
+      "run_id": "q_learning_010_seed_204",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 204,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1472119,
+        "mean_actions_per_episode": 1.472119,
+        "mean_reward": -0.198293,
+        "seconds": 6.615494493998995,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156655,
+        "mean_actions_per_episode": 1.56655,
+        "mean_reward": -0.04844,
+        "win_rate": 0.43087,
+        "draw_rate": 0.08982,
+        "loss_rate": 0.47931,
+        "mean_inference_microseconds_per_action": 0.576166767738023,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_204.json",
+      "total_seconds": 7.274354159000723
+    },
+    {
+      "run_id": "q_learning_010_seed_205",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 205,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1471193,
+        "mean_actions_per_episode": 1.471193,
+        "mean_reward": -0.196359,
+        "seconds": 6.623621373999413,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156247,
+        "mean_actions_per_episode": 1.56247,
+        "mean_reward": -0.04816,
+        "win_rate": 0.43025,
+        "draw_rate": 0.09134,
+        "loss_rate": 0.47841,
+        "mean_inference_microseconds_per_action": 0.5685131618527075,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_205.json",
+      "total_seconds": 7.269607911999628
+    },
+    {
+      "run_id": "q_learning_010_seed_206",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 206,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1473964,
+        "mean_actions_per_episode": 1.473964,
+        "mean_reward": -0.197708,
+        "seconds": 6.598846416000015,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157410,
+        "mean_actions_per_episode": 1.5741,
+        "mean_reward": -0.04812,
+        "win_rate": 0.42981,
+        "draw_rate": 0.09226,
+        "loss_rate": 0.47793,
+        "mean_inference_microseconds_per_action": 0.5341724731592655,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_206.json",
+      "total_seconds": 7.217259885001113
+    },
+    {
+      "run_id": "q_learning_010_seed_207",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 207,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1471705,
+        "mean_actions_per_episode": 1.471705,
+        "mean_reward": -0.197716,
+        "seconds": 6.581419522999568,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155194,
+        "mean_actions_per_episode": 1.55194,
+        "mean_reward": -0.04537,
+        "win_rate": 0.43281,
+        "draw_rate": 0.08901,
+        "loss_rate": 0.47818,
+        "mean_inference_microseconds_per_action": 0.5764084371818498,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_207.json",
+      "total_seconds": 7.236193423999794
+    },
+    {
+      "run_id": "q_learning_010_seed_208",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 208,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1473608,
+        "mean_actions_per_episode": 1.473608,
+        "mean_reward": -0.197592,
+        "seconds": 6.669038260999514,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154838,
+        "mean_actions_per_episode": 1.54838,
+        "mean_reward": -0.04821,
+        "win_rate": 0.43066,
+        "draw_rate": 0.09047,
+        "loss_rate": 0.47887,
+        "mean_inference_microseconds_per_action": 0.5521297420529844,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_208.json",
+      "total_seconds": 7.304360362999432
+    },
+    {
+      "run_id": "q_learning_010_seed_209",
+      "status": "completed",
+      "configuration_id": "q_learning_010",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 209,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1472875,
+        "mean_actions_per_episode": 1.472875,
+        "mean_reward": -0.196592,
+        "seconds": 6.581477874000484,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153671,
+        "mean_actions_per_episode": 1.53671,
+        "mean_reward": -0.04301,
+        "win_rate": 0.43381,
+        "draw_rate": 0.08937,
+        "loss_rate": 0.47682,
+        "mean_inference_microseconds_per_action": 0.5673924813400056,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_010_seed_209.json",
+      "total_seconds": 7.239549107998755
+    },
+    {
+      "run_id": "q_learning_011_seed_200",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 200,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2949184,
+        "mean_actions_per_episode": 1.474592,
+        "mean_reward": -0.19888,
+        "seconds": 13.040968825000164,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157418,
+        "mean_actions_per_episode": 1.57418,
+        "mean_reward": -0.04714,
+        "win_rate": 0.42983,
+        "draw_rate": 0.0932,
+        "loss_rate": 0.47697,
+        "mean_inference_microseconds_per_action": 0.5230317053958251,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_200.json",
+      "total_seconds": 13.66650006600139
+    },
+    {
+      "run_id": "q_learning_011_seed_201",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 201,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2951245,
+        "mean_actions_per_episode": 1.4756225,
+        "mean_reward": -0.197584,
+        "seconds": 13.169063635001294,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 158002,
+        "mean_actions_per_episode": 1.58002,
+        "mean_reward": -0.0458,
+        "win_rate": 0.43109,
+        "draw_rate": 0.09202,
+        "loss_rate": 0.47689,
+        "mean_inference_microseconds_per_action": 0.5608311287198896,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_201.json",
+      "total_seconds": 13.8133704819993
+    },
+    {
+      "run_id": "q_learning_011_seed_202",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 202,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2955005,
+        "mean_actions_per_episode": 1.4775025,
+        "mean_reward": -0.1976615,
+        "seconds": 13.02881830899969,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157584,
+        "mean_actions_per_episode": 1.57584,
+        "mean_reward": -0.04734,
+        "win_rate": 0.43056,
+        "draw_rate": 0.09154,
+        "loss_rate": 0.4779,
+        "mean_inference_microseconds_per_action": 0.548642152756625,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_202.json",
+      "total_seconds": 13.669430036999984
+    },
+    {
+      "run_id": "q_learning_011_seed_203",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 203,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2949923,
+        "mean_actions_per_episode": 1.4749615,
+        "mean_reward": -0.197284,
+        "seconds": 13.097316985000361,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157583,
+        "mean_actions_per_episode": 1.57583,
+        "mean_reward": -0.04657,
+        "win_rate": 0.43072,
+        "draw_rate": 0.09199,
+        "loss_rate": 0.47729,
+        "mean_inference_microseconds_per_action": 0.5797947875088049,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_203.json",
+      "total_seconds": 13.769752947999223
+    },
+    {
+      "run_id": "q_learning_011_seed_204",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 204,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2958336,
+        "mean_actions_per_episode": 1.479168,
+        "mean_reward": -0.1973595,
+        "seconds": 13.068742268998903,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157939,
+        "mean_actions_per_episode": 1.57939,
+        "mean_reward": -0.04809,
+        "win_rate": 0.42923,
+        "draw_rate": 0.09345,
+        "loss_rate": 0.47732,
+        "mean_inference_microseconds_per_action": 0.5550312209144037,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_204.json",
+      "total_seconds": 13.714053174999208
+    },
+    {
+      "run_id": "q_learning_011_seed_205",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 205,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2952670,
+        "mean_actions_per_episode": 1.476335,
+        "mean_reward": -0.1978535,
+        "seconds": 13.075619029001246,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157291,
+        "mean_actions_per_episode": 1.57291,
+        "mean_reward": -0.04836,
+        "win_rate": 0.42936,
+        "draw_rate": 0.09292,
+        "loss_rate": 0.47772,
+        "mean_inference_microseconds_per_action": 0.5515250459339696,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_205.json",
+      "total_seconds": 13.724191402001452
+    },
+    {
+      "run_id": "q_learning_011_seed_206",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 206,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2948826,
+        "mean_actions_per_episode": 1.474413,
+        "mean_reward": -0.1966635,
+        "seconds": 13.020141090000834,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157086,
+        "mean_actions_per_episode": 1.57086,
+        "mean_reward": -0.04564,
+        "win_rate": 0.4314,
+        "draw_rate": 0.09156,
+        "loss_rate": 0.47704,
+        "mean_inference_microseconds_per_action": 0.549572699031104,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_206.json",
+      "total_seconds": 13.662555619001068
+    },
+    {
+      "run_id": "q_learning_011_seed_207",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 207,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2950039,
+        "mean_actions_per_episode": 1.4750195,
+        "mean_reward": -0.198881,
+        "seconds": 12.956429881998702,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156919,
+        "mean_actions_per_episode": 1.56919,
+        "mean_reward": -0.0462,
+        "win_rate": 0.4309,
+        "draw_rate": 0.092,
+        "loss_rate": 0.4771,
+        "mean_inference_microseconds_per_action": 0.5272384287434919,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_207.json",
+      "total_seconds": 13.576623623999694
+    },
+    {
+      "run_id": "q_learning_011_seed_208",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 208,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2945775,
+        "mean_actions_per_episode": 1.4728875,
+        "mean_reward": -0.1972015,
+        "seconds": 12.867311690999486,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154636,
+        "mean_actions_per_episode": 1.54636,
+        "mean_reward": -0.05026,
+        "win_rate": 0.42987,
+        "draw_rate": 0.09,
+        "loss_rate": 0.48013,
+        "mean_inference_microseconds_per_action": 0.5393522271657312,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_208.json",
+      "total_seconds": 13.49922142899959
+    },
+    {
+      "run_id": "q_learning_011_seed_209",
+      "status": "completed",
+      "configuration_id": "q_learning_011",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 209,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2952347,
+        "mean_actions_per_episode": 1.4761735,
+        "mean_reward": -0.1979495,
+        "seconds": 13.071145293999507,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156294,
+        "mean_actions_per_episode": 1.56294,
+        "mean_reward": -0.04644,
+        "win_rate": 0.43109,
+        "draw_rate": 0.09138,
+        "loss_rate": 0.47753,
+        "mean_inference_microseconds_per_action": 0.5485708280548198,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_011_seed_209.json",
+      "total_seconds": 13.7203889479988
+    },
+    {
+      "run_id": "q_learning_012_seed_200",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 200,
+      "training": {
+        "episodes": 500000,
+        "actions": 740821,
+        "mean_actions_per_episode": 1.481642,
+        "mean_reward": -0.156264,
+        "seconds": 3.232769983000253,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153518,
+        "mean_actions_per_episode": 1.53518,
+        "mean_reward": -0.04891,
+        "win_rate": 0.43182,
+        "draw_rate": 0.08745,
+        "loss_rate": 0.48073,
+        "mean_inference_microseconds_per_action": 0.5218233497049206,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_200.json",
+      "total_seconds": 3.832978083000853
+    },
+    {
+      "run_id": "q_learning_012_seed_201",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 201,
+      "training": {
+        "episodes": 500000,
+        "actions": 745199,
+        "mean_actions_per_episode": 1.490398,
+        "mean_reward": -0.15931,
+        "seconds": 3.1436603299989656,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156661,
+        "mean_actions_per_episode": 1.56661,
+        "mean_reward": -0.04646,
+        "win_rate": 0.43149,
+        "draw_rate": 0.09056,
+        "loss_rate": 0.47795,
+        "mean_inference_microseconds_per_action": 0.53252564454459,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_201.json",
+      "total_seconds": 3.757317685000089
+    },
+    {
+      "run_id": "q_learning_012_seed_202",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 202,
+      "training": {
+        "episodes": 500000,
+        "actions": 739826,
+        "mean_actions_per_episode": 1.479652,
+        "mean_reward": -0.156494,
+        "seconds": 3.071072232000006,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156130,
+        "mean_actions_per_episode": 1.5613,
+        "mean_reward": -0.04908,
+        "win_rate": 0.43035,
+        "draw_rate": 0.09022,
+        "loss_rate": 0.47943,
+        "mean_inference_microseconds_per_action": 0.5343225068852879,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_202.json",
+      "total_seconds": 3.69515809800032
+    },
+    {
+      "run_id": "q_learning_012_seed_203",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 203,
+      "training": {
+        "episodes": 500000,
+        "actions": 740439,
+        "mean_actions_per_episode": 1.480878,
+        "mean_reward": -0.158108,
+        "seconds": 3.0790289500000654,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156341,
+        "mean_actions_per_episode": 1.56341,
+        "mean_reward": -0.04817,
+        "win_rate": 0.43096,
+        "draw_rate": 0.08991,
+        "loss_rate": 0.47913,
+        "mean_inference_microseconds_per_action": 0.5977867865754984,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_203.json",
+      "total_seconds": 3.7431793810010277
+    },
+    {
+      "run_id": "q_learning_012_seed_204",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 204,
+      "training": {
+        "episodes": 500000,
+        "actions": 742404,
+        "mean_actions_per_episode": 1.484808,
+        "mean_reward": -0.157518,
+        "seconds": 3.274344438999833,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154624,
+        "mean_actions_per_episode": 1.54624,
+        "mean_reward": -0.04778,
+        "win_rate": 0.43201,
+        "draw_rate": 0.0882,
+        "loss_rate": 0.47979,
+        "mean_inference_microseconds_per_action": 0.5588682287355133,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_204.json",
+      "total_seconds": 3.899063543000011
+    },
+    {
+      "run_id": "q_learning_012_seed_205",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 205,
+      "training": {
+        "episodes": 500000,
+        "actions": 740586,
+        "mean_actions_per_episode": 1.481172,
+        "mean_reward": -0.155414,
+        "seconds": 3.217020723999667,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155280,
+        "mean_actions_per_episode": 1.5528,
+        "mean_reward": -0.04731,
+        "win_rate": 0.43144,
+        "draw_rate": 0.08981,
+        "loss_rate": 0.47875,
+        "mean_inference_microseconds_per_action": 0.529035529366306,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_205.json",
+      "total_seconds": 3.826039892001063
+    },
+    {
+      "run_id": "q_learning_012_seed_206",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 206,
+      "training": {
+        "episodes": 500000,
+        "actions": 743134,
+        "mean_actions_per_episode": 1.486268,
+        "mean_reward": -0.158006,
+        "seconds": 3.2263945320009952,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154515,
+        "mean_actions_per_episode": 1.54515,
+        "mean_reward": -0.05219,
+        "win_rate": 0.43012,
+        "draw_rate": 0.08757,
+        "loss_rate": 0.48231,
+        "mean_inference_microseconds_per_action": 0.5358173057631945,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_206.json",
+      "total_seconds": 3.8347451810004713
+    },
+    {
+      "run_id": "q_learning_012_seed_207",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 207,
+      "training": {
+        "episodes": 500000,
+        "actions": 740107,
+        "mean_actions_per_episode": 1.480214,
+        "mean_reward": -0.155732,
+        "seconds": 3.179583912000453,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155878,
+        "mean_actions_per_episode": 1.55878,
+        "mean_reward": -0.04531,
+        "win_rate": 0.43087,
+        "draw_rate": 0.09295,
+        "loss_rate": 0.47618,
+        "mean_inference_microseconds_per_action": 0.5308401442153479,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_207.json",
+      "total_seconds": 3.788266413999736
+    },
+    {
+      "run_id": "q_learning_012_seed_208",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 208,
+      "training": {
+        "episodes": 500000,
+        "actions": 741504,
+        "mean_actions_per_episode": 1.483008,
+        "mean_reward": -0.155956,
+        "seconds": 3.2462799870008894,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154224,
+        "mean_actions_per_episode": 1.54224,
+        "mean_reward": -0.04618,
+        "win_rate": 0.43181,
+        "draw_rate": 0.0902,
+        "loss_rate": 0.47799,
+        "mean_inference_microseconds_per_action": 0.5400596145865754,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_208.json",
+      "total_seconds": 3.861235611999291
+    },
+    {
+      "run_id": "q_learning_012_seed_209",
+      "status": "completed",
+      "configuration_id": "q_learning_012",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 209,
+      "training": {
+        "episodes": 500000,
+        "actions": 741666,
+        "mean_actions_per_episode": 1.483332,
+        "mean_reward": -0.15711,
+        "seconds": 3.1801726630001212,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155681,
+        "mean_actions_per_episode": 1.55681,
+        "mean_reward": -0.04535,
+        "win_rate": 0.43163,
+        "draw_rate": 0.09139,
+        "loss_rate": 0.47698,
+        "mean_inference_microseconds_per_action": 0.5595179630141122,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_012_seed_209.json",
+      "total_seconds": 3.8211932919984974
+    },
+    {
+      "run_id": "q_learning_013_seed_200",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 200,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1488831,
+        "mean_actions_per_episode": 1.488831,
+        "mean_reward": -0.155117,
+        "seconds": 6.309159558000829,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156847,
+        "mean_actions_per_episode": 1.56847,
+        "mean_reward": -0.04631,
+        "win_rate": 0.43012,
+        "draw_rate": 0.09345,
+        "loss_rate": 0.47643,
+        "mean_inference_microseconds_per_action": 0.5408966827545315,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_200.json",
+      "total_seconds": 6.93799310599934
+    },
+    {
+      "run_id": "q_learning_013_seed_201",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 201,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1494943,
+        "mean_actions_per_episode": 1.494943,
+        "mean_reward": -0.157049,
+        "seconds": 6.304758951000622,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154120,
+        "mean_actions_per_episode": 1.5412,
+        "mean_reward": -0.04451,
+        "win_rate": 0.43264,
+        "draw_rate": 0.09021,
+        "loss_rate": 0.47715,
+        "mean_inference_microseconds_per_action": 0.5613874837788736,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_201.json",
+      "total_seconds": 6.944539688000077
+    },
+    {
+      "run_id": "q_learning_013_seed_202",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 202,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1486386,
+        "mean_actions_per_episode": 1.486386,
+        "mean_reward": -0.156013,
+        "seconds": 6.300853380000262,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154522,
+        "mean_actions_per_episode": 1.54522,
+        "mean_reward": -0.04633,
+        "win_rate": 0.43274,
+        "draw_rate": 0.08819,
+        "loss_rate": 0.47907,
+        "mean_inference_microseconds_per_action": 0.52783013422037,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_202.json",
+      "total_seconds": 6.9086060089994135
+    },
+    {
+      "run_id": "q_learning_013_seed_203",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 203,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1490369,
+        "mean_actions_per_episode": 1.490369,
+        "mean_reward": -0.156446,
+        "seconds": 6.271027064998634,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155002,
+        "mean_actions_per_episode": 1.55002,
+        "mean_reward": -0.04685,
+        "win_rate": 0.43203,
+        "draw_rate": 0.08909,
+        "loss_rate": 0.47888,
+        "mean_inference_microseconds_per_action": 0.5166283596340693,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_203.json",
+      "total_seconds": 6.86479571900054
+    },
+    {
+      "run_id": "q_learning_013_seed_204",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 204,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1493453,
+        "mean_actions_per_episode": 1.493453,
+        "mean_reward": -0.156342,
+        "seconds": 6.279047890999209,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155011,
+        "mean_actions_per_episode": 1.55011,
+        "mean_reward": -0.04415,
+        "win_rate": 0.43249,
+        "draw_rate": 0.09087,
+        "loss_rate": 0.47664,
+        "mean_inference_microseconds_per_action": 0.5351228816019508,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_204.json",
+      "total_seconds": 6.892971697998291
+    },
+    {
+      "run_id": "q_learning_013_seed_205",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 205,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1487333,
+        "mean_actions_per_episode": 1.487333,
+        "mean_reward": -0.154223,
+        "seconds": 6.263915200999691,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156901,
+        "mean_actions_per_episode": 1.56901,
+        "mean_reward": -0.04713,
+        "win_rate": 0.43091,
+        "draw_rate": 0.09105,
+        "loss_rate": 0.47804,
+        "mean_inference_microseconds_per_action": 0.5563187296448079,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_205.json",
+      "total_seconds": 6.902175025999895
+    },
+    {
+      "run_id": "q_learning_013_seed_206",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 206,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1493252,
+        "mean_actions_per_episode": 1.493252,
+        "mean_reward": -0.156453,
+        "seconds": 6.26032621000013,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152288,
+        "mean_actions_per_episode": 1.52288,
+        "mean_reward": -0.04436,
+        "win_rate": 0.4343,
+        "draw_rate": 0.08704,
+        "loss_rate": 0.47866,
+        "mean_inference_microseconds_per_action": 0.5222048881067451,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_206.json",
+      "total_seconds": 6.857670556000812
+    },
+    {
+      "run_id": "q_learning_013_seed_207",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 207,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1488218,
+        "mean_actions_per_episode": 1.488218,
+        "mean_reward": -0.154999,
+        "seconds": 6.29753752599936,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152923,
+        "mean_actions_per_episode": 1.52923,
+        "mean_reward": -0.04933,
+        "win_rate": 0.43092,
+        "draw_rate": 0.08883,
+        "loss_rate": 0.48025,
+        "mean_inference_microseconds_per_action": 0.5748375129967369,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_207.json",
+      "total_seconds": 6.9448553010006435
+    },
+    {
+      "run_id": "q_learning_013_seed_208",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 208,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1486891,
+        "mean_actions_per_episode": 1.486891,
+        "mean_reward": -0.153542,
+        "seconds": 6.214090503000989,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154584,
+        "mean_actions_per_episode": 1.54584,
+        "mean_reward": -0.04479,
+        "win_rate": 0.43234,
+        "draw_rate": 0.09053,
+        "loss_rate": 0.47713,
+        "mean_inference_microseconds_per_action": 0.5342024077524193,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_208.json",
+      "total_seconds": 6.8331815029996505
+    },
+    {
+      "run_id": "q_learning_013_seed_209",
+      "status": "completed",
+      "configuration_id": "q_learning_013",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 209,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1489912,
+        "mean_actions_per_episode": 1.489912,
+        "mean_reward": -0.154643,
+        "seconds": 6.168892360999962,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153607,
+        "mean_actions_per_episode": 1.53607,
+        "mean_reward": -0.05236,
+        "win_rate": 0.43033,
+        "draw_rate": 0.08698,
+        "loss_rate": 0.48269,
+        "mean_inference_microseconds_per_action": 0.5424690997155078,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_013_seed_209.json",
+      "total_seconds": 6.785695919999853
+    },
+    {
+      "run_id": "q_learning_014_seed_200",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 200,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2987601,
+        "mean_actions_per_episode": 1.4938005,
+        "mean_reward": -0.154443,
+        "seconds": 12.600394156999755,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153040,
+        "mean_actions_per_episode": 1.5304,
+        "mean_reward": -0.04718,
+        "win_rate": 0.43269,
+        "draw_rate": 0.08744,
+        "loss_rate": 0.47987,
+        "mean_inference_microseconds_per_action": 0.520404619707266,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_200.json",
+      "total_seconds": 13.20414459300082
+    },
+    {
+      "run_id": "q_learning_014_seed_201",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 201,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2989669,
+        "mean_actions_per_episode": 1.4948345,
+        "mean_reward": -0.1557475,
+        "seconds": 12.547766523999599,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155463,
+        "mean_actions_per_episode": 1.55463,
+        "mean_reward": -0.04705,
+        "win_rate": 0.43137,
+        "draw_rate": 0.09021,
+        "loss_rate": 0.47842,
+        "mean_inference_microseconds_per_action": 0.5239296745849494,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_201.json",
+      "total_seconds": 13.166869582999425
+    },
+    {
+      "run_id": "q_learning_014_seed_202",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 202,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2980143,
+        "mean_actions_per_episode": 1.4900715,
+        "mean_reward": -0.154904,
+        "seconds": 12.47193412499837,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153514,
+        "mean_actions_per_episode": 1.53514,
+        "mean_reward": -0.05419,
+        "win_rate": 0.43084,
+        "draw_rate": 0.08413,
+        "loss_rate": 0.48503,
+        "mean_inference_microseconds_per_action": 0.5143614979741261,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_202.json",
+      "total_seconds": 13.076044618001106
+    },
+    {
+      "run_id": "q_learning_014_seed_203",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 203,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2986594,
+        "mean_actions_per_episode": 1.493297,
+        "mean_reward": -0.1553965,
+        "seconds": 12.661328227000922,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154010,
+        "mean_actions_per_episode": 1.5401,
+        "mean_reward": -0.04575,
+        "win_rate": 0.43242,
+        "draw_rate": 0.08941,
+        "loss_rate": 0.47817,
+        "mean_inference_microseconds_per_action": 0.5487137848191675,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_203.json",
+      "total_seconds": 13.285364905999813
+    },
+    {
+      "run_id": "q_learning_014_seed_204",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 204,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2993162,
+        "mean_actions_per_episode": 1.496581,
+        "mean_reward": -0.1551485,
+        "seconds": 12.355245490000016,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157262,
+        "mean_actions_per_episode": 1.57262,
+        "mean_reward": -0.04794,
+        "win_rate": 0.43037,
+        "draw_rate": 0.09132,
+        "loss_rate": 0.47831,
+        "mean_inference_microseconds_per_action": 0.494085506988338,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_204.json",
+      "total_seconds": 12.943323952000355
+    },
+    {
+      "run_id": "q_learning_014_seed_205",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 205,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2983610,
+        "mean_actions_per_episode": 1.491805,
+        "mean_reward": -0.1541485,
+        "seconds": 12.347699272000682,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156105,
+        "mean_actions_per_episode": 1.56105,
+        "mean_reward": -0.04459,
+        "win_rate": 0.432,
+        "draw_rate": 0.09141,
+        "loss_rate": 0.47659,
+        "mean_inference_microseconds_per_action": 0.5068931424361808,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_205.json",
+      "total_seconds": 12.942109953000909
+    },
+    {
+      "run_id": "q_learning_014_seed_206",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 206,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2992678,
+        "mean_actions_per_episode": 1.496339,
+        "mean_reward": -0.1552,
+        "seconds": 12.047840597000686,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 158781,
+        "mean_actions_per_episode": 1.58781,
+        "mean_reward": -0.04895,
+        "win_rate": 0.42938,
+        "draw_rate": 0.09229,
+        "loss_rate": 0.47833,
+        "mean_inference_microseconds_per_action": 0.4275740800221689,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_206.json",
+      "total_seconds": 12.552563504999853
+    },
+    {
+      "run_id": "q_learning_014_seed_207",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 207,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2983401,
+        "mean_actions_per_episode": 1.4917005,
+        "mean_reward": -0.154447,
+        "seconds": 11.948236153000835,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154093,
+        "mean_actions_per_episode": 1.54093,
+        "mean_reward": -0.04494,
+        "win_rate": 0.43386,
+        "draw_rate": 0.08734,
+        "loss_rate": 0.4788,
+        "mean_inference_microseconds_per_action": 0.4064387090912631,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_207.json",
+      "total_seconds": 12.425850696999987
+    },
+    {
+      "run_id": "q_learning_014_seed_208",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 208,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2982485,
+        "mean_actions_per_episode": 1.4912425,
+        "mean_reward": -0.15358,
+        "seconds": 9.85932761499862,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155690,
+        "mean_actions_per_episode": 1.5569,
+        "mean_reward": -0.04631,
+        "win_rate": 0.43128,
+        "draw_rate": 0.09113,
+        "loss_rate": 0.47759,
+        "mean_inference_microseconds_per_action": 0.38591072002055365,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_208.json",
+      "total_seconds": 10.319868402999418
+    },
+    {
+      "run_id": "q_learning_014_seed_209",
+      "status": "completed",
+      "configuration_id": "q_learning_014",
+      "algorithm": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 209,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2985952,
+        "mean_actions_per_episode": 1.492976,
+        "mean_reward": -0.154692,
+        "seconds": 9.906813670999327,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154327,
+        "mean_actions_per_episode": 1.54327,
+        "mean_reward": -0.04855,
+        "win_rate": 0.43113,
+        "draw_rate": 0.08919,
+        "loss_rate": 0.47968,
+        "mean_inference_microseconds_per_action": 0.3870912218859953,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/q_learning_014_seed_209.json",
+      "total_seconds": 10.367298312999992
+    },
+    {
+      "run_id": "sarsa_003_seed_200",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 200,
+      "training": {
+        "episodes": 500000,
+        "actions": 734463,
+        "mean_actions_per_episode": 1.468926,
+        "mean_reward": -0.140418,
+        "seconds": 2.7734103679995314,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150175,
+        "mean_actions_per_episode": 1.50175,
+        "mean_reward": -0.05163,
+        "win_rate": 0.43167,
+        "draw_rate": 0.08503,
+        "loss_rate": 0.4833,
+        "mean_inference_microseconds_per_action": 0.48893392375561845,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_200.json",
+      "total_seconds": 3.321698634999848
+    },
+    {
+      "run_id": "sarsa_003_seed_201",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 201,
+      "training": {
+        "episodes": 500000,
+        "actions": 731783,
+        "mean_actions_per_episode": 1.463566,
+        "mean_reward": -0.13928,
+        "seconds": 2.7508876970005076,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149602,
+        "mean_actions_per_episode": 1.49602,
+        "mean_reward": -0.05184,
+        "win_rate": 0.43145,
+        "draw_rate": 0.08526,
+        "loss_rate": 0.48329,
+        "mean_inference_microseconds_per_action": 0.49471435542305586,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_201.json",
+      "total_seconds": 3.3080686859993875
+    },
+    {
+      "run_id": "sarsa_003_seed_202",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 202,
+      "training": {
+        "episodes": 500000,
+        "actions": 730628,
+        "mean_actions_per_episode": 1.461256,
+        "mean_reward": -0.140866,
+        "seconds": 2.8848123230000056,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152639,
+        "mean_actions_per_episode": 1.52639,
+        "mean_reward": -0.04996,
+        "win_rate": 0.43151,
+        "draw_rate": 0.08702,
+        "loss_rate": 0.48147,
+        "mean_inference_microseconds_per_action": 0.5028511389618643,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_202.json",
+      "total_seconds": 3.449926798000888
+    },
+    {
+      "run_id": "sarsa_003_seed_203",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 203,
+      "training": {
+        "episodes": 500000,
+        "actions": 730076,
+        "mean_actions_per_episode": 1.460152,
+        "mean_reward": -0.14047,
+        "seconds": 2.8922582610011887,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 151443,
+        "mean_actions_per_episode": 1.51443,
+        "mean_reward": -0.04754,
+        "win_rate": 0.43277,
+        "draw_rate": 0.08692,
+        "loss_rate": 0.48031,
+        "mean_inference_microseconds_per_action": 0.4846661780339798,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_203.json",
+      "total_seconds": 3.441257777998544
+    },
+    {
+      "run_id": "sarsa_003_seed_204",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 204,
+      "training": {
+        "episodes": 500000,
+        "actions": 736244,
+        "mean_actions_per_episode": 1.472488,
+        "mean_reward": -0.140994,
+        "seconds": 2.858892846999879,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149935,
+        "mean_actions_per_episode": 1.49935,
+        "mean_reward": -0.05344,
+        "win_rate": 0.43001,
+        "draw_rate": 0.08654,
+        "loss_rate": 0.48345,
+        "mean_inference_microseconds_per_action": 0.5016720045352986,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_204.json",
+      "total_seconds": 3.4153234050008905
+    },
+    {
+      "run_id": "sarsa_003_seed_205",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 205,
+      "training": {
+        "episodes": 500000,
+        "actions": 730184,
+        "mean_actions_per_episode": 1.460368,
+        "mean_reward": -0.137556,
+        "seconds": 2.8276410279995616,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148963,
+        "mean_actions_per_episode": 1.48963,
+        "mean_reward": -0.04891,
+        "win_rate": 0.43314,
+        "draw_rate": 0.08481,
+        "loss_rate": 0.48205,
+        "mean_inference_microseconds_per_action": 0.4874122835871995,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_205.json",
+      "total_seconds": 3.372678151999935
+    },
+    {
+      "run_id": "sarsa_003_seed_206",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 206,
+      "training": {
+        "episodes": 500000,
+        "actions": 734177,
+        "mean_actions_per_episode": 1.468354,
+        "mean_reward": -0.138516,
+        "seconds": 2.7657889219990466,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150475,
+        "mean_actions_per_episode": 1.50475,
+        "mean_reward": -0.04552,
+        "win_rate": 0.43352,
+        "draw_rate": 0.08744,
+        "loss_rate": 0.47904,
+        "mean_inference_microseconds_per_action": 0.48114306030902143,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_206.json",
+      "total_seconds": 3.3040563089998614
+    },
+    {
+      "run_id": "sarsa_003_seed_207",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 207,
+      "training": {
+        "episodes": 500000,
+        "actions": 734469,
+        "mean_actions_per_episode": 1.468938,
+        "mean_reward": -0.137804,
+        "seconds": 2.778723445999276,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 151008,
+        "mean_actions_per_episode": 1.51008,
+        "mean_reward": -0.05003,
+        "win_rate": 0.43162,
+        "draw_rate": 0.08673,
+        "loss_rate": 0.48165,
+        "mean_inference_microseconds_per_action": 0.49633655170586993,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_207.json",
+      "total_seconds": 3.3297158730001684
+    },
+    {
+      "run_id": "sarsa_003_seed_208",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 208,
+      "training": {
+        "episodes": 500000,
+        "actions": 730062,
+        "mean_actions_per_episode": 1.460124,
+        "mean_reward": -0.139878,
+        "seconds": 2.6840752930002054,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 151427,
+        "mean_actions_per_episode": 1.51427,
+        "mean_reward": -0.0474,
+        "win_rate": 0.43256,
+        "draw_rate": 0.08748,
+        "loss_rate": 0.47996,
+        "mean_inference_microseconds_per_action": 0.4974564245478019,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_208.json",
+      "total_seconds": 3.237953188001484
+    },
+    {
+      "run_id": "sarsa_003_seed_209",
+      "status": "completed",
+      "configuration_id": "sarsa_003",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 209,
+      "training": {
+        "episodes": 500000,
+        "actions": 733318,
+        "mean_actions_per_episode": 1.466636,
+        "mean_reward": -0.138802,
+        "seconds": 2.729312110999672,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152791,
+        "mean_actions_per_episode": 1.52791,
+        "mean_reward": -0.04891,
+        "win_rate": 0.43169,
+        "draw_rate": 0.08771,
+        "loss_rate": 0.4806,
+        "mean_inference_microseconds_per_action": 0.48435017769371236,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_003_seed_209.json",
+      "total_seconds": 3.273239065998496
+    },
+    {
+      "run_id": "sarsa_004_seed_200",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 200,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1470761,
+        "mean_actions_per_episode": 1.470761,
+        "mean_reward": -0.136861,
+        "seconds": 5.607895718998407,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152306,
+        "mean_actions_per_episode": 1.52306,
+        "mean_reward": -0.04849,
+        "win_rate": 0.43118,
+        "draw_rate": 0.08915,
+        "loss_rate": 0.47967,
+        "mean_inference_microseconds_per_action": 0.5610461373813245,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_200.json",
+      "total_seconds": 6.243329565999375
+    },
+    {
+      "run_id": "sarsa_004_seed_201",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 201,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1469314,
+        "mean_actions_per_episode": 1.469314,
+        "mean_reward": -0.136965,
+        "seconds": 5.796657148001032,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 146668,
+        "mean_actions_per_episode": 1.46668,
+        "mean_reward": -0.05109,
+        "win_rate": 0.43329,
+        "draw_rate": 0.08233,
+        "loss_rate": 0.48438,
+        "mean_inference_microseconds_per_action": 0.5655599449095917,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_201.json",
+      "total_seconds": 6.433519066000372
+    },
+    {
+      "run_id": "sarsa_004_seed_202",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 202,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1464632,
+        "mean_actions_per_episode": 1.464632,
+        "mean_reward": -0.137303,
+        "seconds": 6.206013266000809,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152242,
+        "mean_actions_per_episode": 1.52242,
+        "mean_reward": -0.04591,
+        "win_rate": 0.43255,
+        "draw_rate": 0.08899,
+        "loss_rate": 0.47846,
+        "mean_inference_microseconds_per_action": 0.578112695576779,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_202.json",
+      "total_seconds": 6.8552644760002295
+    },
+    {
+      "run_id": "sarsa_004_seed_203",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 203,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1470713,
+        "mean_actions_per_episode": 1.470713,
+        "mean_reward": -0.136934,
+        "seconds": 6.247864179000317,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152155,
+        "mean_actions_per_episode": 1.52155,
+        "mean_reward": -0.04515,
+        "win_rate": 0.43359,
+        "draw_rate": 0.08767,
+        "loss_rate": 0.47874,
+        "mean_inference_microseconds_per_action": 0.561308231737373,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_203.json",
+      "total_seconds": 6.880321656999513
+    },
+    {
+      "run_id": "sarsa_004_seed_204",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 204,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1471853,
+        "mean_actions_per_episode": 1.471853,
+        "mean_reward": -0.138025,
+        "seconds": 6.150132001001111,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152238,
+        "mean_actions_per_episode": 1.52238,
+        "mean_reward": -0.04708,
+        "win_rate": 0.4326,
+        "draw_rate": 0.08772,
+        "loss_rate": 0.47968,
+        "mean_inference_microseconds_per_action": 0.545856494436343,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_204.json",
+      "total_seconds": 6.772991298999841
+    },
+    {
+      "run_id": "sarsa_004_seed_205",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 205,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1463444,
+        "mean_actions_per_episode": 1.463444,
+        "mean_reward": -0.135932,
+        "seconds": 6.258787093998762,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148879,
+        "mean_actions_per_episode": 1.48879,
+        "mean_reward": -0.04647,
+        "win_rate": 0.4344,
+        "draw_rate": 0.08473,
+        "loss_rate": 0.48087,
+        "mean_inference_microseconds_per_action": 0.6197179655962225,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_205.json",
+      "total_seconds": 6.943209136001315
+    },
+    {
+      "run_id": "sarsa_004_seed_206",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 206,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1470954,
+        "mean_actions_per_episode": 1.470954,
+        "mean_reward": -0.136683,
+        "seconds": 6.36865981200026,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 151261,
+        "mean_actions_per_episode": 1.51261,
+        "mean_reward": -0.04621,
+        "win_rate": 0.43314,
+        "draw_rate": 0.08751,
+        "loss_rate": 0.47935,
+        "mean_inference_microseconds_per_action": 0.5315278029366459,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_206.json",
+      "total_seconds": 6.978617376000329
+    },
+    {
+      "run_id": "sarsa_004_seed_207",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 207,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1470862,
+        "mean_actions_per_episode": 1.470862,
+        "mean_reward": -0.135968,
+        "seconds": 6.421133542000462,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150060,
+        "mean_actions_per_episode": 1.5006,
+        "mean_reward": -0.04746,
+        "win_rate": 0.43372,
+        "draw_rate": 0.0851,
+        "loss_rate": 0.48118,
+        "mean_inference_microseconds_per_action": 0.607754524856724,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_207.json",
+      "total_seconds": 7.08686388499882
+    },
+    {
+      "run_id": "sarsa_004_seed_208",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 208,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1466203,
+        "mean_actions_per_episode": 1.466203,
+        "mean_reward": -0.138239,
+        "seconds": 6.439168314000199,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 151768,
+        "mean_actions_per_episode": 1.51768,
+        "mean_reward": -0.0461,
+        "win_rate": 0.43234,
+        "draw_rate": 0.08922,
+        "loss_rate": 0.47844,
+        "mean_inference_microseconds_per_action": 0.5727177270570871,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_208.json",
+      "total_seconds": 7.0929961599995295
+    },
+    {
+      "run_id": "sarsa_004_seed_209",
+      "status": "completed",
+      "configuration_id": "sarsa_004",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 209,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1468298,
+        "mean_actions_per_episode": 1.468298,
+        "mean_reward": -0.135597,
+        "seconds": 6.499732436999693,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 147860,
+        "mean_actions_per_episode": 1.4786,
+        "mean_reward": -0.05012,
+        "win_rate": 0.43329,
+        "draw_rate": 0.0833,
+        "loss_rate": 0.48341,
+        "mean_inference_microseconds_per_action": 0.6115029554984445,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_004_seed_209.json",
+      "total_seconds": 7.1726822239998
+    },
+    {
+      "run_id": "sarsa_005_seed_200",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 200,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2940711,
+        "mean_actions_per_episode": 1.4703555,
+        "mean_reward": -0.1348355,
+        "seconds": 12.842791271999886,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 151177,
+        "mean_actions_per_episode": 1.51177,
+        "mean_reward": -0.0485,
+        "win_rate": 0.43164,
+        "draw_rate": 0.08822,
+        "loss_rate": 0.48014,
+        "mean_inference_microseconds_per_action": 0.6096606494374145,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_200.json",
+      "total_seconds": 13.53718692000075
+    },
+    {
+      "run_id": "sarsa_005_seed_201",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 201,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2937092,
+        "mean_actions_per_episode": 1.468546,
+        "mean_reward": -0.134817,
+        "seconds": 12.875653565999528,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150773,
+        "mean_actions_per_episode": 1.50773,
+        "mean_reward": -0.04875,
+        "win_rate": 0.43206,
+        "draw_rate": 0.08713,
+        "loss_rate": 0.48081,
+        "mean_inference_microseconds_per_action": 0.5918926067664635,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_201.json",
+      "total_seconds": 13.56580000500071
+    },
+    {
+      "run_id": "sarsa_005_seed_202",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 202,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2932185,
+        "mean_actions_per_episode": 1.4660925,
+        "mean_reward": -0.1357155,
+        "seconds": 12.942807635001373,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150260,
+        "mean_actions_per_episode": 1.5026,
+        "mean_reward": -0.0499,
+        "win_rate": 0.4319,
+        "draw_rate": 0.0863,
+        "loss_rate": 0.4818,
+        "mean_inference_microseconds_per_action": 0.6828197124983363,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_202.json",
+      "total_seconds": 13.70913576500061
+    },
+    {
+      "run_id": "sarsa_005_seed_203",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 203,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2941397,
+        "mean_actions_per_episode": 1.4706985,
+        "mean_reward": -0.1352145,
+        "seconds": 12.948334842001714,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150052,
+        "mean_actions_per_episode": 1.50052,
+        "mean_reward": -0.04699,
+        "win_rate": 0.43371,
+        "draw_rate": 0.08559,
+        "loss_rate": 0.4807,
+        "mean_inference_microseconds_per_action": 0.5932009303441473,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_203.json",
+      "total_seconds": 13.640024713000457
+    },
+    {
+      "run_id": "sarsa_005_seed_204",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 204,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2942039,
+        "mean_actions_per_episode": 1.4710195,
+        "mean_reward": -0.135495,
+        "seconds": 13.023509931001172,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150587,
+        "mean_actions_per_episode": 1.50587,
+        "mean_reward": -0.04858,
+        "win_rate": 0.43325,
+        "draw_rate": 0.08492,
+        "loss_rate": 0.48183,
+        "mean_inference_microseconds_per_action": 0.5593226971783752,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_204.json",
+      "total_seconds": 13.695610456001305
+    },
+    {
+      "run_id": "sarsa_005_seed_205",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 205,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2935972,
+        "mean_actions_per_episode": 1.467986,
+        "mean_reward": -0.1354755,
+        "seconds": 12.915933842999948,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150838,
+        "mean_actions_per_episode": 1.50838,
+        "mean_reward": -0.04587,
+        "win_rate": 0.43407,
+        "draw_rate": 0.08599,
+        "loss_rate": 0.47994,
+        "mean_inference_microseconds_per_action": 0.6065045744441057,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_205.json",
+      "total_seconds": 13.626605464998647
+    },
+    {
+      "run_id": "sarsa_005_seed_206",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 206,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2945639,
+        "mean_actions_per_episode": 1.4728195,
+        "mean_reward": -0.135516,
+        "seconds": 13.10957951599994,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150715,
+        "mean_actions_per_episode": 1.50715,
+        "mean_reward": -0.05128,
+        "win_rate": 0.43121,
+        "draw_rate": 0.0863,
+        "loss_rate": 0.48249,
+        "mean_inference_microseconds_per_action": 0.6650251998805693,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_206.json",
+      "total_seconds": 13.861939651000284
+    },
+    {
+      "run_id": "sarsa_005_seed_207",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 207,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2945980,
+        "mean_actions_per_episode": 1.47299,
+        "mean_reward": -0.1348065,
+        "seconds": 13.246332882999923,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 148762,
+        "mean_actions_per_episode": 1.48762,
+        "mean_reward": -0.04858,
+        "win_rate": 0.43358,
+        "draw_rate": 0.08426,
+        "loss_rate": 0.48216,
+        "mean_inference_microseconds_per_action": 0.5798923649856819,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_207.json",
+      "total_seconds": 13.925013938998745
+    },
+    {
+      "run_id": "sarsa_005_seed_208",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 208,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2940574,
+        "mean_actions_per_episode": 1.470287,
+        "mean_reward": -0.1354945,
+        "seconds": 12.919694570999127,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149804,
+        "mean_actions_per_episode": 1.49804,
+        "mean_reward": -0.05151,
+        "win_rate": 0.43166,
+        "draw_rate": 0.08517,
+        "loss_rate": 0.48317,
+        "mean_inference_microseconds_per_action": 0.5527865210541775,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_208.json",
+      "total_seconds": 13.554223938999712
+    },
+    {
+      "run_id": "sarsa_005_seed_209",
+      "status": "completed",
+      "configuration_id": "sarsa_005",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 209,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2931569,
+        "mean_actions_per_episode": 1.4657845,
+        "mean_reward": -0.1349875,
+        "seconds": 12.681782559999192,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 149138,
+        "mean_actions_per_episode": 1.49138,
+        "mean_reward": -0.0497,
+        "win_rate": 0.43309,
+        "draw_rate": 0.08412,
+        "loss_rate": 0.48279,
+        "mean_inference_microseconds_per_action": 0.5541998953988923,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_005_seed_209.json",
+      "total_seconds": 13.317249988000185
+    },
+    {
+      "run_id": "sarsa_006_seed_200",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 200,
+      "training": {
+        "episodes": 500000,
+        "actions": 715534,
+        "mean_actions_per_episode": 1.431068,
+        "mean_reward": -0.195534,
+        "seconds": 3.262460052001188,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155812,
+        "mean_actions_per_episode": 1.55812,
+        "mean_reward": -0.04553,
+        "win_rate": 0.43151,
+        "draw_rate": 0.09145,
+        "loss_rate": 0.47704,
+        "mean_inference_microseconds_per_action": 0.5553664608630915,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_200.json",
+      "total_seconds": 3.895208846000969
+    },
+    {
+      "run_id": "sarsa_006_seed_201",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 201,
+      "training": {
+        "episodes": 500000,
+        "actions": 713892,
+        "mean_actions_per_episode": 1.427784,
+        "mean_reward": -0.195402,
+        "seconds": 3.312546962999477,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152445,
+        "mean_actions_per_episode": 1.52445,
+        "mean_reward": -0.04666,
+        "win_rate": 0.43267,
+        "draw_rate": 0.088,
+        "loss_rate": 0.47933,
+        "mean_inference_microseconds_per_action": 0.5911982091901997,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_201.json",
+      "total_seconds": 3.972934247000012
+    },
+    {
+      "run_id": "sarsa_006_seed_202",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 202,
+      "training": {
+        "episodes": 500000,
+        "actions": 713777,
+        "mean_actions_per_episode": 1.427554,
+        "mean_reward": -0.1935,
+        "seconds": 3.3559382719995483,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153466,
+        "mean_actions_per_episode": 1.53466,
+        "mean_reward": -0.04615,
+        "win_rate": 0.43162,
+        "draw_rate": 0.09061,
+        "loss_rate": 0.47777,
+        "mean_inference_microseconds_per_action": 0.5724059400779326,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_202.json",
+      "total_seconds": 4.008306665999044
+    },
+    {
+      "run_id": "sarsa_006_seed_203",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 203,
+      "training": {
+        "episodes": 500000,
+        "actions": 715245,
+        "mean_actions_per_episode": 1.43049,
+        "mean_reward": -0.193898,
+        "seconds": 3.358340723998481,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152074,
+        "mean_actions_per_episode": 1.52074,
+        "mean_reward": -0.04971,
+        "win_rate": 0.43113,
+        "draw_rate": 0.08803,
+        "loss_rate": 0.48084,
+        "mean_inference_microseconds_per_action": 0.549991786893223,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_203.json",
+      "total_seconds": 3.983833838999999
+    },
+    {
+      "run_id": "sarsa_006_seed_204",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 204,
+      "training": {
+        "episodes": 500000,
+        "actions": 712189,
+        "mean_actions_per_episode": 1.424378,
+        "mean_reward": -0.19678,
+        "seconds": 3.288893402999747,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150745,
+        "mean_actions_per_episode": 1.50745,
+        "mean_reward": -0.04734,
+        "win_rate": 0.43346,
+        "draw_rate": 0.08574,
+        "loss_rate": 0.4808,
+        "mean_inference_microseconds_per_action": 0.5395790971508175,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_204.json",
+      "total_seconds": 3.9082858830006444
+    },
+    {
+      "run_id": "sarsa_006_seed_205",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 205,
+      "training": {
+        "episodes": 500000,
+        "actions": 714661,
+        "mean_actions_per_episode": 1.429322,
+        "mean_reward": -0.193376,
+        "seconds": 3.36476170899914,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153791,
+        "mean_actions_per_episode": 1.53791,
+        "mean_reward": -0.0492,
+        "win_rate": 0.43028,
+        "draw_rate": 0.09024,
+        "loss_rate": 0.47948,
+        "mean_inference_microseconds_per_action": 0.5432642547353227,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_205.json",
+      "total_seconds": 3.9827853180013335
+    },
+    {
+      "run_id": "sarsa_006_seed_206",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 206,
+      "training": {
+        "episodes": 500000,
+        "actions": 714625,
+        "mean_actions_per_episode": 1.42925,
+        "mean_reward": -0.195252,
+        "seconds": 3.191225704000317,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153465,
+        "mean_actions_per_episode": 1.53465,
+        "mean_reward": -0.04637,
+        "win_rate": 0.43158,
+        "draw_rate": 0.09047,
+        "loss_rate": 0.47795,
+        "mean_inference_microseconds_per_action": 0.5284617404619947,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_206.json",
+      "total_seconds": 3.7975246030000562
+    },
+    {
+      "run_id": "sarsa_006_seed_207",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 207,
+      "training": {
+        "episodes": 500000,
+        "actions": 713168,
+        "mean_actions_per_episode": 1.426336,
+        "mean_reward": -0.196442,
+        "seconds": 3.1841440919997694,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154034,
+        "mean_actions_per_episode": 1.54034,
+        "mean_reward": -0.04673,
+        "win_rate": 0.43098,
+        "draw_rate": 0.09131,
+        "loss_rate": 0.47771,
+        "mean_inference_microseconds_per_action": 0.5313448199748108,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_207.json",
+      "total_seconds": 3.791073034000874
+    },
+    {
+      "run_id": "sarsa_006_seed_208",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 208,
+      "training": {
+        "episodes": 500000,
+        "actions": 716465,
+        "mean_actions_per_episode": 1.43293,
+        "mean_reward": -0.194394,
+        "seconds": 3.134029468001245,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154103,
+        "mean_actions_per_episode": 1.54103,
+        "mean_reward": -0.04714,
+        "win_rate": 0.43116,
+        "draw_rate": 0.09054,
+        "loss_rate": 0.4783,
+        "mean_inference_microseconds_per_action": 0.535034931182391,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_208.json",
+      "total_seconds": 3.7438369500014232
+    },
+    {
+      "run_id": "sarsa_006_seed_209",
+      "status": "completed",
+      "configuration_id": "sarsa_006",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 500000,
+      "seed": 209,
+      "training": {
+        "episodes": 500000,
+        "actions": 716543,
+        "mean_actions_per_episode": 1.433086,
+        "mean_reward": -0.195784,
+        "seconds": 3.1323974050010293,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155032,
+        "mean_actions_per_episode": 1.55032,
+        "mean_reward": -0.04575,
+        "win_rate": 0.43125,
+        "draw_rate": 0.09175,
+        "loss_rate": 0.477,
+        "mean_inference_microseconds_per_action": 0.556279439083544,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_006_seed_209.json",
+      "total_seconds": 3.7692929790009657
+    },
+    {
+      "run_id": "sarsa_007_seed_200",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 200,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1434669,
+        "mean_actions_per_episode": 1.434669,
+        "mean_reward": -0.193285,
+        "seconds": 6.320570341998973,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156307,
+        "mean_actions_per_episode": 1.56307,
+        "mean_reward": -0.04581,
+        "win_rate": 0.43081,
+        "draw_rate": 0.09257,
+        "loss_rate": 0.47662,
+        "mean_inference_microseconds_per_action": 0.5314360393328513,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_200.json",
+      "total_seconds": 6.931839664999643
+    },
+    {
+      "run_id": "sarsa_007_seed_201",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 201,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1431485,
+        "mean_actions_per_episode": 1.431485,
+        "mean_reward": -0.19443,
+        "seconds": 6.372212149999541,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155180,
+        "mean_actions_per_episode": 1.5518,
+        "mean_reward": -0.04628,
+        "win_rate": 0.43086,
+        "draw_rate": 0.092,
+        "loss_rate": 0.47714,
+        "mean_inference_microseconds_per_action": 0.536392376594922,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_201.json",
+      "total_seconds": 6.999387457999546
+    },
+    {
+      "run_id": "sarsa_007_seed_202",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 202,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1432067,
+        "mean_actions_per_episode": 1.432067,
+        "mean_reward": -0.195754,
+        "seconds": 6.252767907999441,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155685,
+        "mean_actions_per_episode": 1.55685,
+        "mean_reward": -0.04578,
+        "win_rate": 0.43079,
+        "draw_rate": 0.09264,
+        "loss_rate": 0.47657,
+        "mean_inference_microseconds_per_action": 0.535967170889938,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_202.json",
+      "total_seconds": 6.881845433001217
+    },
+    {
+      "run_id": "sarsa_007_seed_203",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 203,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1429202,
+        "mean_actions_per_episode": 1.429202,
+        "mean_reward": -0.195403,
+        "seconds": 6.3030586059994675,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155282,
+        "mean_actions_per_episode": 1.55282,
+        "mean_reward": -0.04639,
+        "win_rate": 0.43113,
+        "draw_rate": 0.09135,
+        "loss_rate": 0.47752,
+        "mean_inference_microseconds_per_action": 0.5464752901173349,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_203.json",
+      "total_seconds": 6.933029432000694
+    },
+    {
+      "run_id": "sarsa_007_seed_204",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 204,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1426998,
+        "mean_actions_per_episode": 1.426998,
+        "mean_reward": -0.195355,
+        "seconds": 6.349758657001075,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155023,
+        "mean_actions_per_episode": 1.55023,
+        "mean_reward": -0.0466,
+        "win_rate": 0.43122,
+        "draw_rate": 0.09096,
+        "loss_rate": 0.47782,
+        "mean_inference_microseconds_per_action": 0.537996716616244,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_204.json",
+      "total_seconds": 6.971603134999896
+    },
+    {
+      "run_id": "sarsa_007_seed_205",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 205,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1430375,
+        "mean_actions_per_episode": 1.430375,
+        "mean_reward": -0.193516,
+        "seconds": 6.431028637000054,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155423,
+        "mean_actions_per_episode": 1.55423,
+        "mean_reward": -0.04825,
+        "win_rate": 0.43056,
+        "draw_rate": 0.09063,
+        "loss_rate": 0.47881,
+        "mean_inference_microseconds_per_action": 0.5464633677126294,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_205.json",
+      "total_seconds": 7.054339305999747
+    },
+    {
+      "run_id": "sarsa_007_seed_206",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 206,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1432508,
+        "mean_actions_per_episode": 1.432508,
+        "mean_reward": -0.195093,
+        "seconds": 6.3443225779992645,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155351,
+        "mean_actions_per_episode": 1.55351,
+        "mean_reward": -0.04965,
+        "win_rate": 0.42931,
+        "draw_rate": 0.09173,
+        "loss_rate": 0.47896,
+        "mean_inference_microseconds_per_action": 0.5336498381085413,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_206.json",
+      "total_seconds": 6.958667470000364
+    },
+    {
+      "run_id": "sarsa_007_seed_207",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 207,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1433831,
+        "mean_actions_per_episode": 1.433831,
+        "mean_reward": -0.194768,
+        "seconds": 6.359443555000325,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154587,
+        "mean_actions_per_episode": 1.54587,
+        "mean_reward": -0.0457,
+        "win_rate": 0.43202,
+        "draw_rate": 0.09026,
+        "loss_rate": 0.47772,
+        "mean_inference_microseconds_per_action": 0.5309119460239218,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_207.json",
+      "total_seconds": 6.978098511001008
+    },
+    {
+      "run_id": "sarsa_007_seed_208",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 208,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1433426,
+        "mean_actions_per_episode": 1.433426,
+        "mean_reward": -0.194636,
+        "seconds": 6.356362115999218,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153874,
+        "mean_actions_per_episode": 1.53874,
+        "mean_reward": -0.04575,
+        "win_rate": 0.43249,
+        "draw_rate": 0.08927,
+        "loss_rate": 0.47824,
+        "mean_inference_microseconds_per_action": 0.5378439632426532,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_208.json",
+      "total_seconds": 6.977427615000124
+    },
+    {
+      "run_id": "sarsa_007_seed_209",
+      "status": "completed",
+      "configuration_id": "sarsa_007",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 1000000,
+      "seed": 209,
+      "training": {
+        "episodes": 1000000,
+        "actions": 1434228,
+        "mean_actions_per_episode": 1.434228,
+        "mean_reward": -0.195005,
+        "seconds": 6.235961194999618,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154327,
+        "mean_actions_per_episode": 1.54327,
+        "mean_reward": -0.0464,
+        "win_rate": 0.43126,
+        "draw_rate": 0.09108,
+        "loss_rate": 0.47766,
+        "mean_inference_microseconds_per_action": 0.5445420244027293,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_007_seed_209.json",
+      "total_seconds": 6.854481886999565
+    },
+    {
+      "run_id": "sarsa_008_seed_200",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 200,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2870963,
+        "mean_actions_per_episode": 1.4354815,
+        "mean_reward": -0.195764,
+        "seconds": 12.540730593000262,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154800,
+        "mean_actions_per_episode": 1.548,
+        "mean_reward": -0.04734,
+        "win_rate": 0.43062,
+        "draw_rate": 0.09142,
+        "loss_rate": 0.47796,
+        "mean_inference_microseconds_per_action": 0.5090497157622739,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_200.json",
+      "total_seconds": 13.143343408000874
+    },
+    {
+      "run_id": "sarsa_008_seed_201",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 201,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2876225,
+        "mean_actions_per_episode": 1.4381125,
+        "mean_reward": -0.194169,
+        "seconds": 12.584705317000044,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155597,
+        "mean_actions_per_episode": 1.55597,
+        "mean_reward": -0.0493,
+        "win_rate": 0.42937,
+        "draw_rate": 0.09196,
+        "loss_rate": 0.47867,
+        "mean_inference_microseconds_per_action": 0.5484447579323508,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_201.json",
+      "total_seconds": 13.22598920999917
+    },
+    {
+      "run_id": "sarsa_008_seed_202",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 202,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2880009,
+        "mean_actions_per_episode": 1.4400045,
+        "mean_reward": -0.193911,
+        "seconds": 12.654896541000198,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157265,
+        "mean_actions_per_episode": 1.57265,
+        "mean_reward": -0.04934,
+        "win_rate": 0.42899,
+        "draw_rate": 0.09268,
+        "loss_rate": 0.47833,
+        "mean_inference_microseconds_per_action": 0.5335578800114456,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_202.json",
+      "total_seconds": 13.284149729001001
+    },
+    {
+      "run_id": "sarsa_008_seed_203",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 203,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2873243,
+        "mean_actions_per_episode": 1.4366215,
+        "mean_reward": -0.1946105,
+        "seconds": 12.718042327000148,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154021,
+        "mean_actions_per_episode": 1.54021,
+        "mean_reward": -0.04619,
+        "win_rate": 0.43236,
+        "draw_rate": 0.08909,
+        "loss_rate": 0.47855,
+        "mean_inference_microseconds_per_action": 0.5405453866680517,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_203.json",
+      "total_seconds": 13.348348206000082
+    },
+    {
+      "run_id": "sarsa_008_seed_204",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 204,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2876115,
+        "mean_actions_per_episode": 1.4380575,
+        "mean_reward": -0.1937065,
+        "seconds": 12.726095318999796,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156745,
+        "mean_actions_per_episode": 1.56745,
+        "mean_reward": -0.04638,
+        "win_rate": 0.43101,
+        "draw_rate": 0.0916,
+        "loss_rate": 0.47739,
+        "mean_inference_microseconds_per_action": 0.5393481259370314,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_204.json",
+      "total_seconds": 13.361296270999446
+    },
+    {
+      "run_id": "sarsa_008_seed_205",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 205,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2872220,
+        "mean_actions_per_episode": 1.43611,
+        "mean_reward": -0.193339,
+        "seconds": 12.669550995000463,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156075,
+        "mean_actions_per_episode": 1.56075,
+        "mean_reward": -0.04779,
+        "win_rate": 0.43018,
+        "draw_rate": 0.09185,
+        "loss_rate": 0.47797,
+        "mean_inference_microseconds_per_action": 0.5571224795771264,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_205.json",
+      "total_seconds": 13.322617371000888
+    },
+    {
+      "run_id": "sarsa_008_seed_206",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 206,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2876004,
+        "mean_actions_per_episode": 1.438002,
+        "mean_reward": -0.194029,
+        "seconds": 12.9307629190007,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155211,
+        "mean_actions_per_episode": 1.55211,
+        "mean_reward": -0.04731,
+        "win_rate": 0.43094,
+        "draw_rate": 0.09081,
+        "loss_rate": 0.47825,
+        "mean_inference_microseconds_per_action": 0.5351393651223174,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_206.json",
+      "total_seconds": 13.556185510000432
+    },
+    {
+      "run_id": "sarsa_008_seed_207",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 207,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2862126,
+        "mean_actions_per_episode": 1.431063,
+        "mean_reward": -0.1947715,
+        "seconds": 12.68017286400027,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 153586,
+        "mean_actions_per_episode": 1.53586,
+        "mean_reward": -0.04289,
+        "win_rate": 0.43356,
+        "draw_rate": 0.08999,
+        "loss_rate": 0.47645,
+        "mean_inference_microseconds_per_action": 0.5314918156602816,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_207.json",
+      "total_seconds": 13.301691660999495
+    },
+    {
+      "run_id": "sarsa_008_seed_208",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 208,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2873312,
+        "mean_actions_per_episode": 1.436656,
+        "mean_reward": -0.194118,
+        "seconds": 12.911093742000958,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155431,
+        "mean_actions_per_episode": 1.55431,
+        "mean_reward": -0.05035,
+        "win_rate": 0.42932,
+        "draw_rate": 0.09101,
+        "loss_rate": 0.47967,
+        "mean_inference_microseconds_per_action": 0.6040506012314146,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_208.json",
+      "total_seconds": 13.597378959000707
+    },
+    {
+      "run_id": "sarsa_008_seed_209",
+      "status": "completed",
+      "configuration_id": "sarsa_008",
+      "algorithm": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      },
+      "training_episodes": 2000000,
+      "seed": 209,
+      "training": {
+        "episodes": 2000000,
+        "actions": 2876571,
+        "mean_actions_per_episode": 1.4382855,
+        "mean_reward": -0.1939695,
+        "seconds": 12.75024613200003,
+        "q_table_states": 280
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156343,
+        "mean_actions_per_episode": 1.56343,
+        "mean_reward": -0.04447,
+        "win_rate": 0.43161,
+        "draw_rate": 0.09231,
+        "loss_rate": 0.47608,
+        "mean_inference_microseconds_per_action": 0.5882103643911144,
+        "q_table_states": 280,
+        "unseen_state_actions": 0,
+        "unseen_state_action_rate": 0.0
+      },
+      "model": "results/final/blackjack_finite_hidden_selected_transfer_20260828T135125Z/models/sarsa_008_seed_209.json",
+      "total_seconds": 13.426674671
+    }
+  ]
+}

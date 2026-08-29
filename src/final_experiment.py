@@ -41,6 +41,14 @@ def parse_arguments() -> argparse.Namespace:
         "--experiment-name",
         default="blackjack_final_million",
     )
+    parser.add_argument(
+        "--environment-variant",
+        choices=("standard", "finite_hidden", "finite_hi_lo", "finite_composition"),
+        default=None,
+        help="optionally retrain the selected settings in another environment",
+    )
+    parser.add_argument("--decks", type=int, default=6)
+    parser.add_argument("--penetration", type=float, default=0.75)
     return parser.parse_args()
 
 
@@ -85,6 +93,7 @@ def build_final_config(
     workers: int,
     output_dir: Path,
     experiment_name: str,
+    environment_override: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build a scalar, best-per-algorithm sweep configuration."""
     if episodes < 1 or evaluation_episodes < 1:
@@ -99,6 +108,13 @@ def build_final_config(
         if isinstance(loaded, dict):
             source_config = loaded
 
+    source_environment = source_config.get(
+        "environment", {"natural": False, "sab": True}
+    )
+    if not isinstance(source_environment, dict):
+        raise ValueError("source environment must be an object")
+    environment = {**source_environment, **(environment_override or {})}
+
     selected = select_best_configurations(pilot_summary)
     return {
         "experiment_name": experiment_name,
@@ -108,6 +124,7 @@ def build_final_config(
             "phase": "final_validation",
             "selection_source": str(pilot_summary_path),
             "selection_metric": "mean_evaluation_reward",
+            "validation_environment": environment,
             "selected_pilot_configurations": [
                 {
                     "algorithm": item["algorithm"],
@@ -119,9 +136,7 @@ def build_final_config(
                 for item in selected
             ],
         },
-        "environment": source_config.get(
-            "environment", {"natural": False, "sab": True}
-        ),
+        "environment": environment,
         "training": {"episodes": episodes, "seeds": seeds},
         "evaluation": {
             "episodes": evaluation_episodes,
@@ -195,6 +210,13 @@ def main() -> None:
     arguments = parse_arguments()
     pilot_summary_path = resolve_summary_path(arguments.summary)
     pilot_summary = load_summary(pilot_summary_path)
+    environment_override = None
+    if arguments.environment_variant is not None:
+        environment_override = {"variant": arguments.environment_variant}
+        if arguments.environment_variant.startswith("finite_"):
+            environment_override.update(
+                {"decks": arguments.decks, "penetration": arguments.penetration}
+            )
     final_config = build_final_config(
         pilot_summary,
         pilot_summary_path,
@@ -205,6 +227,7 @@ def main() -> None:
         workers=arguments.workers,
         output_dir=arguments.output_dir,
         experiment_name=arguments.experiment_name,
+        environment_override=environment_override,
     )
 
     print(f"pilot_summary={pilot_summary_path}")

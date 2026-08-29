@@ -1,0 +1,73 @@
+{
+  "experiment_name": "blackjack_finite_hidden_selected_transfer",
+  "output_dir": "results/final",
+  "workers": 1,
+  "metadata": {
+    "phase": "environment_transfer_validation",
+    "selection_source": "results/final/blackjack_selected_long_budget_comparison_20260828T132601Z/summary.json",
+    "selection_metric": "mean_evaluation_reward",
+    "source_environment": "standard",
+    "target_environment": "finite_hidden",
+    "purpose": "Retrain one selected configuration per tabular algorithm in finite-hidden Blackjack at matched training budgets."
+  },
+  "environment": {
+    "variant": "finite_hidden",
+    "decks": 6,
+    "penetration": 0.75,
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": [500000, 1000000, 2000000],
+    "seeds": [200, 201, 202, 203, 204, 205, 206, 207, 208, 209]
+  },
+  "evaluation": {
+    "episodes": 100000,
+    "seed": 30000000
+  },
+  "algorithms": [
+    {
+      "name": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      }
+    },
+      {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    },
+    {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    },
+        {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    },
+    {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    }
+  ]
+}

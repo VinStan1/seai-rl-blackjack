@@ -94,6 +94,31 @@ class FinalExperimentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "q_learning"):
             select_best_configurations(self.summary)
 
+    def test_can_retrain_selected_settings_in_finite_hidden_environment(self) -> None:
+        config = build_final_config(
+            self.summary,
+            Path("pilot/summary.json"),
+            episodes=500_000,
+            evaluation_episodes=100_000,
+            evaluation_seed=20_000_000,
+            seeds=[200, 201],
+            workers=2,
+            output_dir=Path("results/final"),
+            experiment_name="hidden_transfer",
+            environment_override={
+                "variant": "finite_hidden",
+                "decks": 6,
+                "penetration": 0.75,
+            },
+        )
+
+        self.assertEqual(config["environment"]["variant"], "finite_hidden")
+        self.assertEqual(config["environment"]["decks"], 6)
+        self.assertEqual(config["environment"]["penetration"], 0.75)
+        self.assertEqual(
+            config["metadata"]["validation_environment"], config["environment"]
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

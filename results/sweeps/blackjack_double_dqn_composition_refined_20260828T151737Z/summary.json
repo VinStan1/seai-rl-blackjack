@@ -1,0 +1,1685 @@
+{
+  "experiment": "blackjack_double_dqn_composition_refined",
+  "experiment_metadata": {
+    "phase": "neural_refined",
+    "description": "Focused Double DQN analysis on normalized exact six-deck composition"
+  },
+  "environment": {
+    "variant": "finite_composition",
+    "decks": 6,
+    "penetration": 0.75,
+    "natural": false,
+    "sab": true
+  },
+  "config_path": "experiments/double_dqn_composition_refined.json",
+  "started_at_utc": "2026-08-28T15:17:37.928815+00:00",
+  "updated_at_utc": "2026-08-28T15:50:43.311585+00:00",
+  "workers": 2,
+  "status": "completed",
+  "total_runs": 30,
+  "completed_runs": 30,
+  "failed_runs": 0,
+  "baseline": {
+    "name": "stick_on_17",
+    "description": "Hit when the player sum is below 17; stick on 17 or above.",
+    "reference": {
+      "title": "Reinforcement Learning: An Introduction",
+      "authors": "Richard S. Sutton and Andrew G. Barto",
+      "edition": "Second edition",
+      "year": 2018,
+      "location": "Example 5.1: Blackjack",
+      "url": "http://incompleteideas.net/book/RLbook2020.pdf"
+    },
+    "evaluation_seed": 50000000,
+    "episodes": 100000,
+    "actions": 162334,
+    "mean_actions_per_episode": 1.62334,
+    "mean_reward": -0.0743,
+    "win_rate": 0.41218,
+    "draw_rate": 0.10134,
+    "loss_rate": 0.48648,
+    "mean_inference_microseconds_per_action": 0.11346131432725122
+  },
+  "configurations": [
+    {
+      "configuration_id": "double_dqn_005",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 5,
+      "mean_reward": {
+        "count": 5,
+        "mean": -0.049386,
+        "standard_deviation": 0.0026313456633441376,
+        "confidence_interval_95": [
+          -0.05169247616801041,
+          -0.047079523831989586
+        ]
+      },
+      "win_rate": {
+        "count": 5,
+        "mean": 0.429216,
+        "standard_deviation": 0.0016277991276567312,
+        "confidence_interval_95": [
+          0.4277891711547631,
+          0.43064282884523686
+        ]
+      },
+      "training_seconds": {
+        "count": 5,
+        "mean": 259.50772093039996,
+        "standard_deviation": 2.0961504166103255,
+        "confidence_interval_95": [
+          257.67036407993874,
+          261.3450777808612
+        ]
+      }
+    },
+    {
+      "configuration_id": "double_dqn_002",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "completed_seeds": 5,
+      "mean_reward": {
+        "count": 5,
+        "mean": -0.05031,
+        "standard_deviation": 0.001758749555792409,
+        "confidence_interval_95": [
+          -0.05185161195636256,
+          -0.048768388043637444
+        ]
+      },
+      "win_rate": {
+        "count": 5,
+        "mean": 0.428286,
+        "standard_deviation": 0.0019892410613095587,
+        "confidence_interval_95": [
+          0.426542353331205,
+          0.430029646668795
+        ]
+      },
+      "training_seconds": {
+        "count": 5,
+        "mean": 207.92712735160003,
+        "standard_deviation": 1.1342035053807902,
+        "confidence_interval_95": [
+          206.93295414536684,
+          208.92130055783323
+        ]
+      }
+    },
+    {
+      "configuration_id": "double_dqn_001",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "completed_seeds": 5,
+      "mean_reward": {
+        "count": 5,
+        "mean": -0.053744,
+        "standard_deviation": 0.005839129215901976,
+        "confidence_interval_95": [
+          -0.058862222423615454,
+          -0.048625777576384546
+        ]
+      },
+      "win_rate": {
+        "count": 5,
+        "mean": 0.425632,
+        "standard_deviation": 0.0033938134892772098,
+        "confidence_interval_95": [
+          0.42265719131532803,
+          0.428606808684672
+        ]
+      },
+      "training_seconds": {
+        "count": 5,
+        "mean": 81.97376432620013,
+        "standard_deviation": 0.6540648601608404,
+        "confidence_interval_95": [
+          81.40045119850681,
+          82.54707745389344
+        ]
+      }
+    },
+    {
+      "configuration_id": "double_dqn_000",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "completed_seeds": 5,
+      "mean_reward": {
+        "count": 5,
+        "mean": -0.05504,
+        "standard_deviation": 0.007111606710160508,
+        "confidence_interval_95": [
+          -0.06127359812499972,
+          -0.04880640187500028
+        ]
+      },
+      "win_rate": {
+        "count": 5,
+        "mean": 0.42515000000000003,
+        "standard_deviation": 0.004351568682670651,
+        "confidence_interval_95": [
+          0.4213356818737814,
+          0.42896431812621866
+        ]
+      },
+      "training_seconds": {
+        "count": 5,
+        "mean": 40.6425696368,
+        "standard_deviation": 0.400762392708609,
+        "confidence_interval_95": [
+          40.291285911254604,
+          40.99385336234539
+        ]
+      }
+    },
+    {
+      "configuration_id": "double_dqn_003",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "completed_seeds": 5,
+      "mean_reward": {
+        "count": 5,
+        "mean": -0.05545,
+        "standard_deviation": 0.005000089999190013,
+        "confidence_interval_95": [
+          -0.059832772123667846,
+          -0.05106722787633215
+        ]
+      },
+      "win_rate": {
+        "count": 5,
+        "mean": 0.426586,
+        "standard_deviation": 0.0037461286683721884,
+        "confidence_interval_95": [
+          0.42330237344486316,
+          0.4298696265551369
+        ]
+      },
+      "training_seconds": {
+        "count": 5,
+        "mean": 46.780206523600285,
+        "standard_deviation": 0.5147649561556503,
+        "confidence_interval_95": [
+          46.32899514531598,
+          47.23141790188459
+        ]
+      }
+    },
+    {
+      "configuration_id": "double_dqn_004",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "completed_seeds": 5,
+      "mean_reward": {
+        "count": 5,
+        "mean": -0.057118,
+        "standard_deviation": 0.0047114297193102655,
+        "confidence_interval_95": [
+          -0.06124775023244748,
+          -0.05298824976755252
+        ]
+      },
+      "win_rate": {
+        "count": 5,
+        "mean": 0.424284,
+        "standard_deviation": 0.0038144567109878254,
+        "confidence_interval_95": [
+          0.42094048127482436,
+          0.4276275187251756
+        ]
+      },
+      "training_seconds": {
+        "count": 5,
+        "mean": 98.22215426159983,
+        "standard_deviation": 0.8892511054370171,
+        "confidence_interval_95": [
+          97.44269130063682,
+          99.00161722256283
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "double_dqn_000_seed_40",
+      "status": "completed",
+      "configuration_id": "double_dqn_000",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 40,
+      "training": {
+        "episodes": 100000,
+        "actions": 149802,
+        "mean_actions_per_episode": 1.49802,
+        "mean_reward": -0.20794,
+        "seconds": 41.01320074000023,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 37201
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 166656,
+        "mean_actions_per_episode": 1.66656,
+        "mean_reward": -0.06631,
+        "win_rate": 0.41843,
+        "draw_rate": 0.09683,
+        "loss_rate": 0.48474,
+        "mean_inference_microseconds_per_action": 20.087272675451228
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_000_seed_40.pt",
+      "total_seconds": 45.06906767300006
+    },
+    {
+      "run_id": "double_dqn_000_seed_41",
+      "status": "completed",
+      "configuration_id": "double_dqn_000",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 41,
+      "training": {
+        "episodes": 100000,
+        "actions": 150830,
+        "mean_actions_per_episode": 1.5083,
+        "mean_reward": -0.21412,
+        "seconds": 40.88084819200003,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 37458
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 159373,
+        "mean_actions_per_episode": 1.59373,
+        "mean_reward": -0.04718,
+        "win_rate": 0.42891,
+        "draw_rate": 0.095,
+        "loss_rate": 0.47609,
+        "mean_inference_microseconds_per_action": 19.224310253305138
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_000_seed_41.pt",
+      "total_seconds": 44.61258454300014
+    },
+    {
+      "run_id": "double_dqn_000_seed_42",
+      "status": "completed",
+      "configuration_id": "double_dqn_000",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 42,
+      "training": {
+        "episodes": 100000,
+        "actions": 151037,
+        "mean_actions_per_episode": 1.51037,
+        "mean_reward": -0.21019,
+        "seconds": 40.90399217200002,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 37510
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 162013,
+        "mean_actions_per_episode": 1.62013,
+        "mean_reward": -0.0564,
+        "win_rate": 0.4235,
+        "draw_rate": 0.0966,
+        "loss_rate": 0.4799,
+        "mean_inference_microseconds_per_action": 20.10461205582268
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_000_seed_42.pt",
+      "total_seconds": 44.86841221199984
+    },
+    {
+      "run_id": "double_dqn_000_seed_43",
+      "status": "completed",
+      "configuration_id": "double_dqn_000",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 43,
+      "training": {
+        "episodes": 100000,
+        "actions": 149893,
+        "mean_actions_per_episode": 1.49893,
+        "mean_reward": -0.20019,
+        "seconds": 40.23207226099976,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 37224
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154256,
+        "mean_actions_per_episode": 1.54256,
+        "mean_reward": -0.05228,
+        "win_rate": 0.4287,
+        "draw_rate": 0.09032,
+        "loss_rate": 0.48098,
+        "mean_inference_microseconds_per_action": 19.25661896457836
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_000_seed_43.pt",
+      "total_seconds": 43.86542102799967
+    },
+    {
+      "run_id": "double_dqn_000_seed_44",
+      "status": "completed",
+      "configuration_id": "double_dqn_000",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 44,
+      "training": {
+        "episodes": 100000,
+        "actions": 150354,
+        "mean_actions_per_episode": 1.50354,
+        "mean_reward": -0.20337,
+        "seconds": 40.18273481899996,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 37339
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 161113,
+        "mean_actions_per_episode": 1.61113,
+        "mean_reward": -0.05303,
+        "win_rate": 0.42621,
+        "draw_rate": 0.09455,
+        "loss_rate": 0.47924,
+        "mean_inference_microseconds_per_action": 19.317039692638087
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_000_seed_44.pt",
+      "total_seconds": 43.96706090299995
+    },
+    {
+      "run_id": "double_dqn_001_seed_40",
+      "status": "completed",
+      "configuration_id": "double_dqn_001",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 40,
+      "training": {
+        "episodes": 200000,
+        "actions": 300421,
+        "mean_actions_per_episode": 1.502105,
+        "mean_reward": -0.20855,
+        "seconds": 82.26483443100005,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 74856
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 159095,
+        "mean_actions_per_episode": 1.59095,
+        "mean_reward": -0.05156,
+        "win_rate": 0.42696,
+        "draw_rate": 0.09452,
+        "loss_rate": 0.47852,
+        "mean_inference_microseconds_per_action": 19.121341368364813
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_001_seed_40.pt",
+      "total_seconds": 85.96374421700011
+    },
+    {
+      "run_id": "double_dqn_001_seed_41",
+      "status": "completed",
+      "configuration_id": "double_dqn_001",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 41,
+      "training": {
+        "episodes": 200000,
+        "actions": 299691,
+        "mean_actions_per_episode": 1.498455,
+        "mean_reward": -0.203045,
+        "seconds": 81.66203590800023,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 74673
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 158230,
+        "mean_actions_per_episode": 1.5823,
+        "mean_reward": -0.04864,
+        "win_rate": 0.42915,
+        "draw_rate": 0.09306,
+        "loss_rate": 0.47779,
+        "mean_inference_microseconds_per_action": 19.487115989382545
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_001_seed_41.pt",
+      "total_seconds": 85.41777475099934
+    },
+    {
+      "run_id": "double_dqn_001_seed_42",
+      "status": "completed",
+      "configuration_id": "double_dqn_001",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 42,
+      "training": {
+        "episodes": 200000,
+        "actions": 299747,
+        "mean_actions_per_episode": 1.498735,
+        "mean_reward": -0.209425,
+        "seconds": 81.05824825800028,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 74687
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 160984,
+        "mean_actions_per_episode": 1.60984,
+        "mean_reward": -0.05121,
+        "win_rate": 0.42664,
+        "draw_rate": 0.09551,
+        "loss_rate": 0.47785,
+        "mean_inference_microseconds_per_action": 19.577936242111015
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_001_seed_42.pt",
+      "total_seconds": 84.88617978599996
+    },
+    {
+      "run_id": "double_dqn_001_seed_43",
+      "status": "completed",
+      "configuration_id": "double_dqn_001",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 43,
+      "training": {
+        "episodes": 200000,
+        "actions": 300925,
+        "mean_actions_per_episode": 1.504625,
+        "mean_reward": -0.204175,
+        "seconds": 82.7974679150002,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 74982
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 161888,
+        "mean_actions_per_episode": 1.61888,
+        "mean_reward": -0.05361,
+        "win_rate": 0.42533,
+        "draw_rate": 0.09573,
+        "loss_rate": 0.47894,
+        "mean_inference_microseconds_per_action": 19.305087955870725
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_001_seed_43.pt",
+      "total_seconds": 86.6010013920004
+    },
+    {
+      "run_id": "double_dqn_001_seed_44",
+      "status": "completed",
+      "configuration_id": "double_dqn_001",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 44,
+      "training": {
+        "episodes": 200000,
+        "actions": 300049,
+        "mean_actions_per_episode": 1.500245,
+        "mean_reward": -0.204825,
+        "seconds": 82.08623511899987,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 74763
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 162630,
+        "mean_actions_per_episode": 1.6263,
+        "mean_reward": -0.0637,
+        "win_rate": 0.42008,
+        "draw_rate": 0.09614,
+        "loss_rate": 0.48378,
+        "mean_inference_microseconds_per_action": 19.967709125007683
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_001_seed_44.pt",
+      "total_seconds": 86.03836936300013
+    },
+    {
+      "run_id": "double_dqn_002_seed_40",
+      "status": "completed",
+      "configuration_id": "double_dqn_002",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 40,
+      "training": {
+        "episodes": 500000,
+        "actions": 750793,
+        "mean_actions_per_episode": 1.501586,
+        "mean_reward": -0.20577,
+        "seconds": 207.6480139940004,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 187449
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155553,
+        "mean_actions_per_episode": 1.55553,
+        "mean_reward": -0.04793,
+        "win_rate": 0.43034,
+        "draw_rate": 0.09139,
+        "loss_rate": 0.47827,
+        "mean_inference_microseconds_per_action": 19.470909072791912
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_002_seed_40.pt",
+      "total_seconds": 211.34613247299967
+    },
+    {
+      "run_id": "double_dqn_002_seed_41",
+      "status": "completed",
+      "configuration_id": "double_dqn_002",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 41,
+      "training": {
+        "episodes": 500000,
+        "actions": 750522,
+        "mean_actions_per_episode": 1.501044,
+        "mean_reward": -0.203074,
+        "seconds": 207.45533876300033,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 187381
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 160515,
+        "mean_actions_per_episode": 1.60515,
+        "mean_reward": -0.05141,
+        "win_rate": 0.42614,
+        "draw_rate": 0.09631,
+        "loss_rate": 0.47755,
+        "mean_inference_microseconds_per_action": 18.955192399464224
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_002_seed_41.pt",
+      "total_seconds": 211.15045821500007
+    },
+    {
+      "run_id": "double_dqn_002_seed_42",
+      "status": "completed",
+      "configuration_id": "double_dqn_002",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 42,
+      "training": {
+        "episodes": 500000,
+        "actions": 752780,
+        "mean_actions_per_episode": 1.50556,
+        "mean_reward": -0.205134,
+        "seconds": 209.8007744589995,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 187946
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 160481,
+        "mean_actions_per_episode": 1.60481,
+        "mean_reward": -0.05255,
+        "win_rate": 0.42748,
+        "draw_rate": 0.09249,
+        "loss_rate": 0.48003,
+        "mean_inference_microseconds_per_action": 19.58976133623295
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_002_seed_42.pt",
+      "total_seconds": 213.63028177900014
+    },
+    {
+      "run_id": "double_dqn_002_seed_43",
+      "status": "completed",
+      "configuration_id": "double_dqn_002",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 43,
+      "training": {
+        "episodes": 500000,
+        "actions": 751989,
+        "mean_actions_per_episode": 1.503978,
+        "mean_reward": -0.20388,
+        "seconds": 207.95919802699973,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 187748
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 155702,
+        "mean_actions_per_episode": 1.55702,
+        "mean_reward": -0.04973,
+        "win_rate": 0.43046,
+        "draw_rate": 0.08935,
+        "loss_rate": 0.48019,
+        "mean_inference_microseconds_per_action": 19.305917297144543
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_002_seed_43.pt",
+      "total_seconds": 211.62913855399984
+    },
+    {
+      "run_id": "double_dqn_002_seed_44",
+      "status": "completed",
+      "configuration_id": "double_dqn_002",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 64,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 44,
+      "training": {
+        "episodes": 500000,
+        "actions": 749934,
+        "mean_actions_per_episode": 1.499868,
+        "mean_reward": -0.208068,
+        "seconds": 206.77231151500018,
+        "network_parameters": 5186,
+        "replay_transitions": 100000,
+        "gradient_steps": 187234
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 161712,
+        "mean_actions_per_episode": 1.61712,
+        "mean_reward": -0.04993,
+        "win_rate": 0.42701,
+        "draw_rate": 0.09605,
+        "loss_rate": 0.47694,
+        "mean_inference_microseconds_per_action": 19.767883966557832
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_002_seed_44.pt",
+      "total_seconds": 210.65813631499987
+    },
+    {
+      "run_id": "double_dqn_003_seed_40",
+      "status": "completed",
+      "configuration_id": "double_dqn_003",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 40,
+      "training": {
+        "episodes": 100000,
+        "actions": 149271,
+        "mean_actions_per_episode": 1.49271,
+        "mean_reward": -0.20143,
+        "seconds": 46.04508552200059,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 37068
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 157889,
+        "mean_actions_per_episode": 1.57889,
+        "mean_reward": -0.05452,
+        "win_rate": 0.42616,
+        "draw_rate": 0.09316,
+        "loss_rate": 0.48068,
+        "mean_inference_microseconds_per_action": 19.96360177086434
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_003_seed_40.pt",
+      "total_seconds": 49.87226693100001
+    },
+    {
+      "run_id": "double_dqn_003_seed_41",
+      "status": "completed",
+      "configuration_id": "double_dqn_003",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 41,
+      "training": {
+        "episodes": 100000,
+        "actions": 151162,
+        "mean_actions_per_episode": 1.51162,
+        "mean_reward": -0.20807,
+        "seconds": 46.850508747000276,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 37541
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 166450,
+        "mean_actions_per_episode": 1.6645,
+        "mean_reward": -0.0624,
+        "win_rate": 0.42174,
+        "draw_rate": 0.09412,
+        "loss_rate": 0.48414,
+        "mean_inference_microseconds_per_action": 19.56117149894863
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_003_seed_41.pt",
+      "total_seconds": 50.78047773600065
+    },
+    {
+      "run_id": "double_dqn_003_seed_42",
+      "status": "completed",
+      "configuration_id": "double_dqn_003",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 42,
+      "training": {
+        "episodes": 100000,
+        "actions": 149530,
+        "mean_actions_per_episode": 1.4953,
+        "mean_reward": -0.20115,
+        "seconds": 47.40670067799965,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 37133
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 151301,
+        "mean_actions_per_episode": 1.51301,
+        "mean_reward": -0.0485,
+        "win_rate": 0.43222,
+        "draw_rate": 0.08706,
+        "loss_rate": 0.48072,
+        "mean_inference_microseconds_per_action": 19.420435952174806
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_003_seed_42.pt",
+      "total_seconds": 50.97741151399987
+    },
+    {
+      "run_id": "double_dqn_003_seed_43",
+      "status": "completed",
+      "configuration_id": "double_dqn_003",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 43,
+      "training": {
+        "episodes": 100000,
+        "actions": 150061,
+        "mean_actions_per_episode": 1.50061,
+        "mean_reward": -0.20558,
+        "seconds": 46.553038532000755,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 37266
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 161556,
+        "mean_actions_per_episode": 1.61556,
+        "mean_reward": -0.05489,
+        "win_rate": 0.42583,
+        "draw_rate": 0.09345,
+        "loss_rate": 0.48072,
+        "mean_inference_microseconds_per_action": 19.99389339919285
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_003_seed_43.pt",
+      "total_seconds": 50.46325488899947
+    },
+    {
+      "run_id": "double_dqn_003_seed_44",
+      "status": "completed",
+      "configuration_id": "double_dqn_003",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 100000,
+      "seed": 44,
+      "training": {
+        "episodes": 100000,
+        "actions": 150157,
+        "mean_actions_per_episode": 1.50157,
+        "mean_reward": -0.20667,
+        "seconds": 47.045699139000135,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 37290
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 150476,
+        "mean_actions_per_episode": 1.50476,
+        "mean_reward": -0.05694,
+        "win_rate": 0.42698,
+        "draw_rate": 0.0891,
+        "loss_rate": 0.48392,
+        "mean_inference_microseconds_per_action": 19.97012775459209
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_003_seed_44.pt",
+      "total_seconds": 50.714804764999826
+    },
+    {
+      "run_id": "double_dqn_004_seed_40",
+      "status": "completed",
+      "configuration_id": "double_dqn_004",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 40,
+      "training": {
+        "episodes": 200000,
+        "actions": 300124,
+        "mean_actions_per_episode": 1.50062,
+        "mean_reward": -0.2089,
+        "seconds": 97.83156088800024,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 74782
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 162958,
+        "mean_actions_per_episode": 1.62958,
+        "mean_reward": -0.05867,
+        "win_rate": 0.42171,
+        "draw_rate": 0.09791,
+        "loss_rate": 0.48038,
+        "mean_inference_microseconds_per_action": 19.81167708243842
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_004_seed_40.pt",
+      "total_seconds": 101.73004299600052
+    },
+    {
+      "run_id": "double_dqn_004_seed_41",
+      "status": "completed",
+      "configuration_id": "double_dqn_004",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 41,
+      "training": {
+        "episodes": 200000,
+        "actions": 298579,
+        "mean_actions_per_episode": 1.492895,
+        "mean_reward": -0.20501,
+        "seconds": 96.92434086799949,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 74395
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 152154,
+        "mean_actions_per_episode": 1.52154,
+        "mean_reward": -0.05365,
+        "win_rate": 0.42868,
+        "draw_rate": 0.08899,
+        "loss_rate": 0.48233,
+        "mean_inference_microseconds_per_action": 19.855811355600245
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_004_seed_41.pt",
+      "total_seconds": 100.59656775300027
+    },
+    {
+      "run_id": "double_dqn_004_seed_42",
+      "status": "completed",
+      "configuration_id": "double_dqn_004",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 42,
+      "training": {
+        "episodes": 200000,
+        "actions": 299755,
+        "mean_actions_per_episode": 1.498775,
+        "mean_reward": -0.209135,
+        "seconds": 98.40317480900012,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 74689
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 162907,
+        "mean_actions_per_episode": 1.62907,
+        "mean_reward": -0.06389,
+        "win_rate": 0.41961,
+        "draw_rate": 0.09689,
+        "loss_rate": 0.4835,
+        "mean_inference_microseconds_per_action": 20.14889902827994
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_004_seed_42.pt",
+      "total_seconds": 102.38200635599969
+    },
+    {
+      "run_id": "double_dqn_004_seed_43",
+      "status": "completed",
+      "configuration_id": "double_dqn_004",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 43,
+      "training": {
+        "episodes": 200000,
+        "actions": 300171,
+        "mean_actions_per_episode": 1.500855,
+        "mean_reward": -0.20396,
+        "seconds": 98.69539035199978,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 74793
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 161835,
+        "mean_actions_per_episode": 1.61835,
+        "mean_reward": -0.05758,
+        "win_rate": 0.42393,
+        "draw_rate": 0.09456,
+        "loss_rate": 0.48151,
+        "mean_inference_microseconds_per_action": 20.032461828405474
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_004_seed_43.pt",
+      "total_seconds": 102.62184698199962
+    },
+    {
+      "run_id": "double_dqn_004_seed_44",
+      "status": "completed",
+      "configuration_id": "double_dqn_004",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 200000,
+      "seed": 44,
+      "training": {
+        "episodes": 200000,
+        "actions": 300520,
+        "mean_actions_per_episode": 1.5026,
+        "mean_reward": -0.20385,
+        "seconds": 99.2563043909995,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 74881
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 158219,
+        "mean_actions_per_episode": 1.58219,
+        "mean_reward": -0.0518,
+        "win_rate": 0.42749,
+        "draw_rate": 0.09322,
+        "loss_rate": 0.47929,
+        "mean_inference_microseconds_per_action": 19.753777934382093
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_004_seed_44.pt",
+      "total_seconds": 103.0461028460004
+    },
+    {
+      "run_id": "double_dqn_005_seed_40",
+      "status": "completed",
+      "configuration_id": "double_dqn_005",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 40,
+      "training": {
+        "episodes": 500000,
+        "actions": 750813,
+        "mean_actions_per_episode": 1.501626,
+        "mean_reward": -0.205208,
+        "seconds": 262.09044909599925,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 187454
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154250,
+        "mean_actions_per_episode": 1.5425,
+        "mean_reward": -0.0536,
+        "win_rate": 0.42734,
+        "draw_rate": 0.09172,
+        "loss_rate": 0.48094,
+        "mean_inference_microseconds_per_action": 20.677978839546192
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_005_seed_40.pt",
+      "total_seconds": 265.9714152730003
+    },
+    {
+      "run_id": "double_dqn_005_seed_41",
+      "status": "completed",
+      "configuration_id": "double_dqn_005",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 41,
+      "training": {
+        "episodes": 500000,
+        "actions": 750467,
+        "mean_actions_per_episode": 1.500934,
+        "mean_reward": -0.204336,
+        "seconds": 259.61526589299956,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 187367
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 158098,
+        "mean_actions_per_episode": 1.58098,
+        "mean_reward": -0.04974,
+        "win_rate": 0.42755,
+        "draw_rate": 0.09516,
+        "loss_rate": 0.47729,
+        "mean_inference_microseconds_per_action": 20.166382686688003
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_005_seed_41.pt",
+      "total_seconds": 263.49695164700006
+    },
+    {
+      "run_id": "double_dqn_005_seed_42",
+      "status": "completed",
+      "configuration_id": "double_dqn_005",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 42,
+      "training": {
+        "episodes": 500000,
+        "actions": 751302,
+        "mean_actions_per_episode": 1.502604,
+        "mean_reward": -0.207074,
+        "seconds": 260.38336413900015,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 187576
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 154612,
+        "mean_actions_per_episode": 1.54612,
+        "mean_reward": -0.04924,
+        "win_rate": 0.43017,
+        "draw_rate": 0.09042,
+        "loss_rate": 0.47941,
+        "mean_inference_microseconds_per_action": 19.912460190670842
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_005_seed_42.pt",
+      "total_seconds": 264.13398243199936
+    },
+    {
+      "run_id": "double_dqn_005_seed_43",
+      "status": "completed",
+      "configuration_id": "double_dqn_005",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 43,
+      "training": {
+        "episodes": 500000,
+        "actions": 748539,
+        "mean_actions_per_episode": 1.497078,
+        "mean_reward": -0.204486,
+        "seconds": 259.0974799380001,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 186885
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156895,
+        "mean_actions_per_episode": 1.56895,
+        "mean_reward": -0.04709,
+        "win_rate": 0.43036,
+        "draw_rate": 0.09219,
+        "loss_rate": 0.47745,
+        "mean_inference_microseconds_per_action": 19.489791835303865
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_005_seed_43.pt",
+      "total_seconds": 262.8134668009998
+    },
+    {
+      "run_id": "double_dqn_005_seed_44",
+      "status": "completed",
+      "configuration_id": "double_dqn_005",
+      "algorithm": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": 0.001,
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": 128,
+        "gradient_clip": 10.0,
+        "decks": 6
+      },
+      "training_episodes": 500000,
+      "seed": 44,
+      "training": {
+        "episodes": 500000,
+        "actions": 747785,
+        "mean_actions_per_episode": 1.49557,
+        "mean_reward": -0.20578,
+        "seconds": 256.3520455860007,
+        "network_parameters": 18562,
+        "replay_transitions": 100000,
+        "gradient_steps": 186697
+      },
+      "evaluation": {
+        "episodes": 100000,
+        "actions": 156374,
+        "mean_actions_per_episode": 1.56374,
+        "mean_reward": -0.04726,
+        "win_rate": 0.43066,
+        "draw_rate": 0.09142,
+        "loss_rate": 0.47792,
+        "mean_inference_microseconds_per_action": 19.351175278498985
+      },
+      "model": "results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/models/double_dqn_005_seed_44.pt",
+      "total_seconds": 260.0278277689995
+    }
+  ]
+}

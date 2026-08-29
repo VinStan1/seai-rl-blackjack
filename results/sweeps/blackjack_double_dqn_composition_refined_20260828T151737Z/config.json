@@ -1,0 +1,59 @@
+{
+  "experiment_name": "blackjack_double_dqn_composition_refined",
+  "output_dir": "results/sweeps",
+  "workers": 1,
+  "metadata": {
+    "phase": "neural_refined",
+    "description": "Focused Double DQN analysis on normalized exact six-deck composition"
+  },
+  "environment": {
+    "variant": "finite_composition",
+    "decks": 6,
+    "penetration": 0.75,
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": [
+      100000,
+      200000,
+      500000
+    ],
+    "seeds": [
+      40,
+      41,
+      42,
+      43,
+      44
+    ]
+  },
+  "evaluation": {
+    "episodes": 100000,
+    "seed": 50000000
+  },
+  "algorithms": [
+    {
+      "name": "double_dqn",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "learning_rate": [
+          0.001
+        ],
+        "gamma": 1.0,
+        "batch_size": 64,
+        "replay_capacity": 100000,
+        "learning_starts": 1000,
+        "train_frequency": 4,
+        "target_update_interval": 1000,
+        "hidden_size": [
+          64,
+          128
+        ],
+        "gradient_clip": 10.0,
+        "decks": 6
+      }
+    }
+  ]
+}

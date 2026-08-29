@@ -1,0 +1,69 @@
+{
+  "experiment_name": "blackjack_selected_long_budget_comparison",
+  "output_dir": "results/final",
+  "workers": 1,
+  "metadata": {
+    "phase": "long_budget_validation",
+    "selection_source": "results/sweeps/blackjack_refined_grid_20260828T124420Z/summary.json",
+    "selection_budget_episodes": 500000,
+    "selection_metric": "mean_evaluation_reward",
+    "purpose": "Retrain the best 500k refined-sweep configuration per tabular algorithm at 500k, 1M, and 2M episodes using fresh seeds."
+  },
+  "environment": {
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": [500000, 1000000, 2000000],
+    "seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
+  },
+  "evaluation": {
+    "episodes": 100000,
+    "seed": 20000000
+  },
+  "algorithms": [
+    {
+      "name": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.25,
+        "gamma": 1.0
+      }
+    },
+      {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon": 0.25,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    },
+    {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    },
+        {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    },
+    {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon": 0.3,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    }
+  ]
+}
