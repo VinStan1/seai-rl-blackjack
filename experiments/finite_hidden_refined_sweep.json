@@ -1,0 +1,13 @@
+{
+  "extends": "hyperparameter_refined_sweep.json",
+  "experiment_name": "blackjack_finite_hidden_refined_grid",
+  "metadata": {
+    "phase": "finite_variant",
+    "description": "The standard refined tabular grid on a hidden persistent six-deck shoe"
+  },
+  "environment": {
+    "variant": "finite_hidden",
+    "decks": 6,
+    "penetration": 0.75
+  }
+}

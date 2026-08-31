@@ -601,14 +601,22 @@ def plot_best_policy_heatmap(
             axis.grid(False)
         axes[row_index][0].set_ylabel("Player total")
 
+    figure.subplots_adjust(
+        left=0.08,
+        right=0.84,
+        top=0.9,
+        bottom=0.06,
+        hspace=0.38,
+        wspace=0.12,
+    )
+    legend_axis = figure.add_axes((0.88, 0.15, 0.025, 0.7))
     figure.colorbar(
         image,
-        ax=axes,
+        cax=legend_axis,
         ticks=[-1, 0, 1],
         label="Greedy action",
     ).ax.set_yticklabels(["Unseen", "Stick", "Hit"])
-    figure.suptitle("Best policy from each tabular algorithm")
-    figure.subplots_adjust(top=0.94, bottom=0.06, hspace=0.38, wspace=0.12)
+    figure.suptitle("Best policy from each tabular algorithm", y=0.985)
     figure.savefig(output_path, dpi=180, bbox_inches="tight")
     plt.close(figure)
     return True

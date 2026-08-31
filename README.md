@@ -217,18 +217,19 @@ docker compose run --rm --build sweep \
   --config experiments/hyperparameter_refined_sweep.json --workers 4
 ```
 
-The refined grid tests fixed epsilon values `0.20`, `0.25`, and `0.30`, plus a
+The refined grid tests fixed epsilon values around `0.20` to `0.35`, plus a
 linear schedule that decays from `1.0` to `0.05` over the first 80% of training.
 SARSA and Q-learning test alpha values `0.005` and `0.01`. Every setting is
-trained at 20,000, 50,000, 100,000, 200,000, and 500,000 episodes using the new
-pilot seeds `10` through `19`. This produces 100 configurations and 1,000 runs.
+trained at 100,000, 200,000, and 500,000 episodes using seeds `10` through `19`.
+This produces 60 configurations and 600 runs.
 Its timestamped summary is stored beside the coarse sweep under
 `results/sweeps/`, so the two experiment histories remain separate.
 
-Run the same refined tabular grid in the two information-augmented finite
-variants:
+Run the same refined tabular grid in the finite variants:
 
 ```bash
+docker compose run --rm --build sweep \
+  --config experiments/finite_hidden_refined_sweep.json --workers 4
 docker compose run --rm --build sweep \
   --config experiments/finite_hi_lo_sweep.json --workers 4
 docker compose run --rm --build sweep \
@@ -239,9 +240,7 @@ These compact files inherit the complete refined grid through `extends` and
 override only experiment metadata and environment settings. The generated
 `config.json` is fully resolved, so results do not depend on the parent file
 after execution. Composition runs can consume substantially more memory and
-storage because their Q-tables contain many more distinct states. Finite-hidden
-is intentionally not given another full grid: it uses the base-selected settings
-through the transfer command documented below.
+storage because their Q-tables contain many more distinct states.
 
 Every invocation creates a timestamped directory under `results/sweeps/`. Each
 seed/configuration run saves a model and run report. `summary.json` is refreshed

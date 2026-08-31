@@ -1,10 +1,10 @@
-# Analysis: blackjack_refined_grid
+# Analysis: blackjack_finite_hidden_refined_grid
 
-Environment variant: **standard**.
+Environment variant: **finite_hidden**.
 
 ## Executive summary
 
-The highest observed final reward came from **SARSA** with `epsilon=1.0->0.05 linear (80%), alpha=0.005, gamma=1.0`. Its mean reward was **-0.04309** (approximate 95% CI -0.04442 to -0.04177), with a 43.32% win rate.
+The highest observed final reward came from **Q-learning** with `epsilon=0.35, alpha=0.005, gamma=1.0`. Its mean reward was **-0.04320** (approximate 95% CI -0.04418 to -0.04222), with a 43.39% win rate.
 
 The sweep status is `completed`: 600 of 600 runs completed and 0 failed.
 
@@ -14,13 +14,13 @@ The sweep status is `completed`: 600 of 600 runs completed and 0 failed.
 
 | Algorithm | Training episodes | Parameters | Mean reward (95% CI) | Win rate | Training time |
 |---|---:|---|---:|---:|---:|
-| Monte Carlo | 500,000 | `epsilon=0.25, gamma=1.0` | -0.04342 [-0.04522, -0.04161] | 43.51% | 20.81 s |
-| Q-learning | 500,000 | `epsilon=0.3, alpha=0.005, gamma=1.0` | -0.04403 [-0.04529, -0.04278] | 43.25% | 20.65 s |
-| SARSA | 500,000 | `epsilon=1.0->0.05 linear (80%), alpha=0.005, gamma=1.0` | -0.04309 [-0.04442, -0.04177] | 43.32% | 20.44 s |
+| Monte Carlo | 500,000 | `epsilon=0.25, gamma=1.0` | -0.04780 [-0.04878, -0.04681] | 43.45% | 6.74 s |
+| Q-learning | 500,000 | `epsilon=0.35, alpha=0.005, gamma=1.0` | -0.04320 [-0.04418, -0.04222] | 43.39% | 4.84 s |
+| SARSA | 500,000 | `epsilon=1.0->0.05 linear (80%), alpha=0.01, gamma=1.0` | -0.04368 [-0.04584, -0.04152] | 43.39% | 5.26 s |
 
 ## Literature baseline
 
-The **stick-on-17** policy hits below 17 and sticks on 17 or above. On the same 100,000 seeded evaluation episodes, its mean reward was **-0.07439** with a 41.12% win rate.
+The **stick-on-17** policy hits below 17 and sticks on 17 or above. On the same 100,000 seeded evaluation episodes, its mean reward was **-0.07665** with a 41.16% win rate.
 
 Reference: Richard S. Sutton and Andrew G. Barto, *Reinforcement Learning: An Introduction*, second edition, Example 5.1: Blackjack (2018), http://incompleteideas.net/book/RLbook2020.pdf.
 
@@ -31,9 +31,9 @@ Differences below are calculated seed by seed as the first algorithm minus the s
 
 | Comparison | Seeds | Mean reward difference (95% CI) | Interpretation |
 |---|---:|---:|---|
-| Monte Carlo - Q-learning | 10 | 0.00062 [-0.00155, 0.00279] | difference is inconclusive at this precision |
-| Monte Carlo - SARSA | 10 | -0.00032 [-0.00263, 0.00198] | difference is inconclusive at this precision |
-| Q-learning - SARSA | 10 | -0.00094 [-0.00219, 0.00030] | difference is inconclusive at this precision |
+| Monte Carlo - Q-learning | 10 | -0.00460 [-0.00623, -0.00296] | interval excludes zero |
+| Monte Carlo - SARSA | 10 | -0.00412 [-0.00643, -0.00180] | interval excludes zero |
+| Q-learning - SARSA | 10 | 0.00048 [-0.00222, 0.00318] | difference is inconclusive at this precision |
 
 These normal-approximation intervals are descriptive; they are not a replacement for a pre-specified final statistical testing protocol.
 
@@ -76,11 +76,11 @@ Training times were collected while independent runs could execute in parallel. 
 - The best settings were selected using the same evaluation results shown here. A separate final seed set reduces selection bias.
 - Confidence-interval overlap alone does not prove algorithms are equivalent.
 - Episode-budget points are trained independently from scratch; they estimate sample efficiency but are not checkpoints from one continuous run.
-- Evaluate environment variants before making claims about generalisation.
+- Compare this result with independently tuned standard and finite variants before attributing differences to the observation alone.
 
 ## Generated artifacts
 
-- Source summary: `results/sweeps/blackjack_refined_grid_20260828T124420Z/summary.json`
+- Source summary: `results/sweeps/blackjack_finite_hidden_refined_grid_20260831T173256Z/summary.json`
 - Full ranked table: `configuration_results.csv`
 - Final reward chart: `configuration_performance.png`
 - Sample-efficiency chart: `sample_efficiency.png`
