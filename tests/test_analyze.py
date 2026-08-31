@@ -120,23 +120,34 @@ class AnalyzeTests(unittest.TestCase):
         self.assertIn("separate pilot sweep", report)
         self.assertNotIn("![Hyperparameter sensitivity]", report)
 
-    def test_generates_best_policy_heatmap_for_finite_hidden_blackjack(self) -> None:
+    def test_generates_best_policy_heatmap_for_each_available_algorithm(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             result_directory = Path(temporary_directory)
-            model_path = result_directory / "models" / "best_model.json"
-            agent = QLearningAgent(seed=1)
-            agent.q_values[(12, 2, False)] = [0.2, 0.7]
-            agent.save(model_path)
+            q_model_path = result_directory / "models" / "q_model.json"
+            q_agent = QLearningAgent(seed=1)
+            q_agent.q_values[(12, 2, False)] = [0.2, 0.7]
+            q_agent.save(q_model_path)
+            mc_model_path = result_directory / "models" / "mc_model.json"
+            mc_agent = QLearningAgent(seed=2)
+            mc_agent.q_values[(18, 10, False)] = [0.8, 0.1]
+            mc_agent.save(mc_model_path)
 
             summary = json.loads(json.dumps(self.summary))
             summary["environment"] = {"variant": "finite_hidden"}
             summary["runs"] = [
                 {
                     "status": "completed",
+                    "configuration_id": "mc_0",
+                    "seed": 2,
+                    "evaluation": {"mean_reward": -0.07},
+                    "model": str(mc_model_path),
+                },
+                {
+                    "status": "completed",
                     "configuration_id": "q_0",
                     "seed": 1,
                     "evaluation": {"mean_reward": -0.05},
-                    "model": str(model_path),
+                    "model": str(q_model_path),
                 }
             ]
             summary_path = result_directory / "summary.json"
@@ -150,7 +161,8 @@ class AnalyzeTests(unittest.TestCase):
 
             self.assertIn(heatmap_path, generated)
             self.assertTrue(heatmap_path.is_file())
-        self.assertIn("best_policy_heatmap.png", report)
+        self.assertIn("Best policies by algorithm", report)
+        self.assertIn("highest-reward configuration of one tabular algorithm", report)
 
     def test_latest_summary_is_resolved_and_loaded(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

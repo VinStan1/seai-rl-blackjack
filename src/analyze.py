@@ -524,24 +524,35 @@ def _load_tabular_q_values(model_path: Path) -> dict[tuple[int | bool, ...], lis
 def plot_best_policy_heatmap(
     summary: dict[str, Any], output_path: Path
 ) -> bool:
-    """Plot greedy actions of the representative model for simple Blackjack states."""
+    """Compare greedy policies for the best tabular configuration per algorithm."""
     environment = summary.get("environment")
     variant = environment.get("variant", "standard") if isinstance(environment, dict) else "standard"
     if variant not in {"standard", "finite_hidden"}:
         return False
 
     configurations = summary["configurations"]
-    best_configuration = max(
-        configurations, key=lambda item: float(item["mean_reward"]["mean"])
-    )
-    run = _representative_best_run(best_configuration, summary["runs"])
-    if run is None:
-        return False
-    model_path = Path(run["model"])
-    if not model_path.is_file():
-        return False
-    q_values = _load_tabular_q_values(model_path)
-    if not q_values:
+    policies: list[
+        tuple[dict[str, Any], dict[str, Any], dict[tuple[int | bool, ...], list[float]]]
+    ] = []
+    for algorithm in ("monte_carlo", "sarsa", "q_learning"):
+        matches = [
+            item for item in configurations if item["algorithm"] == algorithm
+        ]
+        if not matches:
+            continue
+        best_configuration = max(
+            matches, key=lambda item: float(item["mean_reward"]["mean"])
+        )
+        run = _representative_best_run(best_configuration, summary["runs"])
+        if run is None:
+            continue
+        model_path = Path(run["model"])
+        if not model_path.is_file():
+            continue
+        q_values = _load_tabular_q_values(model_path)
+        if q_values:
+            policies.append((best_configuration, run, q_values))
+    if not policies:
         return False
 
     plt = _pyplot()
@@ -551,41 +562,53 @@ def plot_best_policy_heatmap(
     dealer_upcards = list(range(1, 11))
     color_map = ListedColormap(["#d9d9d9", "#e45756", "#4c78a8"])
     normalizer = BoundaryNorm([-1.5, -0.5, 0.5, 1.5], color_map.N)
-    figure, axes = plt.subplots(1, 2, figsize=(12, 7), sharey=True)
+    figure, axes = plt.subplots(
+        len(policies),
+        2,
+        figsize=(12, 4.5 * len(policies)),
+        sharex=True,
+        sharey=True,
+        squeeze=False,
+    )
     image = None
-    for axis, usable_ace in zip(axes, (False, True), strict=True):
-        actions = []
-        for player_total in player_totals:
-            row = []
-            for dealer_upcard in dealer_upcards:
-                values = q_values.get((player_total, dealer_upcard, usable_ace))
-                row.append(-1 if values is None else values.index(max(values)))
-            actions.append(row)
-        image = axis.imshow(
-            actions,
-            cmap=color_map,
-            norm=normalizer,
-            origin="lower",
-            aspect="auto",
-        )
-        axis.set_title("Usable ace" if usable_ace else "No usable ace")
-        axis.set_xticks(range(len(dealer_upcards)), dealer_upcards)
-        axis.set_xlabel("Dealer upcard")
-        axis.set_yticks(range(len(player_totals)), player_totals)
-        axis.grid(False)
+    for row_index, (configuration, run, q_values) in enumerate(policies):
+        for axis, usable_ace in zip(
+            axes[row_index], (False, True), strict=True
+        ):
+            actions = []
+            for player_total in player_totals:
+                row = []
+                for dealer_upcard in dealer_upcards:
+                    values = q_values.get((player_total, dealer_upcard, usable_ace))
+                    row.append(-1 if values is None else values.index(max(values)))
+                actions.append(row)
+            image = axis.imshow(
+                actions,
+                cmap=color_map,
+                norm=normalizer,
+                origin="lower",
+                aspect="auto",
+            )
+            hand_type = "Usable ace" if usable_ace else "No usable ace"
+            axis.set_title(
+                f"{_algorithm_name(configuration['algorithm'])} — {hand_type}\n"
+                f"{int(configuration['training_episodes']):,} episodes, "
+                f"representative seed {run.get('seed', 'unknown')}"
+            )
+            axis.set_xticks(range(len(dealer_upcards)), dealer_upcards)
+            axis.set_xlabel("Dealer upcard")
+            axis.set_yticks(range(len(player_totals)), player_totals)
+            axis.grid(False)
+        axes[row_index][0].set_ylabel("Player total")
 
-    axes[0].set_ylabel("Player total")
     figure.colorbar(
         image,
         ax=axes,
         ticks=[-1, 0, 1],
         label="Greedy action",
     ).ax.set_yticklabels(["Unseen", "Stick", "Hit"])
-    figure.suptitle(
-        f"Best policy: {_algorithm_name(best_configuration['algorithm'])} "
-        f"(representative seed {run.get('seed', 'unknown')})"
-    )
-    figure.subplots_adjust(top=0.86, bottom=0.12, wspace=0.12)
+    figure.suptitle("Best policy from each tabular algorithm")
+    figure.subplots_adjust(top=0.94, bottom=0.06, hspace=0.38, wspace=0.12)
     figure.savefig(output_path, dpi=180, bbox_inches="tight")
     plt.close(figure)
     return True
@@ -825,15 +848,15 @@ def build_report(
     if include_best_policy_heatmap:
         lines.extend(
             [
-                "## Best-model policy",
+                "## Best policies by algorithm",
                 "",
-                "![Best-model action heatmap](best_policy_heatmap.png)",
+                "![Best-per-algorithm action heatmaps](best_policy_heatmap.png)",
                 "",
                 (
-                    "Each cell shows the greedy action of the representative trained "
-                    "model for the highest-reward configuration. The representative seed "
-                    "is the completed run closest to that configuration's mean reward; "
-                    "gray cells were not present in its learned Q-table."
+                    "Each row shows the greedy policy for the highest-reward configuration "
+                    "of one tabular algorithm. Its representative seed is the completed run "
+                    "closest to that configuration's mean reward; gray cells were not present "
+                    "in that model's learned Q-table."
                 ),
                 "",
             ]
@@ -886,7 +909,7 @@ def build_report(
             "- Training-time chart: `training_time.png`",
             "- Performance-versus-training-time charts: one `performance_vs_training_time_<episodes>.png` file per training budget",
             *(
-                ["- Best-model policy heatmap: `best_policy_heatmap.png`"]
+                ["- Best-per-algorithm policy heatmaps: `best_policy_heatmap.png`"]
                 if include_best_policy_heatmap
                 else []
             ),
