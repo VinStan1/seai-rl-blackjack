@@ -43,6 +43,20 @@ These normal-approximation intervals are descriptive; they are not a replacement
 
 Each point is a separately trained agent at that episode budget. Higher reward with fewer episodes indicates better sample efficiency.
 
+## Projected finite-composition policies
+
+![Hit frequency by visible state](best_policy_heatmap.png)
+
+![Projection coverage](best_policy_coverage_heatmap.png)
+
+![Monte Carlo policy by true-count band](best_policy_true_count_monte_carlo.png)
+
+![SARSA policy by true-count band](best_policy_true_count_sarsa.png)
+
+![Q-learning policy by true-count band](best_policy_true_count_q_learning.png)
+
+For each tabular agent, every learned exact-composition Q-table state contributes equally. A Double DQN has no enumerable state table, so its projection instead uses the states visited during up to 10,000 greedy replay episodes. The first heatmap reports the fraction of contributing states or decisions that hit, so values near 0.5 expose visible states whose action changes with exact shoe composition. The coverage heatmap reports log10(1 + contributing states or decisions), distinguishing broad evidence from rare states. The count-conditioned panels repeat the hit-frequency view for negative, neutral, and positive Hi-Lo true counts. Gray means that nothing contributed to that cell. These are compressed projections, not evidence that the policy ignores exact composition. Tabular coverage measures learned-state support, whereas Double DQN coverage measures greedy-replay visitation, so their absolute coverage values should not be compared directly.
+
 
 ## Efficiency
 
@@ -80,3 +94,4 @@ Training times were collected while independent runs could execute in parallel. 
 - Sample-efficiency chart: `sample_efficiency.png`
 - Training-time chart: `training_time.png`
 - Performance-versus-training-time charts: one `performance_vs_training_time_<episodes>.png` file per training budget
+- Policy heatmaps: `best_policy_heatmap.png`, `best_policy_coverage_heatmap.png`, `best_policy_true_count_monte_carlo.png`, `best_policy_true_count_sarsa.png`, `best_policy_true_count_q_learning.png`

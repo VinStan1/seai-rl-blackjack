@@ -1,0 +1,53 @@
+{
+  "experiment_name": "blackjack_finite_composition_selected_long_budget_comparison",
+  "output_dir": "results/final",
+  "workers": 1,
+  "metadata": {
+    "phase": "long_budget_validation",
+    "selection_source": "results/sweeps/blackjack_finite_composition_refined_grid_20260828T143903Z/summary.json",
+    "selection_budget_episodes": 500000,
+    "selection_metric": "mean_evaluation_reward",
+    "timing_protocol": "single_worker",
+    "purpose": "Measure performance and training-time scaling for the best 500k finite-composition configuration per tabular algorithm."
+  },
+  "environment": {
+    "variant": "finite_composition",
+    "decks": 6,
+    "penetration": 0.75,
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": [500000, 1000000, 2000000],
+    "seeds": [300, 301, 302, 303, 304, 305, 306, 307, 308, 309]
+  },
+  "evaluation": {
+    "episodes": 100000,
+    "seed": 60000000
+  },
+  "algorithms": [
+    {
+      "name": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      }
+    },
+    {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon": 0.2,
+        "alpha": 0.01,
+        "gamma": 1.0
+      }
+    },
+    {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon": 0.35,
+        "alpha": 0.005,
+        "gamma": 1.0
+      }
+    }
+  ]
+}

@@ -1,12 +1,12 @@
-# Analysis: blackjack_double_dqn_composition_refined
+# Analysis: blackjack_finite_composition_selected_long_budget_comparison
 
 Environment variant: **finite_composition**.
 
 ## Executive summary
 
-The highest observed final reward came from **Double DQN** with `epsilon=1.0->0.05 linear (80%), gamma=1.0, batch_size=64, decks=6, gradient_clip=10.0, hidden_size=128, learning_rate=0.001, learning_starts=1000, replay_capacity=100000, target_update_interval=1000, train_frequency=4`. Its mean reward was **-0.04939** (approximate 95% CI -0.05169 to -0.04708), with a 42.92% win rate.
+The highest observed final reward came from **SARSA** with `epsilon=0.2, alpha=0.01, gamma=1.0`. Its mean reward was **-0.17819** (approximate 95% CI -0.17866 to -0.17773), with a 38.65% win rate.
 
-The sweep status is `completed`: 30 of 30 runs completed and 0 failed.
+The sweep status is `completed`: 90 of 90 runs completed and 0 failed.
 
 ![Configuration performance](configuration_performance.png)
 
@@ -14,11 +14,13 @@ The sweep status is `completed`: 30 of 30 runs completed and 0 failed.
 
 | Algorithm | Training episodes | Parameters | Mean reward (95% CI) | Win rate | Training time |
 |---|---:|---|---:|---:|---:|
-| Double DQN | 500,000 | `epsilon=1.0->0.05 linear (80%), gamma=1.0, batch_size=64, decks=6, gradient_clip=10.0, hidden_size=128, learning_rate=0.001, learning_starts=1000, replay_capacity=100000, target_update_interval=1000, train_frequency=4` | -0.04939 [-0.05169, -0.04708] | 42.92% | 259.51 s |
+| Monte Carlo | 2,000,000 | `epsilon=0.3, gamma=1.0` | -0.17927 [-0.17987, -0.17867] | 38.61% | 20.90 s |
+| Q-learning | 2,000,000 | `epsilon=0.35, alpha=0.005, gamma=1.0` | -0.17828 [-0.17860, -0.17796] | 38.64% | 14.62 s |
+| SARSA | 2,000,000 | `epsilon=0.2, alpha=0.01, gamma=1.0` | -0.17819 [-0.17866, -0.17773] | 38.65% | 14.89 s |
 
 ## Literature baseline
 
-The **stick-on-17** policy hits below 17 and sticks on 17 or above. On the same 100,000 seeded evaluation episodes, its mean reward was **-0.07430** with a 41.22% win rate.
+The **stick-on-17** policy hits below 17 and sticks on 17 or above. On the same 100,000 seeded evaluation episodes, its mean reward was **-0.07544** with a 41.16% win rate.
 
 Reference: Richard S. Sutton and Andrew G. Barto, *Reinforcement Learning: An Introduction*, second edition, Example 5.1: Blackjack (2018), http://incompleteideas.net/book/RLbook2020.pdf.
 
@@ -29,6 +31,9 @@ Differences below are calculated seed by seed as the first algorithm minus the s
 
 | Comparison | Seeds | Mean reward difference (95% CI) | Interpretation |
 |---|---:|---:|---|
+| Monte Carlo - Q-learning | 10 | -0.00099 [-0.00169, -0.00029] | interval excludes zero |
+| Monte Carlo - SARSA | 10 | -0.00108 [-0.00185, -0.00030] | interval excludes zero |
+| Q-learning - SARSA | 10 | -0.00009 [-0.00061, 0.00043] | difference is inconclusive at this precision |
 
 These normal-approximation intervals are descriptive; they are not a replacement for a pre-specified final statistical testing protocol.
 
@@ -38,30 +43,34 @@ These normal-approximation intervals are descriptive; they are not a replacement
 
 Each point is a separately trained agent at that episode budget. Higher reward with fewer episodes indicates better sample efficiency.
 
-## Projected Double DQN policy
+## Projected finite-composition policies
 
 ![Hit frequency by visible state](best_policy_heatmap.png)
 
 ![Projection coverage](best_policy_coverage_heatmap.png)
 
-![Double DQN policy by true-count band](best_policy_true_count_double_dqn.png)
+![Monte Carlo policy by true-count band](best_policy_true_count_monte_carlo.png)
+
+![SARSA policy by true-count band](best_policy_true_count_sarsa.png)
+
+![Q-learning policy by true-count band](best_policy_true_count_q_learning.png)
 
 For each tabular agent, every learned exact-composition Q-table state contributes equally. A Double DQN has no enumerable state table, so its projection instead uses the states visited during up to 10,000 greedy replay episodes. The first heatmap reports the fraction of contributing states or decisions that hit, so values near 0.5 expose visible states whose action changes with exact shoe composition. The coverage heatmap reports log10(1 + contributing states or decisions), distinguishing broad evidence from rare states. The count-conditioned panels repeat the hit-frequency view for negative, neutral, and positive Hi-Lo true counts. Gray means that nothing contributed to that cell. These are compressed projections, not evidence that the policy ignores exact composition. Tabular coverage measures learned-state support, whereas Double DQN coverage measures greedy-replay visitation, so their absolute coverage values should not be compared directly.
 
 
 ## Efficiency
 
-### 100,000 training episodes
-
-![Performance versus training time at 100,000 episodes](performance_vs_training_time_100000.png)
-
-### 200,000 training episodes
-
-![Performance versus training time at 200,000 episodes](performance_vs_training_time_200000.png)
-
 ### 500,000 training episodes
 
 ![Performance versus training time at 500,000 episodes](performance_vs_training_time_500000.png)
+
+### 1,000,000 training episodes
+
+![Performance versus training time at 1,000,000 episodes](performance_vs_training_time_1000000.png)
+
+### 2,000,000 training episodes
+
+![Performance versus training time at 2,000,000 episodes](performance_vs_training_time_2000000.png)
 
 Each chart holds the training budget fixed. Every point is one hyperparameter configuration, horizontal intervals show uncertainty in mean training time, and vertical intervals show uncertainty in mean evaluation reward. The preferred region is the upper-left; black outlines identify the best-reward configuration for each algorithm at that budget.
 
@@ -71,7 +80,7 @@ Training times were collected while independent runs could execute in parallel. 
 
 ## Interpretation limits and next steps
 
-- This experiment uses only 5 training seeds per configuration. Use at least 10-20 fresh seeds for a stronger final comparison.
+- Results use 10 independent training seeds per configuration; retain the per-seed results when applying the final paired statistical test.
 - The best settings were selected using the same evaluation results shown here. A separate final seed set reduces selection bias.
 - Confidence-interval overlap alone does not prove algorithms are equivalent.
 - Episode-budget points are trained independently from scratch; they estimate sample efficiency but are not checkpoints from one continuous run.
@@ -79,10 +88,10 @@ Training times were collected while independent runs could execute in parallel. 
 
 ## Generated artifacts
 
-- Source summary: `results/sweeps/blackjack_double_dqn_composition_refined_20260828T151737Z/summary.json`
+- Source summary: `results/final/blackjack_finite_composition_selected_long_budget_comparison_20260901T164852Z/summary.json`
 - Full ranked table: `configuration_results.csv`
 - Final reward chart: `configuration_performance.png`
 - Sample-efficiency chart: `sample_efficiency.png`
 - Training-time chart: `training_time.png`
 - Performance-versus-training-time charts: one `performance_vs_training_time_<episodes>.png` file per training budget
-- Policy heatmaps: `best_policy_heatmap.png`, `best_policy_coverage_heatmap.png`, `best_policy_true_count_double_dqn.png`
+- Policy heatmaps: `best_policy_heatmap.png`, `best_policy_coverage_heatmap.png`, `best_policy_true_count_monte_carlo.png`, `best_policy_true_count_sarsa.png`, `best_policy_true_count_q_learning.png`

@@ -118,17 +118,27 @@ The pilot evaluates two training budgets and two learning rates on three seeds,
 for 12 runs rather than reusing the much larger tabular grid. Model selection and
 analysis still use mean evaluation reward exactly as for the other agents.
 
-After using the pilot to verify learning, run the focused neural analysis:
+After using the pilot to verify learning, run the extended neural analysis:
 
 ```bash
 docker compose run --rm --build sweep \
   --config experiments/double_dqn_composition_refined.json --workers 2
 ```
 
-This evaluates 100,000, 200,000, and 500,000 training episodes, learning rates
-`0.001` and `0.0003`, hidden widths 64 and 128, and five seeds: 60 runs in total.
-It is intentionally separate from the tabular grid because neural and tabular
-agents do not share the same meaningful hyperparameters.
+This evaluates 100,000, 200,000, 500,000, and 1,000,000 training episodes. Its
+curated grid ranges final epsilon (`0.01`, `0.05`, `0.10`), exploration-decay
+fraction (`0.50`, `0.80`, `1.00`), learning rate (`0.001`, `0.0003`), hidden
+width (64, 128, 256), and batch size (64, 128) without taking the prohibitively
+large full Cartesian product. Sixteen parameter settings over four budgets and
+five seeds produce 320 runs. It is intentionally separate from the tabular grid
+because neural and tabular agents do not share the same meaningful parameters.
+Finite-composition analysis now projects the best representative model in three
+complementary ways: a hit-frequency heatmap, a coverage heatmap, and separate
+hit-frequency policies for negative, neutral, and positive Hi-Lo true-count
+bands. Tabular plots aggregate all learned exact Q-table states; Double DQN plots
+use states encountered during greedy replay because a network has no finite table
+to enumerate. These compressed summaries must not be interpreted as showing that
+exact composition is irrelevant.
 
 The extension can be removed without changing the environments or tabular
 agents: remove `double_dqn.py`, `requirements-dqn.txt`, its Docker install layer,

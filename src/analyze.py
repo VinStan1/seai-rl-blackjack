@@ -23,6 +23,7 @@ COLORS = {
     "double_dqn": "#B279A2",
 }
 BASELINE_COLOR = "#B22222"
+POLICY_PROJECTION_EPISODES = 10_000
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -521,20 +522,368 @@ def _load_tabular_q_values(model_path: Path) -> dict[tuple[int | bool, ...], lis
     return q_values
 
 
+def _project_composition_actions(
+    model_path: Path,
+    algorithm: str,
+    environment_config: dict[str, Any],
+    *,
+    episodes: int,
+    seed: int = 91_000_000,
+) -> dict[str, Any]:
+    """Sample a composition-aware greedy policy and retain useful projections."""
+    from src.agents import MonteCarloAgent, QLearningAgent, SarsaAgent
+    from src.environments.factory import make_blackjack_environment
+
+    if algorithm == "double_dqn":
+        from src.agents.double_dqn import DoubleDQNAgent
+
+        agent = DoubleDQNAgent.load(model_path)
+    else:
+        loaders = {
+            "monte_carlo": MonteCarloAgent,
+            "sarsa": SarsaAgent,
+            "q_learning": QLearningAgent,
+        }
+        agent = loaders[algorithm].load(model_path)
+    action_counts: dict[tuple[int | bool, ...], list[float]] = {}
+    count_action_counts: dict[
+        str, dict[tuple[int | bool, ...], list[float]]
+    ] = {label: {} for label in ("negative", "neutral", "positive")}
+    q_values = getattr(agent, "q_values", None)
+    if q_values is not None:
+        for state, values in q_values.items():
+            if len(state) != 13 or len(values) < 2:
+                continue
+            action = values.index(max(values))
+            visible_state = (int(state[0]), int(state[1]), bool(state[2]))
+            counts = action_counts.setdefault(visible_state, [0.0, 0.0])
+            counts[action] += 1.0
+            count_group = _composition_true_count_group(state)
+            grouped_counts = count_action_counts[count_group].setdefault(
+                visible_state, [0.0, 0.0]
+            )
+            grouped_counts[action] += 1.0
+        return {
+            "action_counts": action_counts,
+            "count_action_counts": count_action_counts,
+            "episodes": 0,
+            "source": "learned_states",
+            "sample_count": sum(sum(values) for values in action_counts.values()),
+        }
+
+    with make_blackjack_environment(environment_config) as environment:
+        for episode_index in range(episodes):
+            state, _ = environment.reset(seed=seed if episode_index == 0 else None)
+            while True:
+                action = agent.select_action(state, explore=False)
+                visible_state = (int(state[0]), int(state[1]), bool(state[2]))
+                counts = action_counts.setdefault(visible_state, [0.0, 0.0])
+                counts[action] += 1.0
+                count_group = _composition_true_count_group(state)
+                grouped_counts = count_action_counts[count_group].setdefault(
+                    visible_state, [0.0, 0.0]
+                )
+                grouped_counts[action] += 1.0
+                state, _, terminated, truncated, _ = environment.step(action)
+                if terminated or truncated:
+                    break
+    return {
+        "action_counts": action_counts,
+        "count_action_counts": count_action_counts,
+        "episodes": episodes,
+        "source": "greedy_replay",
+        "sample_count": sum(sum(values) for values in action_counts.values()),
+    }
+
+
+def _composition_true_count_group(state: tuple[int | bool, ...]) -> str:
+    """Compress exact remaining-card counts into a familiar Hi-Lo count band."""
+    if len(state) != 13:
+        raise ValueError("finite-composition state must contain 13 values")
+    remaining = [int(value) for value in state[3:]]
+    hi_lo_weights = (-1, 1, 1, 1, 1, 1, 0, 0, 0, -1)
+    remaining_count = sum(
+        weight * count for weight, count in zip(hi_lo_weights, remaining, strict=True)
+    )
+    running_count = -remaining_count
+    decks_remaining = max(sum(remaining) / 52.0, 0.25)
+    true_count = running_count / decks_remaining
+    if true_count < -1.0:
+        return "negative"
+    if true_count > 1.0:
+        return "positive"
+    return "neutral"
+
+
+def _composition_policies(
+    summary: dict[str, Any], environment: dict[str, Any]
+) -> list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]]:
+    """Load and replay one representative best model per available algorithm."""
+    policies: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]] = []
+    for algorithm in ("monte_carlo", "sarsa", "q_learning", "double_dqn"):
+        matches = [
+            item for item in summary["configurations"] if item["algorithm"] == algorithm
+        ]
+        if not matches:
+            continue
+        best_configuration = max(
+            matches, key=lambda item: float(item["mean_reward"]["mean"])
+        )
+        run = _representative_best_run(best_configuration, summary["runs"])
+        if run is None:
+            continue
+        model_path = Path(run["model"])
+        if not model_path.is_file():
+            continue
+        evaluation = run.get("evaluation", {})
+        projection_episodes = min(
+            POLICY_PROJECTION_EPISODES,
+            max(1, int(evaluation.get("episodes", POLICY_PROJECTION_EPISODES))),
+        )
+        projection = _project_composition_actions(
+            model_path,
+            algorithm,
+            environment,
+            episodes=projection_episodes,
+        )
+        if projection["action_counts"]:
+            policies.append((best_configuration, run, projection))
+    return policies
+
+
+def _heatmap_matrix(
+    action_counts: dict[tuple[int | bool, ...], list[float]],
+    *,
+    metric: str,
+    usable_ace: bool,
+) -> list[list[float]]:
+    matrix: list[list[float]] = []
+    for player_total in range(4, 22):
+        row = []
+        for dealer_upcard in range(1, 11):
+            values = action_counts.get((player_total, dealer_upcard, usable_ace))
+            if values is None or sum(values) == 0:
+                row.append(float("nan"))
+            elif metric == "hit_frequency":
+                row.append(values[1] / sum(values))
+            elif metric == "coverage":
+                row.append(math.log10(1.0 + sum(values)))
+            else:
+                raise ValueError(f"unknown policy heatmap metric: {metric}")
+        matrix.append(row)
+    return matrix
+
+
+def _format_policy_axis(axis: Any, *, show_ylabel: bool) -> None:
+    player_totals = list(range(4, 22))
+    dealer_upcards = list(range(1, 11))
+    axis.set_xticks(range(len(dealer_upcards)), dealer_upcards)
+    axis.set_xlabel("Dealer upcard")
+    axis.set_yticks(range(len(player_totals)), player_totals)
+    if show_ylabel:
+        axis.set_ylabel("Player total")
+    axis.grid(False)
+
+
+def _projection_source_label(projection: dict[str, Any]) -> str:
+    if projection["source"] == "learned_states":
+        return f"{projection['sample_count']:,.0f} learned exact states"
+    return f"{projection['episodes']:,} greedy replay episodes"
+
+
+def _plot_composition_policy_heatmaps(
+    policies: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]],
+    output_path: Path,
+) -> list[Path]:
+    """Plot behavior, coverage, and count-conditioned finite-shoe projections."""
+    plt = _pyplot()
+    generated: list[Path] = []
+    hit_color_map = plt.get_cmap("RdBu").with_extremes(bad="#d9d9d9")
+    coverage_color_map = plt.get_cmap("viridis").with_extremes(bad="#d9d9d9")
+
+    figure, axes = plt.subplots(
+        len(policies),
+        2,
+        figsize=(12, max(6, 4.5 * len(policies))),
+        sharex=True,
+        sharey=True,
+        squeeze=False,
+    )
+    image = None
+    for row_index, (configuration, run, projection) in enumerate(policies):
+        for column_index, usable_ace in enumerate((False, True)):
+            axis = axes[row_index][column_index]
+            image = axis.imshow(
+                _heatmap_matrix(
+                    projection["action_counts"],
+                    metric="hit_frequency",
+                    usable_ace=usable_ace,
+                ),
+                cmap=hit_color_map,
+                vmin=0.0,
+                vmax=1.0,
+                origin="lower",
+                aspect="auto",
+            )
+            hand_type = "Usable ace" if usable_ace else "No usable ace"
+            axis.set_title(
+                f"{_algorithm_name(configuration['algorithm'])} — {hand_type}\n"
+                f"{_projection_source_label(projection)}"
+            )
+            _format_policy_axis(axis, show_ylabel=column_index == 0)
+    figure.subplots_adjust(
+        left=0.08,
+        right=0.84,
+        top=0.72 if len(policies) == 1 else 0.9,
+        bottom=0.06,
+        hspace=0.38,
+        wspace=0.12,
+    )
+    legend_axis = figure.add_axes((0.88, 0.15, 0.025, 0.7))
+    figure.colorbar(
+        image,
+        cax=legend_axis,
+        label="Fraction of contributing states/decisions that hit",
+    )
+    figure.suptitle("Finite-composition policy variation projected onto visible state", y=0.985)
+    figure.savefig(output_path, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+    generated.append(output_path)
+
+    coverage_path = output_path.with_name("best_policy_coverage_heatmap.png")
+    maximum_coverage = max(
+        math.log10(1.0 + sum(values))
+        for _, _, projection in policies
+        for values in projection["action_counts"].values()
+    )
+    figure, axes = plt.subplots(
+        len(policies),
+        2,
+        figsize=(12, max(6, 5.0 * len(policies))),
+        sharex=True,
+        sharey=True,
+        squeeze=False,
+    )
+    image = None
+    for row_index, (configuration, run, projection) in enumerate(policies):
+        for column_index, usable_ace in enumerate((False, True)):
+            axis = axes[row_index][column_index]
+            image = axis.imshow(
+                _heatmap_matrix(
+                    projection["action_counts"],
+                    metric="coverage",
+                    usable_ace=usable_ace,
+                ),
+                cmap=coverage_color_map,
+                vmin=0.0,
+                vmax=maximum_coverage,
+                origin="lower",
+                aspect="auto",
+            )
+            hand_type = "Usable ace" if usable_ace else "No usable ace"
+            axis.set_title(
+                f"{_algorithm_name(configuration['algorithm'])} — {hand_type}\n"
+                f"{_projection_source_label(projection)}"
+            )
+            _format_policy_axis(axis, show_ylabel=column_index == 0)
+    figure.subplots_adjust(
+        left=0.08,
+        right=0.84,
+        top=0.72 if len(policies) == 1 else 0.9,
+        bottom=0.06,
+        hspace=0.52,
+        wspace=0.12,
+    )
+    legend_axis = figure.add_axes((0.88, 0.15, 0.025, 0.7))
+    figure.colorbar(
+        image,
+        cax=legend_axis,
+        label="log10(1 + contributing states/decisions)",
+    )
+    figure.suptitle("Finite-composition policy projection coverage", y=0.985)
+    figure.savefig(coverage_path, dpi=180, bbox_inches="tight")
+    plt.close(figure)
+    generated.append(coverage_path)
+
+    count_labels = {
+        "negative": "Negative true count (< -1)",
+        "neutral": "Neutral true count (-1 to 1)",
+        "positive": "Positive true count (> 1)",
+    }
+    for configuration, run, projection in policies:
+        algorithm = configuration["algorithm"]
+        count_path = output_path.with_name(
+            f"best_policy_true_count_{algorithm}.png"
+        )
+        figure, axes = plt.subplots(
+            2,
+            3,
+            figsize=(15, 9),
+            sharex=True,
+            sharey=True,
+            squeeze=False,
+        )
+        image = None
+        for row_index, usable_ace in enumerate((False, True)):
+            for column_index, count_group in enumerate(
+                ("negative", "neutral", "positive")
+            ):
+                axis = axes[row_index][column_index]
+                image = axis.imshow(
+                    _heatmap_matrix(
+                        projection["count_action_counts"][count_group],
+                        metric="hit_frequency",
+                        usable_ace=usable_ace,
+                    ),
+                    cmap=hit_color_map,
+                    vmin=0.0,
+                    vmax=1.0,
+                    origin="lower",
+                    aspect="auto",
+                )
+                hand_type = "Usable ace" if usable_ace else "No usable ace"
+                axis.set_title(f"{count_labels[count_group]} — {hand_type}")
+                _format_policy_axis(axis, show_ylabel=column_index == 0)
+        figure.subplots_adjust(
+            left=0.07, right=0.87, top=0.88, bottom=0.08, hspace=0.3, wspace=0.14
+        )
+        legend_axis = figure.add_axes((0.91, 0.15, 0.02, 0.7))
+        figure.colorbar(
+            image,
+            cax=legend_axis,
+            label="Fraction of contributing states/decisions that hit",
+        )
+        figure.suptitle(
+            f"{_algorithm_name(algorithm)} policy by Hi-Lo true-count band\n"
+            f"representative seed {run.get('seed', 'unknown')}",
+            y=0.985,
+        )
+        figure.savefig(count_path, dpi=180, bbox_inches="tight")
+        plt.close(figure)
+        generated.append(count_path)
+    return generated
+
+
 def plot_best_policy_heatmap(
     summary: dict[str, Any], output_path: Path
-) -> bool:
-    """Compare greedy policies for the best tabular configuration per algorithm."""
+) -> list[Path]:
+    """Plot exact tabular policies or finite-composition policy projections."""
     environment = summary.get("environment")
     variant = environment.get("variant", "standard") if isinstance(environment, dict) else "standard"
-    if variant not in {"standard", "finite_hidden"}:
-        return False
+    if variant not in {"standard", "finite_hidden", "finite_composition"}:
+        return []
+    if variant == "finite_composition":
+        policies = _composition_policies(summary, environment)
+        if not policies:
+            return []
+        return _plot_composition_policy_heatmaps(policies, output_path)
 
     configurations = summary["configurations"]
     policies: list[
         tuple[dict[str, Any], dict[str, Any], dict[tuple[int | bool, ...], list[float]]]
     ] = []
-    for algorithm in ("monte_carlo", "sarsa", "q_learning"):
+    algorithms = ("monte_carlo", "sarsa", "q_learning")
+    for algorithm in algorithms:
         matches = [
             item for item in configurations if item["algorithm"] == algorithm
         ]
@@ -549,11 +898,11 @@ def plot_best_policy_heatmap(
         model_path = Path(run["model"])
         if not model_path.is_file():
             continue
-        q_values = _load_tabular_q_values(model_path)
-        if q_values:
-            policies.append((best_configuration, run, q_values))
+        action_values = _load_tabular_q_values(model_path)
+        if action_values:
+            policies.append((best_configuration, run, action_values))
     if not policies:
-        return False
+        return []
 
     plt = _pyplot()
     from matplotlib.colors import BoundaryNorm, ListedColormap
@@ -565,7 +914,7 @@ def plot_best_policy_heatmap(
     figure, axes = plt.subplots(
         len(policies),
         2,
-        figsize=(12, 4.5 * len(policies)),
+        figsize=(12, max(6, 4.5 * len(policies))),
         sharex=True,
         sharey=True,
         squeeze=False,
@@ -604,7 +953,7 @@ def plot_best_policy_heatmap(
     figure.subplots_adjust(
         left=0.08,
         right=0.84,
-        top=0.9,
+        top=0.82 if len(policies) == 1 else 0.9,
         bottom=0.06,
         hspace=0.38,
         wspace=0.12,
@@ -616,10 +965,15 @@ def plot_best_policy_heatmap(
         ticks=[-1, 0, 1],
         label="Greedy action",
     ).ax.set_yticklabels(["Unseen", "Stick", "Hit"])
-    figure.suptitle("Best policy from each tabular algorithm", y=0.985)
+    policy_algorithms = {item[0]["algorithm"] for item in policies}
+    if policy_algorithms == {"double_dqn"}:
+        title = "Double DQN projected policy"
+    else:
+        title = "Best policy from each tabular algorithm"
+    figure.suptitle(title, y=0.985)
     figure.savefig(output_path, dpi=180, bbox_inches="tight")
     plt.close(figure)
-    return True
+    return [output_path]
 
 
 def write_configuration_csv(
@@ -670,7 +1024,12 @@ def build_report(
     summary_path: Path,
     *,
     include_best_policy_heatmap: bool = False,
+    policy_heatmap_paths: list[Path] | None = None,
 ) -> str:
+    policy_heatmap_paths = policy_heatmap_paths or []
+    include_best_policy_heatmap = (
+        include_best_policy_heatmap or bool(policy_heatmap_paths)
+    )
     configurations = summary["configurations"]
     runs = summary["runs"]
     metadata = summary.get("experiment_metadata", {})
@@ -854,18 +1213,63 @@ def build_report(
         )
 
     if include_best_policy_heatmap:
+        if environment_variant == "finite_composition":
+            analyzed_algorithms = {
+                item["algorithm"] for item in configurations
+            }
+            if analyzed_algorithms == {"double_dqn"}:
+                policy_heading = "Projected Double DQN policy"
+            else:
+                policy_heading = "Projected finite-composition policies"
+            policy_explanation = (
+                "For each tabular agent, every learned exact-composition Q-table "
+                "state contributes equally. A Double DQN has no enumerable state table, so its "
+                f"projection instead uses the states visited during up to "
+                f"{POLICY_PROJECTION_EPISODES:,} greedy replay episodes. The first heatmap "
+                "reports the fraction of contributing states or decisions that hit, so values "
+                "near 0.5 expose visible states whose action changes with exact shoe "
+                "composition. The coverage heatmap reports log10(1 + contributing states or "
+                "decisions), distinguishing broad evidence from rare states. The "
+                "count-conditioned panels repeat the hit-frequency view for negative, neutral, "
+                "and positive Hi-Lo true counts. Gray means that nothing contributed to that "
+                "cell. These are compressed projections, not evidence that the policy ignores "
+                "exact composition. Tabular coverage measures learned-state support, whereas "
+                "Double DQN coverage measures greedy-replay visitation, so their absolute "
+                "coverage values should not be compared directly."
+            )
+            policy_images = [
+                "![Hit frequency by visible state](best_policy_heatmap.png)",
+                "",
+                "![Projection coverage](best_policy_coverage_heatmap.png)",
+            ]
+            generated_names = {path.name for path in policy_heatmap_paths}
+            for algorithm in ("monte_carlo", "sarsa", "q_learning", "double_dqn"):
+                filename = f"best_policy_true_count_{algorithm}.png"
+                if filename in generated_names:
+                    policy_images.extend(
+                        [
+                            "",
+                            f"![{_algorithm_name(algorithm)} policy by true-count band]({filename})",
+                        ]
+                    )
+        else:
+            policy_heading = "Best policies by algorithm"
+            policy_explanation = (
+                "Each row shows the greedy policy for the highest-reward configuration "
+                "of one tabular algorithm. Its representative seed is the completed run "
+                "closest to that configuration's mean reward; gray cells were not present "
+                "in that model's learned Q-table."
+            )
+            policy_images = [
+                "![Best-per-algorithm action heatmaps](best_policy_heatmap.png)"
+            ]
         lines.extend(
             [
-                "## Best policies by algorithm",
+                f"## {policy_heading}",
                 "",
-                "![Best-per-algorithm action heatmaps](best_policy_heatmap.png)",
+                *policy_images,
                 "",
-                (
-                    "Each row shows the greedy policy for the highest-reward configuration "
-                    "of one tabular algorithm. Its representative seed is the completed run "
-                    "closest to that configuration's mean reward; gray cells were not present "
-                    "in that model's learned Q-table."
-                ),
+                policy_explanation,
                 "",
             ]
         )
@@ -917,7 +1321,10 @@ def build_report(
             "- Training-time chart: `training_time.png`",
             "- Performance-versus-training-time charts: one `performance_vs_training_time_<episodes>.png` file per training budget",
             *(
-                ["- Best-per-algorithm policy heatmaps: `best_policy_heatmap.png`"]
+                [
+                    "- Policy heatmaps: "
+                    + ", ".join(f"`{path.name}`" for path in policy_heatmap_paths)
+                ]
                 if include_best_policy_heatmap
                 else []
             ),
@@ -947,13 +1354,13 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
     performance_time_paths = plot_performance_vs_training_time(
         configurations, output_dir
     )
-    best_policy_generated = plot_best_policy_heatmap(summary, best_policy_path)
+    policy_heatmap_paths = plot_best_policy_heatmap(summary, best_policy_path)
     write_configuration_csv(configurations, csv_path)
     report_path.write_text(
         build_report(
             summary,
             summary_path,
-            include_best_policy_heatmap=best_policy_generated,
+            policy_heatmap_paths=policy_heatmap_paths,
         ),
         encoding="utf-8",
     )
@@ -963,7 +1370,7 @@ def generate_analysis(summary_path: Path, output_dir: Path) -> list[Path]:
         sample_efficiency_path,
         training_time_path,
         *performance_time_paths,
-        *([best_policy_path] if best_policy_generated else []),
+        *policy_heatmap_paths,
         csv_path,
     ]
 

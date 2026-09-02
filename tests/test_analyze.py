@@ -7,14 +7,17 @@ import unittest
 from pathlib import Path
 
 from src.agents import QLearningAgent
+from src.agents.double_dqn import DoubleDQNAgent
 from src.analyze import (
     _best_by_algorithm,
+    _composition_true_count_group,
     _paired_comparison,
     build_report,
     generate_analysis,
     load_summary,
     resolve_summary_path,
 )
+from src.environments.factory import make_blackjack_environment
 
 
 def configuration(identifier: str, algorithm: str, reward: float):
@@ -163,6 +166,105 @@ class AnalyzeTests(unittest.TestCase):
             self.assertTrue(heatmap_path.is_file())
         self.assertIn("Best policies by algorithm", report)
         self.assertIn("highest-reward configuration of one tabular algorithm", report)
+
+    def test_generates_projected_double_dqn_policy_heatmap(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            result_directory = Path(temporary_directory)
+            model_path = result_directory / "models" / "double_dqn.pt"
+            DoubleDQNAgent(seed=7).save(model_path)
+            dqn_configuration = configuration("dqn_0", "double_dqn", -0.05)
+            summary = json.loads(json.dumps(self.summary))
+            summary["environment"] = {
+                "variant": "finite_composition",
+                "decks": 6,
+                "penetration": 0.75,
+                "natural": False,
+                "sab": True,
+            }
+            summary["configurations"] = [dqn_configuration]
+            summary["runs"] = [
+                {
+                    "status": "completed",
+                    "configuration_id": "dqn_0",
+                    "seed": 7,
+                    "evaluation": {"episodes": 20, "mean_reward": -0.05},
+                    "model": str(model_path),
+                }
+            ]
+            summary_path = result_directory / "summary.json"
+            summary_path.write_text(json.dumps(summary), encoding="utf-8")
+
+            generated = generate_analysis(summary_path, result_directory / "analysis")
+            heatmap_path = result_directory / "analysis" / "best_policy_heatmap.png"
+            report = (result_directory / "analysis" / "analysis.md").read_text(
+                encoding="utf-8"
+            )
+
+            self.assertIn(heatmap_path, generated)
+            self.assertTrue(heatmap_path.is_file())
+            self.assertTrue(
+                (result_directory / "analysis" / "best_policy_coverage_heatmap.png").is_file()
+            )
+            self.assertTrue(
+                (result_directory / "analysis" / "best_policy_true_count_double_dqn.png").is_file()
+            )
+        self.assertIn("Projected Double DQN policy", report)
+        self.assertIn("compressed projections", report)
+        self.assertIn("fraction of contributing states or decisions", report)
+
+    def test_generates_projected_tabular_composition_heatmaps(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            result_directory = Path(temporary_directory)
+            model_path = result_directory / "models" / "q_learning.json"
+            agent = QLearningAgent(seed=9)
+            environment_config = {
+                "variant": "finite_composition",
+                "decks": 6,
+                "penetration": 0.75,
+                "natural": False,
+                "sab": True,
+            }
+            with make_blackjack_environment(environment_config) as environment:
+                state, _ = environment.reset(seed=91_000_000)
+            agent.q_values[state] = [0.8, 0.1]
+            agent.save(model_path)
+            q_configuration = configuration("q_0", "q_learning", -0.05)
+            summary = json.loads(json.dumps(self.summary))
+            summary["environment"] = environment_config
+            summary["configurations"] = [q_configuration]
+            summary["runs"] = [
+                {
+                    "status": "completed",
+                    "configuration_id": "q_0",
+                    "seed": 9,
+                    "evaluation": {"episodes": 20, "mean_reward": -0.05},
+                    "model": str(model_path),
+                }
+            ]
+            summary_path = result_directory / "summary.json"
+            summary_path.write_text(json.dumps(summary), encoding="utf-8")
+
+            generated = generate_analysis(summary_path, result_directory / "analysis")
+            report = (result_directory / "analysis" / "analysis.md").read_text(
+                encoding="utf-8"
+            )
+
+        generated_names = {path.name for path in generated}
+        self.assertIn("best_policy_heatmap.png", generated_names)
+        self.assertIn("best_policy_coverage_heatmap.png", generated_names)
+        self.assertIn("best_policy_true_count_q_learning.png", generated_names)
+        self.assertIn("Projected finite-composition policies", report)
+        self.assertIn("learned exact-composition Q-table", report)
+        self.assertIn("negative, neutral, and positive Hi-Lo true", report)
+
+    def test_groups_exact_compositions_by_hi_lo_true_count(self) -> None:
+        neutral = (16, 10, False, 24, 24, 24, 24, 24, 24, 24, 24, 24, 96)
+        positive = (16, 10, False, 24, 8, 24, 24, 24, 24, 24, 24, 24, 96)
+        negative = (16, 10, False, 24, 24, 24, 24, 24, 24, 24, 24, 24, 80)
+
+        self.assertEqual(_composition_true_count_group(neutral), "neutral")
+        self.assertEqual(_composition_true_count_group(positive), "positive")
+        self.assertEqual(_composition_true_count_group(negative), "negative")
 
     def test_latest_summary_is_resolved_and_loaded(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -86,4 +86,4 @@ Training times were collected while independent runs could execute in parallel. 
 - Sample-efficiency chart: `sample_efficiency.png`
 - Training-time chart: `training_time.png`
 - Performance-versus-training-time charts: one `performance_vs_training_time_<episodes>.png` file per training budget
-- Best-per-algorithm policy heatmaps: `best_policy_heatmap.png`
+- Policy heatmaps: `best_policy_heatmap.png`
