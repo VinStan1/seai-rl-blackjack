@@ -192,6 +192,32 @@ def _plot_baseline(axis: Any, baseline: dict[str, Any] | None) -> None:
     )
 
 
+def _parameter_plot_labels(
+    configurations: list[dict[str, Any]],
+) -> dict[tuple[str, str], str]:
+    """Assign compact, stable plot IDs to unique settings per algorithm."""
+    labels: dict[tuple[str, str], str] = {}
+    for algorithm in ALGORITHM_NAMES:
+        parameter_sets = sorted(
+            {
+                json.dumps(item["parameters"], sort_keys=True)
+                for item in configurations
+                if item["algorithm"] == algorithm
+            }
+        )
+        for index, serialized in enumerate(parameter_sets, start=1):
+            labels[(algorithm, serialized)] = f"P{index:02d}"
+    return labels
+
+
+def _budget_label(episodes: int) -> str:
+    if episodes >= 1_000_000 and episodes % 1_000_000 == 0:
+        return f"{episodes // 1_000_000}M episodes"
+    if episodes >= 1_000 and episodes % 1_000 == 0:
+        return f"{episodes // 1_000}k episodes"
+    return f"{episodes:,} episodes"
+
+
 def plot_configuration_performance(
     configurations: list[dict[str, Any]],
     output_path: Path,
@@ -210,6 +236,7 @@ def plot_configuration_performance(
         budget: palette(index / max(1, len(budgets) - 1))
         for index, budget in enumerate(budgets)
     }
+    compact_labels = _parameter_plot_labels(configurations)
     figure, axes = plt.subplots(
         1,
         len(algorithms),
@@ -224,7 +251,7 @@ def plot_configuration_performance(
             {json.dumps(item["parameters"], sort_keys=True) for item in matches}
         )
         labels = [
-            _parameters_text(json.loads(parameters)) for parameters in parameter_sets
+            compact_labels[(algorithm, parameters)] for parameters in parameter_sets
         ]
         offsets = {
             budget: (index - (len(budgets) - 1) / 2) * 0.14
@@ -254,16 +281,46 @@ def plot_configuration_performance(
                     color=budget_colors[budget],
                     capsize=3,
                     markersize=6,
-                    label=f"{budget:,} episodes" if position == 0 else None,
                 )
-        axis.set_xticks(range(len(labels)), labels, rotation=35, ha="right", fontsize=8)
+        axis.set_xticks(range(len(labels)), labels, fontsize=8)
         axis.set_title(_algorithm_name(algorithm))
-        axis.set_xlabel("Agent hyperparameters")
+        axis.set_xlabel("Hyperparameter setting (mapping in CSV)")
         axis.grid(axis="y", alpha=0.25)
         _plot_baseline(axis, baseline)
 
     axes[0][0].set_ylabel("Mean evaluation reward (higher is better)")
-    axes[0][-1].legend(title="Training budget / reference", fontsize=8)
+    from matplotlib.lines import Line2D
+
+    legend_handles = []
+    baseline_reward = _baseline_reward(baseline)
+    if baseline_reward is not None:
+        legend_handles.append(
+            Line2D(
+                [0],
+                [0],
+                color=BASELINE_COLOR,
+                linestyle="--",
+                linewidth=1.8,
+                label=f"Stick-on-17 baseline ({baseline_reward:.4f})",
+            )
+        )
+    legend_handles.extend(
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            linestyle="None",
+            color=budget_colors[budget],
+            markersize=6,
+            label=_budget_label(budget),
+        )
+        for budget in budgets
+    )
+    axes[0][-1].legend(
+        handles=legend_handles,
+        title="Training budget / reference",
+        fontsize=8,
+    )
     figure.suptitle("Configuration performance with 95% confidence intervals")
     figure.tight_layout()
     figure.savefig(output_path, dpi=180, bbox_inches="tight")
@@ -981,6 +1038,7 @@ def write_configuration_csv(
 ) -> None:
     fields = [
         "rank",
+        "plot_label",
         "configuration_id",
         "algorithm",
         "training_episodes",
@@ -997,6 +1055,7 @@ def write_configuration_csv(
         key=lambda item: item["mean_reward"]["mean"],
         reverse=True,
     )
+    plot_labels = _parameter_plot_labels(configurations)
     with output_path.open("w", newline="", encoding="utf-8") as output:
         writer = csv.DictWriter(output, fieldnames=fields)
         writer.writeheader()
@@ -1005,6 +1064,12 @@ def write_configuration_csv(
             writer.writerow(
                 {
                     "rank": rank,
+                    "plot_label": plot_labels[
+                        (
+                            item["algorithm"],
+                            json.dumps(item["parameters"], sort_keys=True),
+                        )
+                    ],
                     "configuration_id": item["configuration_id"],
                     "algorithm": item["algorithm"],
                     "training_episodes": item.get("training_episodes", ""),
@@ -1071,6 +1136,12 @@ def build_report(
         ),
         "",
         "![Configuration performance](configuration_performance.png)",
+        "",
+        (
+            "Compact labels `P01`, `P02`, and so on identify unique parameter "
+            "settings within each algorithm panel. Their complete mapping is in "
+            "the `plot_label` column of `configuration_results.csv`."
+        ),
         "",
         "## Best configuration per algorithm",
         "",

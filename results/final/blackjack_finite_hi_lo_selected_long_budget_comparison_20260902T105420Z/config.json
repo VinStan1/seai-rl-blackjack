@@ -1,0 +1,73 @@
+{
+  "experiment_name": "blackjack_finite_hi_lo_selected_long_budget_comparison",
+  "output_dir": "results/final",
+  "workers": 1,
+  "metadata": {
+    "phase": "long_budget_validation",
+    "selection_source": "results/sweeps/blackjack_finite_hi_lo_refined_grid_20260828T141547Z/summary.json",
+    "selection_budget_episodes": 500000,
+    "selection_metric": "mean_evaluation_reward",
+    "timing_protocol": "single_worker",
+    "purpose": "Retrain the best 500k finite-Hi-Lo configuration per tabular algorithm at 500k, 1M, and 2M episodes using fresh seeds."
+  },
+  "environment": {
+    "variant": "finite_hi_lo",
+    "decks": 6,
+    "penetration": 0.75,
+    "natural": false,
+    "sab": true
+  },
+  "training": {
+    "episodes": [
+      500000,
+      1000000,
+      2000000,
+      5000000
+    ],
+    "seeds": [
+      400,
+      401,
+      402,
+      403,
+      404,
+      405,
+      406,
+      407,
+      408,
+      409
+    ]
+  },
+  "evaluation": {
+    "episodes": 100000,
+    "seed": 50000000
+  },
+  "algorithms": [
+    {
+      "name": "monte_carlo",
+      "parameters": {
+        "epsilon": 0.3,
+        "gamma": 1.0
+      }
+    },
+    {
+      "name": "sarsa",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.01,
+        "gamma": 1.0
+      }
+    },
+    {
+      "name": "q_learning",
+      "parameters": {
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.8,
+        "alpha": 0.01,
+        "gamma": 1.0
+      }
+    }
+  ]
+}

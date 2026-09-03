@@ -1,5 +1,6 @@
 """Tests for human-readable sweep analysis helpers."""
 
+import csv
 import json
 import os
 import tempfile
@@ -10,12 +11,15 @@ from src.agents import QLearningAgent
 from src.agents.double_dqn import DoubleDQNAgent
 from src.analyze import (
     _best_by_algorithm,
+    _budget_label,
     _composition_true_count_group,
+    _parameter_plot_labels,
     _paired_comparison,
     build_report,
     generate_analysis,
     load_summary,
     resolve_summary_path,
+    write_configuration_csv,
 )
 from src.environments.factory import make_blackjack_environment
 
@@ -100,6 +104,25 @@ class AnalyzeTests(unittest.TestCase):
         self.assertEqual(comparison["count"], 2)
         self.assertAlmostEqual(comparison["mean_difference"], 0.02)
 
+    def test_assigns_short_plot_labels_and_formats_million_budget(self) -> None:
+        second_q = configuration("q_1", "q_learning", -0.04)
+        second_q["parameters"] = {"epsilon": 0.2, "gamma": 1.0}
+
+        labels = _parameter_plot_labels([self.q, second_q])
+
+        self.assertEqual(set(labels.values()), {"P01", "P02"})
+        self.assertEqual(_budget_label(1_000_000), "1M episodes")
+
+    def test_configuration_csv_contains_plot_label_mapping(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output_path = Path(directory) / "configurations.csv"
+            write_configuration_csv([self.mc, self.q], output_path)
+            with output_path.open(encoding="utf-8", newline="") as input_file:
+                rows = list(csv.DictReader(input_file))
+
+        self.assertEqual({row["plot_label"] for row in rows}, {"P01"})
+        self.assertTrue(all(row["parameters"] for row in rows))
+
     def test_report_contains_result_and_interpretation_sections(self) -> None:
         report = build_report(self.summary, Path("summary.json"))
 
@@ -113,6 +136,7 @@ class AnalyzeTests(unittest.TestCase):
         self.assertIn("preferred region is the upper-left", report)
         self.assertIn("stick-on-17", report)
         self.assertIn("Sutton", report)
+        self.assertIn("plot_label", report)
 
     def test_final_report_does_not_claim_to_reestimate_sensitivity(self) -> None:
         self.summary["experiment_metadata"] = {"phase": "final_validation"}
